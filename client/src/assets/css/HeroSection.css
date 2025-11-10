@@ -1,0 +1,85 @@
+ /* Hero Section */
+        .hero-section {
+            padding-top: 5rem;    /* py-20 */
+            padding-bottom: 5rem; /* py-20 */
+            text-align: center;
+        }
+        .hero-content {
+            max-width: 896px; /* max-w-4xl */
+            margin: 0 auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .tagline {
+            color: var(--primary);
+            font-size: 0.875rem; /* text-sm */
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em; /* tracking-widest */
+            margin-bottom: 0.75rem; /* mb-3 */
+        }
+
+        .main-heading {
+            font-size: 2.25rem; /* text-4xl */
+            font-weight: 800; /* font-extrabold */
+            color: var(--secondary);
+            line-height: 1.2; /* leading-tight */
+            margin-bottom: 1.5rem; /* mb-6 */
+        }
+
+        .sub-heading {
+            font-size: 1.25rem; /* text-xl */
+            color: #4b5563; /* gray-600 */
+            margin-bottom: 2.5rem; /* mb-10 */
+            max-width: 672px; /* max-w-2xl */
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .cta-group {
+            display: flex;
+            /* flex-direction: column; */
+            justify-content: center;
+            gap: 1rem; /* space-y-4 */
+        }
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2.5rem;
+            border: 1px solid transparent;
+            font-size: 1rem;
+            font-weight: 700; /* font-bold */
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: var(--shadow-lg);
+            transition: all 200ms ease-in-out;
+            text-decoration: none;
+        }
+        
+        .cta-btn i {
+            margin-left: 0.5rem;
+            font-size: 0.875rem;
+        }
+        .cta-primary {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .cta-primary:hover {
+            background-color: #3f36c5; /* indigo-700 equivalent */
+            transform: scale(1.02);
+        }
+        .cta-secondary {
+            background-color: var(--white);
+            color: #4b5563; /* gray-700 */
+            border-color: #d1d5db; /* gray-300 */
+        }
+        .cta-secondary:hover {
+            background-color: #f3f4f6; /* gray-100 equivalent */
+        }
+        .trust-banner {
+            margin-top: 4rem; /* mt-16 */
+            color: #6b7280; /* gray-500 */
+            font-size: 0.875rem; /* text-sm */
+        }
+        

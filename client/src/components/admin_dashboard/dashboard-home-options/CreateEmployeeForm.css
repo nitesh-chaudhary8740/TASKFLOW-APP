@@ -1,0 +1,195 @@
+/* --- Essential CSS Variables --- */
+:root {
+    --primary: #4686e5; /* Indigo 600 */
+    --primary-dark: #376dc3; /* Darker primary for hover effects */
+    --secondary: #1f2937; /* Gray 800 (Main text) */
+    --text-light: #6b7280; /* Gray 500 (Subtle text) */
+    --white: #ffffff;
+    --background: #f4f6f9; /* Light background for the main content */
+    --border-color: #e5e7eb; /* Gray 200 */
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* --- MODAL STYLES --- */
+
+/* Modal Overlay (The transparent backdrop) */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6); 
+    z-index: 1000; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+}
+
+/* Modal Content Container (The actual form card) */
+.task-form-container {
+    position: relative; 
+    max-width: 800px;
+    width: 90%; 
+    margin: 40px auto; 
+    padding: 30px;
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    animation: slideIn 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Close Button Positioning */
+.modal-close-btn {
+    position: absolute; 
+    top: 15px;          
+    right: 15px;        
+    background: none;
+    border: none;
+    color: var(--text-light);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.modal-close-btn:hover {
+    background-color: var(--background);
+    color: var(--secondary);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* --- Shared Form Styles (Task, Employee, Project) --- */
+.form-title {
+    display: flex;
+    align-items: center;
+    font-size: 1.8rem;
+    color: var(--secondary);
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.task-form .form-group {
+    margin-bottom: 20px;
+}
+
+.task-form label {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    color: var(--secondary);
+    margin-bottom: 8px;
+    gap: 5px;
+    font-size: 0.95rem;
+}
+
+/* Input, Textarea, and Select Styles */
+.form-input, 
+.form-textarea,
+.form-select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--secondary);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box; 
+    /* Ensures consistent appearance for all form controls */
+    -webkit-appearance: none; 
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(70, 134, 229, 0.2); 
+    outline: none;
+}
+
+.form-textarea {
+    resize: vertical;
+}
+
+/* Specific styling for the dropdown (select) to handle visual cues */
+.form-select {
+    /* Adding a custom arrow for better cross-browser consistency */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%3E%3Cpath%20fill%3D%22%236b7280%22%20d%3D%22M4.5%206L7.5%209L10.5%206H4.5Z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 30px; /* Make space for the arrow */
+}
+
+
+/* Grouping fields side-by-side */
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+/* Submit Button */
+.form-submit-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 12px 20px;
+    background-color: var(--primary);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    margin-top: 15px;
+}
+
+.form-submit-btn:hover {
+    background-color: var(--primary-dark);
+}
+
+/* Messages (Success/Info) */
+.form-message {
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.form-message.success {
+    background-color: #d1fae5; 
+    color: #059669; 
+    border: 1px solid #10b981; 
+}
+
+.form-message.info {
+    background-color: #dbeafe; 
+    color: #2563eb; 
+    border: 1px solid #3b82f6; 
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+}

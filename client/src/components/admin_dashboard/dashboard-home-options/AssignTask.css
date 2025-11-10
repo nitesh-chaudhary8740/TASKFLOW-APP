@@ -1,0 +1,189 @@
+/* --- MODAL OVERLAY (Shared with CreateTaskForm) --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6); 
+    z-index: 1000; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+}
+
+/* Modal Content Container */
+.assign-task-container {
+    max-width: 600px; /* Slightly narrower for a focused list */
+    width: 90%; 
+    margin: 40px auto; 
+    padding: 30px;
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    position: relative; 
+    animation: slideIn 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh; /* Limits height on large screens */
+}
+
+/* Close Button Positioning */
+.modal-close-btn {
+    position: absolute; 
+    top: 15px; 
+    right: 15px; 
+    background: none;
+    border: none;
+    color: var(--text-light);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.modal-close-btn:hover {
+    background-color: var(--background);
+    color: var(--secondary);
+}
+
+.form-title {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    color: var(--secondary);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+/* --- Search Bar --- */
+.search-bar-group {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.assign-search-input {
+    width: 100%;
+    padding: 12px 12px 12px 40px; /* Extra padding for the icon */
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--secondary);
+}
+
+.assign-search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+}
+
+/* --- Task List --- */
+.task-list {
+    overflow-y: auto; /* Scrollable list of tasks */
+    flex-grow: 1; /* Allows list to fill remaining space */
+    padding-right: 5px; /* Space for scrollbar */
+}
+
+.task-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: var(--background);
+    border-radius: 8px;
+    border-left: 5px solid var(--primary);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.task-info {
+    flex-grow: 1;
+    margin-right: 15px;
+}
+
+.task-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 5px 0;
+    color: var(--secondary);
+}
+
+.task-description {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin: 0 0 8px 0;
+}
+
+.priority-tag {
+    /* Reusing priority styles from AdminAllTasksMenu.css */
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+/* Priority Colors (must be defined or copied from AllTasksMenu CSS) */
+/* .high { ... } .medium { ... } .low { ... } */
+
+
+/* --- Action Button --- */
+.assign-action-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 15px;
+    background-color: #10b981; /* Emerald Green */
+    color: var(--white);
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    flex-shrink: 0; /* Ensures button does not collapse */
+}
+
+.assign-action-btn:hover {
+    background-color: #059669; /* Darker Green */
+}
+
+/* --- State Messages --- */
+.task-list-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+    color: var(--text-light);
+}
+
+.task-list-state svg {
+    margin-bottom: 10px;
+    color: var(--primary);
+}
+
+.task-list-state.loading-state .spinner {
+    animation: spin 1s linear infinite;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 500px) {
+    .task-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .assign-action-btn {
+        width: 100%;
+        margin-top: 10px;
+        justify-content: center;
+    }
+    .task-info {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+}

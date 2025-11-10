@@ -1,0 +1,279 @@
+/* --- Essential CSS Variables (Copy from your main dashboard styles) --- */
+:root {
+    --primary: #4686e5;
+    --primary-dark: #376dc3;
+    --secondary: #1f2937; 
+    --text-light: #6b7280; 
+    --white: #ffffff;
+    --background: #f4f6f9; 
+    --border-color: #e5e7eb; 
+    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.task-menu-container {
+    padding: 20px;
+    background-color: var(--background);
+    min-height: calc(100vh - 80px); 
+}
+
+.task-list-title {
+    display: flex;
+    align-items: center;
+    font-size: 2rem;
+    color: var(--secondary);
+    margin-bottom: 25px;
+}
+
+/* --- Table Structure --- */
+.task-table-wrapper {
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    overflow-x: auto;
+}
+
+.task-table {
+    width: 100%;
+    border-collapse: collapse;
+    /* Changed to fixed and set widths in JSX to help control column wrapping */
+    table-layout: fixed; 
+}
+
+.task-table th, .task-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--secondary);
+    font-size: 0.95rem;
+    vertical-align: middle; /* Ensures content aligns vertically */
+}
+
+.task-table th {
+    background-color: var(--background);
+    color: var(--text-light);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+}
+
+.task-table tbody tr:hover {
+    background-color: var(--background);
+}
+
+/* --- Column Specific Styling --- */
+.task-name-cell {
+    font-weight: 600;
+}
+
+.assigned-to-cell, .date-cell {
+    /* Resetting display to default for TD but applying flex to content within */
+    display: table-cell;
+    padding: 15px;
+}
+
+/* New Assigned List Button/Link Styling */
+.assigned-list-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 6px;
+    color: var(--primary);
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.assigned-list-btn:hover {
+    background-color: var(--primary);
+    color: var(--white);
+}
+
+.assigned-list-btn:hover .icon-user {
+    color: var(--white);
+}
+
+.assigned-list-btn .icon-user {
+    color: var(--primary);
+    transition: color 0.2s;
+}
+
+
+/* --- Status Tags --- */
+.status-tag, .priority-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 16px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    white-space: nowrap;
+    text-transform: capitalize;
+}
+
+/* Status Colors... (Unchanged) */
+.in-progress { background-color: #fef3c7; color: #b45309; } 
+.pending { background-color: #fee2e2; color: #ef4444; } 
+.completed { background-color: #d1fae5; color: #059669; } 
+.on-hold { background-color: #e0f2fe; color: #0284c7; } 
+
+/* Priority Colors... (Unchanged) */
+.high { background-color: #ffe4e6; color: #e11d48; font-weight: 700; } 
+.medium { background-color: #fffbeb; color: #d97706; } 
+.low { background-color: #eff6ff; color: #2563eb; } 
+
+/* --- Action Column Styles (Fixing alignment issue) --- */
+.actions-column {
+    width: 150px; 
+    text-align: center !important;
+}
+
+.actions-cell {
+    /* Ensure the cell content is aligned vertically and horizontally */
+    display: flex; 
+    gap: 8px;
+    justify-content: center;
+    align-items: center; 
+    height: 100%; /* Important for vertical alignment */
+}
+
+.action-btn {
+    background: none;
+    border: 1px solid var(--border-color);
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-btn:hover {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Assign Button Style */
+.assign-btn {
+    color: #10b981; 
+}
+.assign-btn:hover {
+    background-color: #10b981;
+    color: var(--white);
+    border-color: #10b981;
+}
+
+.manage-btn {
+    color: var(--primary); 
+}
+
+.manage-btn:hover {
+    background-color: var(--primary);
+    color: var(--white);
+    border-color: var(--primary);
+}
+
+.delete-btn {
+    color: #ef4444; 
+}
+
+.delete-btn:hover {
+    background-color: #ef4444;
+    color: var(--white);
+    border-color: #ef4444;
+}
+
+
+/* --- States (Loading/Error/No Data) --- */
+/* (Unchanged) */
+.loading-state, .error-state, .no-data {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    text-align: center;
+    color: var(--text-light);
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+    color: var(--primary);
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.mock-warning {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: #d97706;
+}
+
+/* --- Responsive Table (Mobile optimization) --- */
+@media (max-width: 768px) {
+    /* ... (Mobile styles unchanged, they should handle the actions column as a block) */
+    .task-table-wrapper {
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .task-table thead {
+        position: absolute;
+        clip: rect(0 0 0 0);
+        overflow: hidden;
+        margin: -1px;
+        height: 1px;
+        width: 1px;
+        padding: 0;
+        border: 0;
+    }
+
+    .task-table tr {
+        display: block;
+        margin-bottom: 15px;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        background-color: var(--white);
+    }
+    
+    .task-table td {
+        border: none;
+        display: block;
+        text-align: right;
+        padding: 10px 15px;
+        border-bottom: 1px solid #eee;
+        position: relative;
+    }
+
+    .task-table td::before {
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        color: var(--secondary);
+    }
+    
+    .task-table tr:last-child td:last-child {
+        border-bottom: 0;
+    }
+
+    .hide-on-mobile {
+        display: none;
+    }
+    
+    .actions-cell {
+        justify-content: flex-end; 
+        border-bottom: none;
+    }
+    .assigned-to-cell {
+        display: block; /* Ensure it works as a block in mobile view */
+        text-align: right;
+    }
+    .assigned-to-cell .assigned-list-btn {
+        margin-left: auto; /* Center or push to the right */
+    }
+}

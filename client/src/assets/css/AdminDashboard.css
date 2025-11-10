@@ -1,0 +1,316 @@
+/* AdminDashboard.css - Consolidated Styles */
+
+/* --- Variables --- */
+:root {
+    --primary: #4686e5; /* Indigo 600 */
+    --primary-dark: #376dc3; /* Darker primary for hover effects */
+    --secondary: #1f2937; /* Gray 800 (Main text) */
+    --text-light: #6b7280; /* Gray 500 (Subtle text) */
+    --light-bg: #f9fafb; /* Gray 50 (General background) */
+    --white: #ffffff;
+    --border-color: #e5e7eb; /* Gray 200 (Borders/Separators) */
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+
+    /* Dashboard Card Colors */
+    --color-blue: #3b82f6; /* Blue 500 */
+    --color-green: #10b981; /* Green 500 */
+    --color-indigo: #6366f1; /* Indigo 500 */
+    --color-red: #ef4444; /* Red 500 */
+}
+
+/* ---------------------------------------------------- */
+/* --- AdminNavBar Component Styling (Reverted Flexbox) --- */
+/* ---------------------------------------------------- */
+/* .admin-app-wrapper{
+    filter: blur(2px) brightness(0.8);
+    pointer-events: none; 
+    transition: filter 0.3s;
+} */
+.admin-navbar {
+    display: flex;
+    justify-content: space-between; /* Push left (Logo+Menu) and right (Search+Actions) sections apart */
+    align-items: center;
+    height: 64px; 
+    padding: 0 24px;
+    background-color: var(--white);
+    box-shadow: var(--shadow-md);
+    position: sticky; 
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar-left-section,
+.navbar-right-section {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Default gap between internal elements */
+}
+
+/* Logo Section */
+.navbar-logo {
+    color: var(--primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+
+/* Vertical Separators */
+.nav-separator {
+    width: 1px;
+    height: 24px;
+    background-color: var(--border-color);
+    margin: 0 8px; 
+}
+
+/* Separator between Logo and Menu */
+.nav-separator.logo-separator {
+    margin-right: 16px; 
+    margin-left: 16px; 
+}
+
+/* Main Navigation Menu */
+.navbar-menu {
+    display: flex;
+    gap: 8px; 
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: var(--text-light);
+    font-weight: 500;
+    border-radius: 6px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.nav-link:hover {
+    background-color: var(--light-bg);
+    color: var(--secondary);
+}
+
+.nav-link.active {
+    color: var(--primary);
+    background-color: var(--light-bg);
+    position: relative;
+}
+
+/* 🔍 SEARCH BAR STYLES 🔍 */
+.navbar-search {
+    display: flex;
+    align-items: center;
+    padding: 6px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--light-bg);
+    width: 250px; 
+}
+
+.search-icon {
+    color: var(--text-light);
+    margin-right: 8px;
+}
+
+.search-input {
+    flex-grow: 1;
+    border: none;
+    background: transparent;
+    font-size: 0.9rem;
+    color: var(--secondary);
+}
+
+.search-input:focus {
+    outline: none;
+}
+
+.search-input::placeholder {
+    color: var(--text-light);
+    opacity: 0.7;
+}
+
+/* Action Buttons (Notifications, Settings) */
+.nav-action-btn {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background-color 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-action-btn:hover {
+    background-color: var(--light-bg);
+    color: var(--primary);
+}
+
+/* Profile Section */
+.nav-profile-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: 8px; 
+}
+
+.profile-avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary);
+}
+
+
+/* ---------------------------------------------------- */
+/* --- AdminDashBoardContent Styles --- */
+/* ---------------------------------------------------- */
+
+.admin-main-content {
+    padding: 32px 48px; /* Generous padding for the main area */
+    flex-grow: 1;
+    background-color: var(--light-bg);
+}
+
+.dashboard-header {
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 16px;
+}
+
+.organization-name {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--secondary);
+}
+
+.dashboard-subtitle {
+    color: var(--text-light);
+    font-size: 1rem;
+    margin-top: 4px;
+}
+
+/* --- Section Styling --- */
+
+.quick-actions-section,
+.metrics-section,
+.detailed-info-section {
+    margin-bottom: 40px;
+}
+
+.quick-actions-section h2,
+.metrics-section h2 {
+    font-size: 1.5rem;
+    color: var(--secondary);
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+
+/* --- 2. Quick Action Buttons --- */
+
+.actions-grid {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.quick-action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 180px; 
+    height: 120px;
+    padding: 15px;
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-align: center;
+}
+
+.quick-action-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary);
+}
+
+.action-icon {
+    color: var(--primary);
+    margin-bottom: 8px;
+    transition: color 0.2s;
+}
+
+.quick-action-btn:hover .action-icon {
+    color: var(--primary-dark);
+}
+
+.action-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--secondary);
+}
+
+
+/* --- 3. Summary Cards --- */
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.summary-card {
+    padding: 20px;
+    border-radius: 12px;
+    color: var(--white); 
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.card-title {
+    font-size: 1rem;
+    font-weight: 500;
+    opacity: 0.8;
+}
+
+.card-icon {
+    opacity: 0.7;
+}
+
+.card-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+/* Card Color Variants */
+/* Note: These use the new variables defined in :root */
+.card-blue {
+    background: var(--color-blue);
+}
+
+.card-green {
+    background: var(--color-green);
+}
+
+.card-indigo {
+    background: var(--color-indigo);
+}
+
+.card-red {
+    background: var(--color-red);
+}
