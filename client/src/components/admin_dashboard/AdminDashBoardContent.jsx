@@ -79,7 +79,7 @@ function AdminDashBoardContent() {
     }
     const handleReviewActivity = () => console.log('Navigating to Detailed Activity Log...');
 
-console.log("admin",adminContextValues.adminMetaData)
+// console.log("admin",adminContextValues.adminMetaData)
     return (
         <div className="admin-main-content">
             

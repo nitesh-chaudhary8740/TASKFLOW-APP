@@ -51,19 +51,18 @@ export const CreateEmployeeForm = () => {
                 antDContextValues.showNotification("info","A new employee has been created!",`${(new Date).toDateString}`)
                 clearTimeout(showNotificationTO)
         }, 2000);
-     navigate('/admin-dashboard')
     } catch (error) {
-      alert(error.response.data.msg);
+      antDContextValues.showError("error in creating employee",error)
     }
     finally{
-         navigate('/admin-dashboard')
-       setEmployeeData({ //empty all the fields even if success/fail
+      adminContextValues.setIsCreateEmpFormOpen(false); //close the form after submission if failed/success
+      navigate('/admin-dashboard')
+      setEmployeeData({ //empty all the fields even if success/fail
       fullName: "",
       userName: "",
       email: "",
       designation: "",
     });
-    adminContextValues.setIsCreateEmpFormOpen(false); //close the form after submission if failed/success
     }
 
    
@@ -99,7 +98,7 @@ export const CreateEmployeeForm = () => {
               type="text"
               id="fullName"
               name="fullName"
-              value={employeeData.name}
+              value={employeeData.fullName}
               onChange={inputOnChange(setEmployeeData)}
               placeholder="e.g., Jane Doe"
               required
@@ -116,7 +115,7 @@ export const CreateEmployeeForm = () => {
               type="text"
               id="username"
               name="userName"
-              value={employeeData.username}
+              value={employeeData.userName}
               onChange={inputOnChange(setEmployeeData)}
               placeholder="e.g., user@joe"
               required

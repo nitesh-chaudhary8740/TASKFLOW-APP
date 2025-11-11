@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
-import { Clock, Bell, Cog, LogOut, Search, File,  } from 'lucide-react';
+import { Clock, Bell,  LogOut, Search, File,  } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { AdminDashBoardContext } from '../../contexts/AdminDashBoardContext';
 
 function AdminNavBar() {
-  const adminContextValues = useContext(AdminDashBoardContext) 
-  console.log("it rendered")
+  const adminContextValues = useContext(AdminDashBoardContext)  
+  const user = JSON.parse(localStorage.getItem("currentUser"));
+  console.log(user)
+
   
-  
- 
   return (
     <nav className="admin-navbar">
       
@@ -61,9 +61,7 @@ function AdminNavBar() {
         <button title="Notifications" className="nav-action-btn">
           <Bell size={20} />
         </button>
-        <button title="Settings" className="nav-action-btn">
-          <Cog size={20} />
-        </button>
+        
         
         {/* Vertical Separator between Actions and Profile */}
         <div className="nav-separator"></div>
@@ -72,7 +70,7 @@ function AdminNavBar() {
         <div className="nav-profile-section">
           <div className="profile-avatar">
             <img
-              src="https://placehold.co/100x100/4f46e5/ffffff?text=A"
+              src={`https://placehold.co/100x100/4f46e5/ffffff?text=${user.name.charAt(0).toUpperCase()}`}
               alt="Admin Avatar"
             />
           </div>

@@ -4,20 +4,19 @@ import { USER_ROLES } from "../enums/roles.js";
 
 
 function TaskManageMentProvider({ children }) {
-  const [showHeroSection, setShowHeroSection] = useState(true);
+ 
   const [currentUser,setCurrentUser] = useState(null)
   const selectedAuthRole = useRef(USER_ROLES.ADMIN)
 
 
   const values = useMemo(
-    () => ({ showHeroSection,
-       setShowHeroSection,
+    () => ({ 
        selectedAuthRole,
 
        currentUser,
        setCurrentUser
        }),
-    [showHeroSection, setShowHeroSection,currentUser,setCurrentUser]
+    [currentUser,setCurrentUser]
   );
   return (
     <TASK_MANAGEMENT_HOME.Provider value={values}>

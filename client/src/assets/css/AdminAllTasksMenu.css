@@ -1,279 +1,465 @@
-/* --- Essential CSS Variables (Copy from your main dashboard styles) --- */
+/* --- Essential CSS Variables --- */
 :root {
-    --primary: #4686e5;
-    --primary-dark: #376dc3;
-    --secondary: #1f2937; 
-    --text-light: #6b7280; 
-    --white: #ffffff;
-    --background: #f4f6f9; 
-    --border-color: #e5e7eb; 
-    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+--primary: #4686e5;
+--primary-dark: #376dc3;
+--secondary: #1f2937;
+--text-light: #6b7280;
+--white: #ffffff;
+--background: #f4f6f9;
+--border-color: #e5e7eb;
+--shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
 }
 
 .task-menu-container {
-    padding: 20px;
-    background-color: var(--background);
-    min-height: calc(100vh - 80px); 
+padding: 20px;
+background-color: var(--background);
+min-height: calc(100vh - 80px);
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
 }
 
 .task-list-title {
-    display: flex;
-    align-items: center;
-    font-size: 2rem;
-    color: var(--secondary);
-    margin-bottom: 25px;
+display: flex;
+align-items: center;
+font-size: 2rem;
+color: var(--secondary);
+margin-bottom: 25px;
+}
+
+/* --- Styles for Controls --- */
+.controls-container {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 20px;
+flex-wrap: wrap;
+gap: 15px;
+padding: 15px;
+background-color: var(--white);
+border-radius: 12px;
+box-shadow: var(--shadow);
+}
+
+.task-search-bar-group{
+    /* border: 2px solid; */
+flex-grow: 1;
+max-width: 800px;
+display: flex;
+/* flex-direction: column; */
+align-items: center;
+
+/* position: relative; */
+}
+
+.alltasks-search-input {
+width: 100%;
+padding: 10px 15px;
+border: 1px solid var(--border-color);
+border-radius: 8px;
+font-size: 1rem;
+transition: border-color 0.2s;
+box-sizing: border-box;
+}
+
+.search-input:focus {
+border-color: var(--primary);
+outline: none;
+box-shadow: 0 0 0 3px rgba(70, 134, 229, 0.2);
+}
+
+.filter-group {
+display: flex;
+gap: 10px;
+flex-wrap: wrap; /* Added for responsiveness */
+}
+
+.filter-select {
+padding: 10px 15px;
+border: 1px solid var(--border-color);
+border-radius: 8px;
+background-color: var(--white);
+font-size: 1rem;
+cursor: pointer;
+appearance: none;
+background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide luc-chevron-down"><path d="m6 9 6 6 6-6"/></svg>');
+background-repeat: no-repeat;
+background-position: right 10px center;
+padding-right: 30px;
+}
+
+/* --- NEW: Assignment Radio Filter Group Styles --- */
+
+.radio-filter-group {
+display: flex;
+align-items: center;
+gap: 10px;
+padding: 8px 15px;
+/* border: 1px solid var(--border-color); */
+border-radius: 8px;
+background-color: var(--white);
+flex-shrink: 0; /* Prevents shrinking */
+}
+
+.radio-label {
+font-size: 0.9rem;
+color: var(--secondary);
+font-weight: 600;
+white-space: nowrap;
+}
+
+.radio-options-wrapper {
+display: flex;
+gap: 5px;
+}
+
+.radio-option {
+cursor: pointer;
+padding: 6px 12px;
+border-radius: 6px;
+font-size: 0.9rem;
+font-weight: 500;
+transition: all 0.2s;
+border: 1px solid #ddd;
+background-color: #f7f7f7;
+color: var(--text-light);
+user-select: none;
+}
+
+.hidden-radio {
+/* Hide the default radio button */
+position: absolute;
+opacity: 0;
+width: 0;
+height: 0;
+}
+
+/* Active State Colors */
+
+/* ALL (Primary/Blue) */
+.radio-option.active-all {
+background-color: var(--primary);
+color: var(--white);
+border-color: var(--primary);
+}
+
+/* Assigned (Teal/Green) */
+.radio-option.assigned {
+color: #065f46; 
+border-color: #a7f3d0;
+}
+.radio-option.assigned.active-assigned {
+background-color: #34d399;
+color: #065f46;
+border-color: #34d399;
+}
+.radio-option.assigned:hover:not(.active-assigned) {
+background-color: #d1fae5;
+}
+
+/* Unassigned (Red/Pink)*/
+.radio-option.unassigned {
+color: #b91c1c;
+border-color: #fecaca;
+}
+.radio-option.unassigned.active-unassigned {
+background-color: #fca5a5;  
+color: #7f1d1d;
+border-color: #fca5a5;
+}
+.radio-option.unassigned:hover:not(.active-unassigned) {
+background-color: #fee2e2;
 }
 
 /* --- Table Structure --- */
 .task-table-wrapper {
-    background-color: var(--white);
-    border-radius: 12px;
-    box-shadow: var(--shadow);
-    overflow-x: auto;
+background-color: var(--white);
+border-radius: 12px;
+box-shadow: var(--shadow);
+overflow-x: auto;
 }
 
 .task-table {
-    width: 100%;
-    border-collapse: collapse;
-    /* Changed to fixed and set widths in JSX to help control column wrapping */
-    table-layout: fixed; 
+width: 100%;
+border-collapse: collapse;
+table-layout: fixed;
 }
 
 .task-table th, .task-table td {
-    padding: 15px;
-    text-align: left;
-    border-bottom: 1px solid var(--border-color);
-    color: var(--secondary);
-    font-size: 0.95rem;
-    vertical-align: middle; /* Ensures content aligns vertically */
+padding: 15px;
+text-align: left;
+border-bottom: 1px solid var(--border-color);
+color: var(--secondary);
+font-size: 0.95rem;
+vertical-align: middle;
 }
 
 .task-table th {
-    background-color: var(--background);
-    color: var(--text-light);
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    letter-spacing: 0.5px;
+background-color: var(--background);
+color: var(--text-light);
+font-weight: 600;
+text-transform: uppercase;
+font-size: 0.8rem;
+letter-spacing: 0.5px;
 }
 
 .task-table tbody tr:hover {
-    background-color: var(--background);
+background-color: #f0f3f6;
+}
+
+/* Sorting Header Styles */
+.sortable-header {
+cursor: pointer;
+user-select: none;
+}
+
+.sort-btn {
+display: flex;
+align-items: center;
+background: none;
+border: none;
+padding: 0;
+font-size: 0.8rem;
+font-weight: 600;
+color: var(--text-light);
+text-transform: uppercase;
+cursor: pointer;
+transition: color 0.2s;
+}
+
+.sort-btn:hover {
+color: var(--primary);
 }
 
 /* --- Column Specific Styling --- */
 .task-name-cell {
-    font-weight: 600;
+font-weight: 600;
 }
 
 .assigned-to-cell, .date-cell {
-    /* Resetting display to default for TD but applying flex to content within */
-    display: table-cell;
-    padding: 15px;
+display: table-cell;
+padding: 15px;
 }
 
-/* New Assigned List Button/Link Styling */
+/* Assigned List Button/Link Styling */
 .assigned-list-btn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: none;
-    border: none;
-    padding: 4px 8px;
-    border-radius: 6px;
-    color: var(--primary);
-    cursor: pointer;
-    font-size: 0.95rem;
-    font-weight: 500;
-    transition: background-color 0.2s, color 0.2s;
+display: flex;
+align-items: center;
+gap: 6px;
+background: none;
+border: none;
+padding: 4px 8px;
+border-radius: 6px;
+color: var(--primary);
+cursor: pointer;
+font-size: 0.95rem;
+font-weight: 500;
+transition: background-color 0.2s, color 0.2s;
 }
 
 .assigned-list-btn:hover {
-    background-color: var(--primary);
-    color: var(--white);
+background-color: var(--primary);
+color: var(--white);
 }
 
 .assigned-list-btn:hover .icon-user {
-    color: var(--white);
+color: var(--white);
 }
 
 .assigned-list-btn .icon-user {
-    color: var(--primary);
-    transition: color 0.2s;
+color: var(--primary);
+transition: color 0.2s;
 }
-
 
 /* --- Status Tags --- */
 .status-tag, .priority-tag {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 16px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    white-space: nowrap;
-    text-transform: capitalize;
+display: inline-block;
+padding: 4px 10px;
+border-radius: 16px;
+font-size: 0.85rem;
+font-weight: 500;
+white-space: nowrap;
+text-transform: capitalize;
 }
 
-/* Status Colors... (Unchanged) */
-.in-progress { background-color: #fef3c7; color: #b45309; } 
-.pending { background-color: #fee2e2; color: #ef4444; } 
-.completed { background-color: #d1fae5; color: #059669; } 
-.on-hold { background-color: #e0f2fe; color: #0284c7; } 
+/* Status Colors */
+.in-progress { background-color: #fef3c7; color: #b45309; }
+.pending { background-color: #fee2e2; color: #ef4444; }
+.completed { background-color: #d1fae5; color: #059669; }
+.on-hold { background-color: #e0f2fe; color: #0284c7; }
 
-/* Priority Colors... (Unchanged) */
-.high { background-color: #ffe4e6; color: #e11d48; font-weight: 700; } 
-.medium { background-color: #fffbeb; color: #d97706; } 
-.low { background-color: #eff6ff; color: #2563eb; } 
+/* Priority Colors */
+.high { background-color: #ffe4e6; color: #e11d48; font-weight: 700; }
+.medium { background-color: #fffbeb; color: #d97706; }
+.low { background-color: #eff6ff; color: #2563eb; }
 
-/* --- Action Column Styles (Fixing alignment issue) --- */
+/* --- Action Column Styles --- */
 .actions-column {
-    width: 150px; 
-    text-align: center !important;
+width: 150px;
+text-align: center !important;
 }
 
 .actions-cell {
-    /* Ensure the cell content is aligned vertically and horizontally */
-    display: flex; 
-    gap: 8px;
-    justify-content: center;
-    align-items: center; 
-    height: 100%; /* Important for vertical alignment */
+display: flex;
+gap: 8px;
+justify-content: center;
+align-items: center;
+height: 100%;
 }
 
 .action-btn {
-    background: none;
-    border: 1px solid var(--border-color);
-    padding: 8px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+background: none;
+border: 1px solid var(--border-color);
+padding: 8px;
+border-radius: 6px;
+cursor: pointer;
+transition: all 0.2s;
+display: flex;
+align-items: center;
+justify-content: center;
 }
 
 .action-btn:hover {
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Assign Button Style */
-.assign-btn {
-    color: #10b981; 
-}
-.assign-btn:hover {
-    background-color: #10b981;
-    color: var(--white);
-    border-color: #10b981;
-}
+.assign-btn { color: #10b981; }
+.assign-btn:hover { background-color: #10b981; color: var(--white); border-color: #10b981; }
 
-.manage-btn {
-    color: var(--primary); 
-}
+.manage-btn { color: var(--primary); }
+.manage-btn:hover { background-color: var(--primary); color: var(--white); border-color: var(--primary); }
 
-.manage-btn:hover {
-    background-color: var(--primary);
-    color: var(--white);
-    border-color: var(--primary);
-}
-
-.delete-btn {
-    color: #ef4444; 
-}
-
-.delete-btn:hover {
-    background-color: #ef4444;
-    color: var(--white);
-    border-color: #ef4444;
-}
-
+.delete-btn { color: #ef4444; }
+.delete-btn:hover { background-color: #ef4444; color: var(--white); border-color: #ef4444; }
 
 /* --- States (Loading/Error/No Data) --- */
-/* (Unchanged) */
 .loading-state, .error-state, .no-data {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 200px;
-    text-align: center;
-    color: var(--text-light);
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+min-height: 200px;
+text-align: center;
+color: var(--text-light);
+background-color: var(--white);
+border-radius: 12px;
+box-shadow: var(--shadow);
+padding: 20px;
 }
 
 .spinner {
-    animation: spin 1s linear infinite;
-    color: var(--primary);
+animation: spin 1s linear infinite;
+color: var(--primary);
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+to { transform: rotate(360deg); }
 }
 
 .mock-warning {
-    margin-top: 10px;
-    font-size: 0.85rem;
-    color: #d97706;
+margin-top: 10px;
+font-size: 0.85rem;
+color: #d97706;
 }
 
 /* --- Responsive Table (Mobile optimization) --- */
 @media (max-width: 768px) {
-    /* ... (Mobile styles unchanged, they should handle the actions column as a block) */
-    .task-table-wrapper {
-        border-radius: 0;
-        box-shadow: none;
-    }
+.controls-container {
+flex-direction: column;
+align-items: stretch;
+padding: 10px;
+}
+.search-bar-group {
+max-width: 100%;
+}
+.filter-group {
+flex-direction: column;
+gap: 10px;
+width: 100%;
+}
+.filter-select {
+width: 100%;
+}
 
-    .task-table thead {
-        position: absolute;
-        clip: rect(0 0 0 0);
-        overflow: hidden;
-        margin: -1px;
-        height: 1px;
-        width: 1px;
-        padding: 0;
-        border: 0;
-    }
+/* Responsive Radio Group adjustments */
+.radio-filter-group {
+    border: none;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 15px;
+    gap: 5px;
+}
+.radio-label {
+    margin-bottom: 5px;
+}
+.radio-options-wrapper {
+    width: 100%;
+    justify-content: space-between;
+}
+.radio-option {
+    flex-grow: 1;
+    text-align: center;
+}
 
-    .task-table tr {
-        display: block;
-        margin-bottom: 15px;
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        background-color: var(--white);
-    }
-    
-    .task-table td {
-        border: none;
-        display: block;
-        text-align: right;
-        padding: 10px 15px;
-        border-bottom: 1px solid #eee;
-        position: relative;
-    }
+/* Standard responsive table styles */
+.task-table-wrapper {
+    border-radius: 0;
+    box-shadow: none;
+}
 
-    .task-table td::before {
-        content: attr(data-label);
-        float: left;
-        font-weight: bold;
-        color: var(--secondary);
-    }
-    
-    .task-table tr:last-child td:last-child {
-        border-bottom: 0;
-    }
+.task-table thead {
+    position: absolute;
+    clip: rect(0 0 0 0);
+    overflow: hidden;
+    margin: -1px;
+    height: 1px;
+    width: 1px;
+    padding: 0;
+    border: 0;
+}
 
-    .hide-on-mobile {
-        display: none;
-    }
-    
-    .actions-cell {
-        justify-content: flex-end; 
-        border-bottom: none;
-    }
-    .assigned-to-cell {
-        display: block; /* Ensure it works as a block in mobile view */
-        text-align: right;
-    }
-    .assigned-to-cell .assigned-list-btn {
-        margin-left: auto; /* Center or push to the right */
-    }
+.task-table tr {
+    display: block;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--white);
+}
+
+.task-table td {
+    border: none;
+    display: block;
+    text-align: right;
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
+    position: relative;
+}
+
+.task-table td::before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    color: var(--secondary);
+}
+
+.task-table tr:last-child td:last-child {
+    border-bottom: 0;
+}
+
+.hide-on-mobile {
+    display: none;
+}
+
+.actions-cell {
+    justify-content: flex-end; 
+    border-bottom: none;
+}
+.assigned-to-cell {
+    display: block; 
+    text-align: right;
+}
+.assigned-to-cell .assigned-list-btn {
+    margin-left: auto;
+}
+
+
 }

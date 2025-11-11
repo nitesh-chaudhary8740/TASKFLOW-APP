@@ -1,48 +1,67 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-// Define the schema for the User model
-const taskSchema = new mongoose.Schema({
+// Define the allowed values for the status field
+const TASK_STATUS = [
+  "Pending",
+  "In Progress",
+  "Under Review",
+  "Completed",
+  "Blocked", // Added a common status for real-world tasks
+];
+
+// Define the schema for the Task model
+const taskSchema = new mongoose.Schema(
+  {
     name: {
-        type: String,
-        required: true,
-        trim: true,
-       
+      type: String,
+      required: true,
+      trim: true,
     },
     description: {
-        type: String,
-        required: true,
-        trim: true
+      type: String,
+      required: true,
+      trim: true,
     },
-    
     dueDate: {
-        type: String,
-        required: true,
-      
+      type: String,
+      required: true,
     },
     priority: {
-        type: String,
-        required: true,
-      
+      type: String,
+      required: true,
     },
-    status:{
+
+    // 🚀 ENUM IMPLEMENTATION HERE 🚀
+    status: {
+      type: String,
+      default: "Pending", // Set the default status to one of the enum values
+      trim: true,
+      // The enum array restricts the possible values for this field
+      enum: TASK_STATUS,
+      // Optional: Custom error message if a value outside the enum is used
+      message: "{VALUE} is not a valid task status.",
+    },
+
+    isAssigned: {
+      type: Boolean,
+      default: false,
+    },
+    assignedTo: {
+      empId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Employee",
+      },
+      empName: {
         type:String,
-        default:"pending",
-        trim:true
+      },
     },
-    assignedTo: [
-        {
-         employee:{
-                type: mongoose.Schema.Types.ObjectId,
-                ref:"Employee"
-            }
-        }
-    ]
-}, { 
-    // 👇 Key Change: Automatically adds createdAt and updatedAt fields
-    timestamps: true
-});
+  },
+  {
+    timestamps: true,
+  }
+);
 
-// Create and export the model named 'User'
-const Task = mongoose.model('Task', taskSchema);
+// Create and export the model named 'Task'
+const Task = mongoose.model("Task", taskSchema);
 
-module.exports = {Task}
+module.exports = { Task };

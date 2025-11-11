@@ -9,13 +9,13 @@ import { CreateProjectForm } from "./dashboard-home-options/CreateProjectForm.js
 import axios from "axios";
 import { LayoutDashboard, Users,  ListChecks,FolderPlus  } from 'lucide-react';
 import { AssignTask } from "./dashboard-home-options/AssignTask.jsx";
+import { AssignEmployee } from "./dashboard-home-options/AssignEmployee.jsx";
   const navLinks = [
       { name: 'Dashboard', icon: LayoutDashboard, href: '/admin-dashboard', active: true },
       { name: 'Employees', icon: Users, href: '/admin-dashboard/employees', active: false },
       { name: 'All Tasks', icon: ListChecks, href: '/admin-dashboard/all-tasks', active: false },
       { name: 'Projects', icon: FolderPlus, href: '/admin-dashboard/projects' , active: false},
     ];
-    console.log(navLinks)
 function AdminDashboard() {
   const [adminMetaData, setAdminmetaData] = useState(null);
     const [acticeNavLink,setActiveNavLink] =useState([...navLinks])
@@ -23,20 +23,21 @@ function AdminDashboard() {
   const [isCreateEmpFormOpen, setIsCreateEmpFormOpen] = useState(false);
   const [isCreateProjectFormOpen, setIsCreateProjectFormOpen] = useState(false);
   const [isAssignTaskFormOpen, setIsAssignTaskFormOpen] = useState(false);
+  const [isAssignEmployeeFormOpen, setIsAssignEmployeeFormOpen] = useState(false);
   const selectedEmployee = useRef(null);
+  const selectedTask = useRef(null);
   useEffect(() => {
     const fetchAdminMetaData = async () => {
       try {
         const apiUrl = import.meta.env.VITE_API_URL;
         const response = await axios.get(`${apiUrl}/metadata`);
-        console.log(response.data);
         setAdminmetaData(response.data);
       } catch (error) {
         alert(error.response.data);
       }
     };
     fetchAdminMetaData();
-  }, [isAssignTaskFormOpen,isCreateEmpFormOpen]);
+  }, [isAssignTaskFormOpen,isCreateEmpFormOpen,isTaskFormOpen]);
 
  const handleChangeActiveLink = (index) =>{
    try {
@@ -44,8 +45,6 @@ function AdminDashboard() {
      tempNavLinks.map(link=>link.active=false)
       tempNavLinks[index].active=true
       setActiveNavLink(tempNavLinks)
-      console.log("afterchange",tempNavLinks)
-
    } catch (error) {
     console.log(error)
    }
@@ -65,7 +64,9 @@ function AdminDashboard() {
      acticeNavLink,//nav links
      setActiveNavLink,
      navLinks,
-     handleChangeActiveLink
+     handleChangeActiveLink,
+     setIsAssignEmployeeFormOpen,
+     selectedTask
   };
   return (
     <div className={`admin-app-wrapper${isTaskFormOpen ? "modal" : ""}`}>
@@ -75,6 +76,7 @@ function AdminDashboard() {
         {isCreateEmpFormOpen && <CreateEmployeeForm />}
         {isCreateProjectFormOpen && <CreateProjectForm />}
         {isAssignTaskFormOpen && <AssignTask />}
+        {isAssignEmployeeFormOpen &&<AssignEmployee/>}
         <Outlet />
       </AdminDashBoardContext.Provider>
     </div>

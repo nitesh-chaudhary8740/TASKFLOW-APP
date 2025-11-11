@@ -11,9 +11,11 @@ export const AdminDashBoardContext = createContext({
   isAssignTaskFormOpen:false,
    setIsAssignTaskFormOpen:()=>{},
    selectedEmployee:null,
+   selectedTask:null,
     acticeNavLink:null,//nav links
      setActiveNavLink:()=>{},
      navLinks:[],
       handleChangeActiveLink:()=>{},
+    setIsAssignEmployeeFormOpen:()=>{},
    
 })

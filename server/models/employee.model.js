@@ -28,7 +28,15 @@ const empSchema = new mongoose.Schema({
         type: String,
         required: true,
       
-    }
+    },
+    assignedTasks:[
+        {
+            task:{
+                type:mongoose.Schema.Types.ObjectId,
+                ref:"Task"
+            }
+        }
+    ]
 }, { 
     // 👇 Key Change: Automatically adds createdAt and updatedAt fields
     timestamps: true

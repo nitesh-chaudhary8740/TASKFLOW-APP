@@ -4,11 +4,13 @@ import "./CreateTaskForm.css"
 import { AdminDashBoardContext } from '../../../contexts/AdminDashBoardContext';
 import { inputOnChange } from '../../../utils/utility.functions';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 
  export const CreateTaskForm = () => { 
 const values = useContext(AdminDashBoardContext)
+const navigate = useNavigate()
 
     const [taskData, setTaskData] = useState({
         name: '',
@@ -16,8 +18,6 @@ const values = useContext(AdminDashBoardContext)
         dueDate: '',
         priority: 'medium',
     });
-
-   
 
     const priorityOptions = [
         { value: 'high', label: 'High Priority' },
@@ -28,8 +28,6 @@ const values = useContext(AdminDashBoardContext)
 
     const handleSubmit = async(e) => {
         e.preventDefault();
-       
-        
         console.log("Task Data Ready for Submission:", taskData);
         
         // Simulate a successful API response
@@ -40,14 +38,12 @@ const values = useContext(AdminDashBoardContext)
          }
           const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/task-create`,taskData);
-      console.log(response.data);
+            console.log(response.data);
       } catch (error) {
         alert(error.response.data.msg)
       }
-
-         
-            
-            // Clear the form after submission
+      finally{
+        navigate('/admin-dashboard')
             setTaskData({
                 name: '',
                 description: '',
@@ -55,6 +51,11 @@ const values = useContext(AdminDashBoardContext)
                 priority: 'medium',
             });
             values.setIsTaskFormOpen(false)
+      }
+
+         
+            
+           
        
     };
 

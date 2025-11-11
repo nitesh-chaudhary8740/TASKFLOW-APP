@@ -5,13 +5,7 @@ import { AdminDashBoardContext } from '../../../contexts/AdminDashBoardContext';
 import axios from 'axios';
 import './AssignTask.css'; // Import the CSS file
 
-const getMockTasks = () => ([
-    { id: 101, name: "Implement User Authentication", description: "Set up login/signup flow.", priority: "High" },
-    { id: 102, name: "Design Landing Page Mockup", description: "Create initial layout in Figma.", priority: "Medium" },
-    { id: 103, name: "Bug Fix: Shopping Cart", description: "Resolve checkout error on mobile.", priority: "High" },
-    { id: 104, name: "Review Q4 Budget", description: "Finalize financial report.", priority: "Medium" },
-    { id: 105, name: "Set up CI/CD Pipeline", description: "Automate deployment process.", priority: "High" },
-]);
+
 
 export const AssignTask = () => {
     // Assuming the context provides 'setIsAssignTaskOpen'
@@ -28,12 +22,8 @@ export const AssignTask = () => {
         const fetchTasks = async () => {
             setIsLoading(true);
             try {
-                // In a real application, you would fetch tasks that need assigning
                 const response = await axios.get(`${import.meta.env.VITE_API_URL}/pending-tasks`);
-                
-                // Using mock data for immediate functionality
-                // const fetchedTasks = getMockTasks();
-                 console.log(response)
+                console.log(response)
                 const fetchedTasks = response.data
                 setAllTasks(fetchedTasks);
                 setFilteredTasks(fetchedTasks);
@@ -41,9 +31,7 @@ export const AssignTask = () => {
             } catch (err) {
                 console.error("Error fetching tasks:", err);
                 setError("Failed to load tasks. Displaying mock data.");
-                const mockTasks = getMockTasks();
-                setAllTasks(mockTasks);
-                setFilteredTasks(mockTasks);
+            
             } finally {
                 setIsLoading(false);
             }
@@ -105,7 +93,7 @@ export const AssignTask = () => {
 
                 <h2 className="form-title">
                     <UserPlus size={24} style={{ marginRight: '10px' }} />
-                    Assign Employee to Task
+                    Assign Tasks to  <span>{values.selectedEmployee.current.fullName} </span> 
                 </h2>
                 
                 {error && <div className="form-message error">{error}</div>}
