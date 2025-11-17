@@ -9,37 +9,84 @@ import { inputOnChange } from '../../utils/utility.functions'
 import axios from 'axios'
 import { USER_ROLES } from '../../enums/roles'
 import { AntDContext } from '../../contexts/AntDContext.js'
+import { useEffect } from 'react'
 function SignIn() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const {showError,showSuccess} = useContext(AntDContext)
   const appContextValues = useContext(TASK_MANAGEMENT_HOME)
-  const AntDContextValues = useContext(AntDContext)
+ 
   const [formdata,setFormData]= useState({
     userNameOrEmail:"",
     password:"",
     role:appContextValues.selectedAuthRole.current
   })
+//redirect to dashboard if user is login
+  const user = JSON.parse(localStorage.getItem("currentUser"))
+ useEffect(()=>{
+  
+  if(user){
+     if(user?.role===USER_ROLES.ADMIN){
+    navigate('/admin-dashboard')
+    return;
+  }
+  else{
+    navigate("/employee-dashboard")
+  }
+  }
+  
+ },[navigate,user])
+  
+const adminLogin = async()=>{
+    try {
+       const response = await axios.post(`${import.meta.env.VITE_API_URL}/login`,formdata)
+        console.log(response.data)
+        appContextValues.setCurrentUser(response.data)
+        localStorage.setItem("currentUser",JSON.stringify(response.data))
+        showSuccess("login successful",3)
+        navigate('/admin-dashboard')
+    } catch (error) {
+      console.log(error)
+      if(error.response.data){
+        showError(error.response.data)
+      }
+      
+    }
+}
+const empLogin = async()=>{
+
+   try {
+      const response = await axios.post(`${import.meta.env.VITE_EMP_API_URL}/login`,formdata)
+       console.log(response.data)
+       appContextValues.setCurrentUser(response.data)
+       localStorage.setItem("currentUser",JSON.stringify(response.data))
+       console.log("emp login")
+       showSuccess("login successful",3)
+       navigate('/employee-dashboard')
+   } catch (error) {
+     console.log(error)
+      if(error.response.data){
+        showError(error.response.data)
+      }
+   }
+}
   const handleOnSubmit = async(e)=>{
     e.preventDefault()
-    try {
+
       if(!formdata.userNameOrEmail ||!formdata.password){
         alert("fill all the fields")
         return
       }
-      if(appContextValues.selectedAuthRole.current!==USER_ROLES.ADMIN) {
-        alert(appContextValues.selectedAuthRole.current)
-        return;
+      if(appContextValues.selectedAuthRole.current===USER_ROLES.EMPLOYEE) {
+          empLogin()
+          return
       }
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/login`,formdata)
-      console.log(response.data)
-      appContextValues.setCurrentUser(response.data)
-      localStorage.setItem("currentUser",JSON.stringify(response.data))
-      AntDContextValues.showSuccess("login successful",2)
-      navigate('/admin-dashboard')
+     else if(appContextValues.selectedAuthRole.current===USER_ROLES.ADMIN) {
+        adminLogin()
+          return
+      }
 
-    } catch (error) {
-      alert(error)
     }
-  }
+  
   return (
     // The 'auth' class provides the full-page background and relative positioning for the icon
     <div className='auth' >
@@ -60,7 +107,7 @@ function SignIn() {
         
         <form className="login-form" onSubmit={handleOnSubmit}>
           <div className="input-group">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="username">Username or email</label>
             <input
               type="text"
               id="username"

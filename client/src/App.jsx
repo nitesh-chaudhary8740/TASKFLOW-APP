@@ -17,6 +17,12 @@ import AdminEmployeesMenu from "./components/admin_dashboard/AdminEmployeesMenu"
 import AdminProjectsMenu from "./components/admin_dashboard/AdminProjectsMenu";
 import {CreateTaskForm} from "./components/admin_dashboard/dashboard-home-options/CreateTaskForm";
 import AntDContextProvider from "./contexts/AntDContextProvider";
+import EmployeeDashboard from "./components/employee-dashboard/EmployeeDashboard";
+import EmpDashboardContent from "./components/employee-dashboard/emp-menus/EmpDashboardContent";
+import EmployeeMyTasks from "./components/employee-dashboard/emp-menus/EmployeeMyTasks";
+import EmployeeAssignedProjects from "./components/employee-dashboard/emp-menus/EmployeeAssignedProjects";
+import PendingTasksTable from "./components/employee-dashboard/emp-menus/emp-dashboard-content-sub-comp/PendingTasksTable";
+import OngoingTasksTable from "./components/employee-dashboard/emp-menus/emp-dashboard-content-sub-comp/OngoingTasksTable";
 
 
 function App() {
@@ -36,17 +42,26 @@ function App() {
 
               {/* 2. Admin Dashboard Layout Route */}
               <Route path="/admin-dashboard" element={<AdminDashboard />}>
-                {/* Nested Routes render INSIDE the <Outlet /> of AdminDashboard */}
                 
-                {/* Index Route (Default content for /admin-dashboard) */}
                 <Route index element={<AdminDashBoardContent />} /> 
                 
                 <Route path="employees" element={<AdminEmployeesMenu />} />
                 <Route path="all-tasks" element={<AdminAllTasksMenu />} />
                 <Route path="projects" element={<AdminProjectsMenu />} />
               </Route>
+              {/* Employee Route */}
+              <Route path="/employee-dashboard" element={<EmployeeDashboard/>}>
+
+                <Route path="/employee-dashboard" element={<EmpDashboardContent/>}>
+                      <Route path="/employee-dashboard/pending-tasks" element={<PendingTasksTable/>}/>
+                      <Route path="/employee-dashboard/on-going-tasks" element={<OngoingTasksTable/>}/>
+                </Route>
+                
+                <Route path="my-tasks" element={<EmployeeMyTasks/>}/>
+                <Route path="assigned-projects" element={<EmployeeAssignedProjects/>}/>
               
-              {/* Standalone Route (If not intended to be inside AdminDashboard layout) */}
+              </Route>
+             
              
               
             </Routes>

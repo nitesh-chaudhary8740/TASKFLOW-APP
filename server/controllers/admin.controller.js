@@ -110,6 +110,8 @@ const assignTask = async (req, res) => {
   task.assignedTo.empId=employee._id;
   task.assignedTo = {empId:employee._id,empName:employee.fullName}
   await task.save({validateBeforeSave:false})
+  employee.assignedTasks.push(task)
+  await employee.save({validateBeforeSave:false})
   res.send("task assigned successfully");
 };
 const deleteEmployee = async (req, res) => {

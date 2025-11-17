@@ -1,14 +1,16 @@
 import React, { useContext } from 'react';
 import { Clock, Bell,  LogOut, Search, File, ChevronDown,  } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { AdminDashBoardContext } from '../../contexts/AdminDashBoardContext';
-import { useState } from 'react';
-import { ProfileMenu } from './admin-nav-sub-com0/ProfileMenu';
 
-function AdminNavBar() {
-  const [showProfileMenu,setShowProfileMenu] = useState(false)
-  const adminContextValues = useContext(AdminDashBoardContext)  
-  const user = JSON.parse(localStorage.getItem("currentUser"));
+import { useState } from 'react';
+
+import { EmployeeDashboardContext } from '../../contexts/EmployeeDashboardContext';
+import { EmployeeProfileMenu } from './EmployeeProfileMenu';
+
+function EmployeeNavbar() {
+    const [showProfileMenu,setShowProfileMenu] = useState(false)
+    const {activeEmpNavLinks} = useContext(EmployeeDashboardContext)
+    const user = JSON.parse(localStorage.getItem("currentUser"));
 
 
   return (
@@ -27,7 +29,7 @@ function AdminNavBar() {
 
         {/* Main Navigation Menu */}
         <div className="navbar-menu">
-          {adminContextValues.acticeNavLink.map((link)=> (
+          {activeEmpNavLinks.map((link)=> (
             <Link 
               key={link.name} 
               to={link.href} 
@@ -73,10 +75,10 @@ function AdminNavBar() {
         }}
       
         >
-        {showProfileMenu?<ProfileMenu showProfileMenu={showProfileMenu} setShowProfileMenu={setShowProfileMenu}/>
+        {showProfileMenu?<EmployeeProfileMenu showProfileMenu={showProfileMenu} setShowProfileMenu={setShowProfileMenu}/>
         : <div className="profile-avatar">
             <img
-              src={`https://placehold.co/100x100/4f46e5/ffffff?text=${user?.name?.charAt(0).toUpperCase()}`}
+              src={`https://placehold.co/100x100/4f46e5/ffffff?text=${user?.userName?.charAt(0).toUpperCase()}`}
               alt="Admin Avatar"
             />
           </div>
@@ -87,4 +89,4 @@ function AdminNavBar() {
   );
 }
 
-export default AdminNavBar;
+export default EmployeeNavbar;

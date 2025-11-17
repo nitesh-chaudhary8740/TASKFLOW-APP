@@ -65,7 +65,6 @@ const { showSuccess, showError } = useContext(AntDContext);
         console.error("Error fetching employees:", err);
         const errMsg = err.response ? err.response.data : err.message;
         setError(errMsg);
-        // Set mock data if fetch fails (for development)
       } finally {
         setIsLoading(false);
       }

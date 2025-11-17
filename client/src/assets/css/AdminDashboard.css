@@ -164,7 +164,20 @@
     border: 2px solid var(--primary);
 }
 
+.profile-chevron {
+    color: #6b7280; /* text-gray-500 */
+    /* Default (hidden) state: transparent and rotated */
+    opacity: 0;
+    transform: rotate(90deg) translateX(4px); 
+    /* Enable smooth transition for both opacity and transform */
+    transition: opacity 900ms ease-out, transform 900ms ease-out;
+}
 
+/* State Class: Applied on hover/show */
+.profile-chevron.show-chevron {
+    opacity: 1;
+    transform: rotate(0deg) translateX(0); /* Visible and normal orientation */
+}
 /* ---------------------------------------------------- */
 /* --- AdminDashBoardContent Styles --- */
 /* ---------------------------------------------------- */

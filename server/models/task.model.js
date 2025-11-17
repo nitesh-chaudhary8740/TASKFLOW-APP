@@ -3,10 +3,12 @@ const mongoose = require("mongoose");
 // Define the allowed values for the status field
 const TASK_STATUS = [
   "Pending",
-  "In Progress",
-  "Under Review",
+  "In-Progress",
+  "Under-Review",
   "Completed",
-  "Blocked", // Added a common status for real-world tasks
+  "Blocked",
+  "Overdue"
+  // Added a common status for real-world tasks
 ];
 
 // Define the schema for the Task model
@@ -46,7 +48,7 @@ const taskSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    assignedTo: {
+    assignedTo:{
       empId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Employee",

@@ -56,3 +56,36 @@ export function filterTasks(mainArray, filterArraySetter, filterOptions) {
     console.log(`Filter applied. Showing ${filteredArray.length} tasks.`);
     filterArraySetter(filteredArray);
 }
+export const sortTasks = (filteredArray,filteredArraySetter,sortOptions) =>{
+     const sortedArray =  [...filteredArray]
+    const {order,by}=sortOptions
+   if(order==="none"||by==="none") return;
+   if(order==="asc"){
+       sortedArray.sort((a,b)=>
+       {
+        if(a[by]>b[by]) return 1;
+        if(a[by]<b[by]) return -1;
+        return 0;
+       }
+    )
+   console.log(sortedArray)
+  filteredArraySetter(sortedArray)
+  return;
+   }
+   if(order==="desc"){
+       sortedArray.sort((a,b)=>
+       {
+        if(a[by]<b[by]) return 1;
+        if(a[by]>b[by]) return -1;
+        return 0;
+       }
+    )
+   console.log(sortedArray)
+  filteredArraySetter(sortedArray)
+  return;
+   }
+  
+   
+   
+ 
+}

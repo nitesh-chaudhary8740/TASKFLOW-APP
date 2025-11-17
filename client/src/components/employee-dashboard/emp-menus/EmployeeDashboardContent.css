@@ -1,0 +1,357 @@
+/* --- VARIABLES --- */
+:root {
+    --color-primary-indigo: #4f46e5;
+    --color-primary-dark: #1f2937;
+    --color-secondary-gray: #6b7280;
+    --color-background: #f9fafb; /* gray-50 */
+    --color-white: #ffffff;
+
+    --color-red: #ef4444;
+    --color-yellow: #f59e0b;
+    --color-green: #10b981;
+    --color-orange: #f97316;
+    --color-teal: #14b8a6;
+    --color-blue: #3b82f6;
+    --color-indigo-light: #eef2ff;
+    
+    /* NEW COLORS FOR STAT CARDS */
+    --color-maroon-bg: rgba(153, 27, 27, 0.25); /* Overdue Background */
+    --color-maroon-icon: #991b1b; /* Overdue Icon */
+}
+
+/* --- BASE LAYOUT --- */
+.dashboard-layout {
+    min-height: 100vh;
+    background-color: var(--color-background);
+    padding: 16px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Responsive Padding */
+@media (min-width: 640px) { /* sm breakpoint */
+    .dashboard-layout {
+        padding: 32px;
+    }
+}
+
+.dashboard-header {
+    margin-bottom: 32px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.dashboard-title {
+    font-size: 2.25rem; /* 4xl */
+    font-weight: 800; /* extrabold */
+    color: var(--color-primary-dark);
+    margin-bottom: 4px;
+}
+
+.dashboard-date {
+    color: var(--color-secondary-gray);
+    font-weight: 500;
+}
+
+/* ----------------------------------------------------- */
+/* --- NEW MAIN CONTENT LAYOUT (The structure you need) --- */
+/* ----------------------------------------------------- */
+
+.main-content-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column on mobile */
+    gap: 24px;
+}
+
+@media (min-width: 1024px) { /* lg breakpoint */
+    .main-content-grid {
+        /* Creates the 2/3 (Tasks/Activity) and 1/3 (Actions/Profile) split */
+        grid-template-columns: 2fr 1fr; 
+    }
+}
+
+.task-activity-column {
+    display: flex;
+    
+    /* flex-direction: column; */
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.action-profile-column {
+    display: flex;
+    /* flex-direction: column; */
+    gap: 24px;
+}
+
+.content-box {
+    background-color: var(--color-white);
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #f3f4f6;
+    height: fit-content;
+}
+
+.profile-box {
+    /* Ensures the profile box fills its column nicely */
+    /* This might need adjustment depending on your QuickActions height */
+}
+
+/* --- General Box Styling --- (Keep these) */
+.box-title {
+    font-size: 1.25rem; /* xl */
+    font-weight: 600;
+    color: var(--color-primary-dark);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.icon-mr {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+}
+
+.task-title-icon { color: var(--color-primary-indigo); }
+.quick-action-title { color: var(--color-green); }
+.profile-title { color: var(--color-teal); }
+/* ----------------------------------------------------- */
+
+
+/* --- STATS GRID --- (Corrected icon wrapper styling) */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+@media (min-width: 640px) { /* sm breakpoint */
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) { /* lg breakpoint */
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.stat-card {
+    background-color: var(--color-white);
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f3f4f6;
+    transition: all 300ms ease;
+}
+
+.stat-card:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.stat-icon-wrapper {
+    padding: 12px;
+    /* Removed fixed width/height/margin/display:flex. Stick to the basic styling: */
+    border-radius: 9999px;
+    display: inline-block;
+    margin-bottom: 12px;
+}
+
+.statcard-icon {
+    /* Keep the icon size as defined by Lucide by default, or explicitly: */
+    width: 24px;
+    height: 24px;
+}
+
+.stat-value {
+    font-size: 1.875rem; /* 3xl */
+    font-weight: 700;
+    color: var(--color-primary-dark);
+}
+
+.stat-label {
+    font-size: 0.875rem; /* sm */
+    font-weight: 500;
+    color: var(--color-secondary-gray);
+    margin-top: 4px;
+}
+
+/* --- Stat Card Colors (FIXED to use RGBA backgrounds for light effect) --- */
+
+.color-indigo { 
+    background-color: rgba(79, 70, 229, 0.15); /* Indigo 600 RGB */
+    color: #4f46e5; 
+}
+.color-yellow { 
+    background-color: rgba(245, 158, 11, 0.15); /* Yellow 600 RGB */
+    color: #f59e0b; 
+}
+.color-maroon { 
+    background-color: var(--color-maroon-bg); 
+    color: var(--color-maroon-icon); 
+}
+.color-red { 
+    background-color: rgba(239, 68, 68, 0.15); /* Red 600 RGB */
+    color: #ef4444; 
+}
+.color-orange { 
+    background-color: rgba(249, 115, 22, 0.15); /* Orange 600 RGB */
+    color: #f97316; 
+}
+.color-green { 
+    background-color: rgba(16, 185, 129, 0.15); /* Green 600 RGB */
+    color: #10b981; 
+}
+.color-blue { 
+    background-color: rgba(59, 130, 246, 0.15); /* Blue 500 RGB */
+    color: #3b82f6; 
+}
+
+/* --- DashboardTasks Component Styles --- (Keeping the classes for context, but you should remove the component) */
+.dashboard-tasks-container {
+    padding: 24px;
+    background-color: var(--color-white);
+    min-height: 100vh;
+    border: 2px solid;
+}
+
+/* ... (rest of DashboardTasks CSS styles are retained but the component is removed) ... */
+
+
+/* --- Remaining Styles (Keeping for completeness) --- */
+.badge {
+    font-size: 0.75rem; 
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 9999px;
+    display: inline-block;
+}
+
+.badge-high { background-color: #fee2e2; color: #b91c1c; }
+.badge-medium { background-color: #fef3c7; color: #b45309; }
+.badge-low { background-color: #d1fae5; color: #059669; }
+.badge-default { background-color: #e5e7eb; color: #4b5563; }
+
+.emp-pending-task-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 760px;
+}
+.emp-pending-table-header { background-color: #f9fafb; }
+.emp-pending-table-th {
+    padding: 12px ;
+    text-align: left;
+    font-size: 0.75rem; 
+    font-weight: 500;
+    color: var(--color-secondary-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+.emp-pending-table-th.rounded-tl { border-top-left-radius: 12px; }
+.emp-pending-table-th.rounded-tr { border-top-right-radius: 12px; }
+.emp-pending-table-body {
+    background-color: var(--color-white);
+    border-top: 1px solid #e5e7eb;
+}
+.emp-pending-table-row-item { transition: background-color 150ms; }
+.emp-pending-table-row-item:hover { background-color: var(--color-indigo-light); }
+.emp-pending-table-td {
+    width: 40px;
+    padding: 2vh ;
+    font-size: 0.875rem;
+    border-bottom: 1px solid #f3f4f6;
+    width: auto;
+}
+.emp-pending-table-row-item:last-child .emp-pending-table-td { border-bottom: none; }
+.text-main { font-weight: 500; color: var(--color-primary-dark); }
+.text-sub { color: var(--color-secondary-gray); }
+.text-sub-lg { font-weight: 500; color: var(--color-secondary-gray); }
+.text-due-today { color: var(--color-red); font-weight: 600; }
+.text-right { text-align: right; }
+.flex-center-y { display: flex; align-items: center; }
+.emp-pending-task-icon-status{ margin-right: 12px; }
+.text-red { color: var(--color-red); }
+.text-indigo { color: var(--color-primary-indigo); }
+.action-link {
+    color: var(--color-primary-indigo);
+    font-weight: 500;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 150ms;
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+.action-link:hover { color: #3730a3; }
+
+.table-empty-state {
+    padding: 48px 24px;
+    text-align: center;
+    color: var(--color-secondary-gray);
+    font-size: 1.125rem;
+}
+.emp-quick-action-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.emp-quick-action-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 500;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+    transition: all 150ms ease;
+    border: none;
+    cursor: pointer;
+    height: 8vh;
+}
+.emp-quick-action-btn:hover {
+    transform: scale(1.01);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+.btn-primary { 
+    background-color: var(--color-primary-indigo); 
+    color: var(--color-white); 
+}
+.btn-primary:hover { background-color: #4338ca; }
+.btn-secondary { 
+    background-color: var(--color-blue); 
+    color: var(--color-white); 
+}
+.btn-secondary:hover { background-color: #2563eb; }
+.btn-default { 
+    background-color: #e5e7eb; 
+    color: var(--color-secondary-gray); 
+}
+.btn-default:hover { background-color: #d1d5db; }
+.activity-list {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #4b5563;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.activity-item { display: flex; align-items: flex-start; }
+.icon-activity {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+.activity-item.color-green .icon-activity { color: var(--color-green); }
+.activity-item.color-blue .icon-activity { color: var(--color-blue); }
+.activity-item.color-orange-icon .icon-activity { color: var(--color-orange); }

@@ -42,7 +42,7 @@ function AdminDashboard() {
  const handleChangeActiveLink = (index) =>{
    try {
      const tempNavLinks = [...acticeNavLink];
-     tempNavLinks.map(link=>link.active=false)
+     tempNavLinks.forEach(link=>link.active=false)
       tempNavLinks[index].active=true
       setActiveNavLink(tempNavLinks)
    } catch (error) {

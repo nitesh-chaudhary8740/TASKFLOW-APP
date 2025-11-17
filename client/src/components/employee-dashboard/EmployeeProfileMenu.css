@@ -1,0 +1,100 @@
+
+/* Profile Menu Container */
+.profile-menu-container {
+    /* Styles for positioning, size, background, and shadow */
+    width: 256px; 
+    background-color: #fff;
+    border: 1px solid #e5e7eb;
+    position: absolute;
+    right: 1%;
+    top: 2%;
+    border-radius: 12px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    z-index: 50;
+    font-family: sans-serif;
+}
+
+/* Header Section */
+.menu-header {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid #f3f4f6;
+    position: relative; 
+}
+
+/* User Avatar */
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #4f46e5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+    margin-right: 12px;
+}
+
+/* Close Button (X) */
+.close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: #9ca3af; /* Initial gray color */
+    padding: 4px;
+    border-radius: 50%;
+    transition: color 150ms, background-color 150ms;
+}
+
+.close-btn:hover {
+    color: #4b5563; /* Darker gray on hover */
+    background-color: #f3f4f6;
+}
+
+/* Menu Items Container */
+.menu-options {
+    padding: 8px;
+}
+
+/* Individual Menu Item */
+.menu-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border: none;
+    background: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 150ms, color 150ms;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151; /* Dark text */
+}
+
+.menu-item-icon {
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.menu-item:hover {
+    background-color: #eef2ff; /* Light indigo background */
+    color: #4f46e5; /* Indigo text */
+}
+
+/* Danger (Logout) state */
+.menu-item.danger {
+    color: #ef4444; /* Red text */
+}
+
+.menu-item.danger:hover {
+    background-color: #fee2e2; /* Light red background */
+    color: #b91c1c; /* Darker red on hover */
+}

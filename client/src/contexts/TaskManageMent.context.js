@@ -5,7 +5,6 @@ export const TASK_MANAGEMENT_HOME = createContext(
     {
     
         selectedAuthRole:null,
-      
         currentUser:null,
         setCurrentUser:()=>{}
     }
