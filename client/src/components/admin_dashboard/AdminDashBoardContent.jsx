@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import { PlusCircle, UserPlus, ListPlus, FolderPlus, Activity, TrendingUp, Users, CheckCircle } from 'lucide-react';
+import { PlusCircle, UserPlus, ListPlus, FolderPlus, Activity, TrendingUp, Users, CheckCircle, Clock } from 'lucide-react';
 import { AdminDashBoardContext } from '../../contexts/AdminDashBoardContext';
 // import { TASK_MANAGEMENT_HOME } from '../../contexts/TaskManageMent.context';
 
@@ -25,8 +25,8 @@ const summaryData = [
     },
     { 
         title: "Pending Tasks", 
-        value: 'totalPendingTasks',
-        icon: TrendingUp, 
+        value: 'totalUnAssignedTasks',
+        icon: Clock, 
         colorClass: 'card-red' 
     },
 ];
@@ -44,11 +44,11 @@ const QuickActionButton = ({ icon: Icon, title, onClick }) => (
 // eslint-disable-next-line no-unused-vars
 const SummaryCard = ({ title, value, icon: Icon, colorClass,metaData}) => (
     <div className={`summary-card ${colorClass}`}>
-        <div className="card-header">
-            <h3 className="card-title">{title}</h3>
-            <Icon size={20} className="card-icon" />
+        <div className="summary-card-header">
+            <h3 className="summary-card-title">{title}</h3>
+            <Icon size={20} className="summary-card-icon" />
         </div>
-        <p className="card-value">{metaData[value]|0}</p>
+        <p className="summary-card-value">{metaData[value]|0}</p>
     </div>
 );
 

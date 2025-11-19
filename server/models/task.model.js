@@ -14,6 +14,10 @@ const TASK_STATUS = [
 // Define the schema for the Task model
 const taskSchema = new mongoose.Schema(
   {
+    id:{
+      type:String,
+      unique:true
+    },
     name: {
       type: String,
       required: true,
@@ -49,13 +53,8 @@ const taskSchema = new mongoose.Schema(
       default: false,
     },
     assignedTo:{
-      empId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Employee",
-      },
-      empName: {
-        type:String,
-      },
     },
   },
   {
@@ -65,5 +64,6 @@ const taskSchema = new mongoose.Schema(
 
 // Create and export the model named 'Task'
 const Task = mongoose.model("Task", taskSchema);
+
 
 module.exports = { Task };

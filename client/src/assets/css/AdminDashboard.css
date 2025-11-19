@@ -288,24 +288,24 @@
     overflow: hidden;
 }
 
-.card-header {
+.summary-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
 }
 
-.card-title {
+.summary-card-title {
     font-size: 1rem;
     font-weight: 500;
     opacity: 0.8;
 }
 
-.card-icon {
+.summary-card-icon {
     opacity: 0.7;
 }
 
-.card-value {
+.summary-card-value {
     font-size: 2.5rem;
     font-weight: 700;
 }

@@ -322,7 +322,9 @@ box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .assign-btn { color: #10b981; }
+.unassign-btn { color: #df2626; }
 .assign-btn:hover { background-color: #10b981; color: var(--white); border-color: #10b981; }
+.unassign-btn:hover { background-color: #df2626; color: var(--white); border-color: #df2626; }
 
 .manage-btn { color: var(--primary); }
 .manage-btn:hover { background-color: var(--primary); color: var(--white); border-color: var(--primary); }

@@ -10,6 +10,7 @@ import axios from "axios";
 import { LayoutDashboard, Users,  ListChecks,FolderPlus  } from 'lucide-react';
 import { AssignTask } from "./dashboard-home-options/AssignTask.jsx";
 import { AssignEmployee } from "./dashboard-home-options/AssignEmployee.jsx";
+import TaskDetails from "./dashboard-home-options/TaskDetails.jsx";
   const navLinks = [
       { name: 'Dashboard', icon: LayoutDashboard, href: '/admin-dashboard', active: true },
       { name: 'Employees', icon: Users, href: '/admin-dashboard/employees', active: false },
@@ -24,8 +25,39 @@ function AdminDashboard() {
   const [isCreateProjectFormOpen, setIsCreateProjectFormOpen] = useState(false);
   const [isAssignTaskFormOpen, setIsAssignTaskFormOpen] = useState(false);
   const [isAssignEmployeeFormOpen, setIsAssignEmployeeFormOpen] = useState(false);
+  const [isTaskDetailsFormOpen, setIsTaskDetailsFormOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [tasks, setTasks] = useState([]);
   const selectedEmployee = useRef(null);
   const selectedTask = useRef(null);
+   // --- Fetch Tasks (Initial Load) ---
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const apiUrl = import.meta.env.VITE_API_URL;
+        if (!apiUrl) {
+          throw new Error(
+            "VITE_API_URL is not defined in environment variables."
+          );
+        }
+
+        const response = await axios.get(`${apiUrl}/tasks`);
+        setTasks(response.data);
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching tasks:", err);
+        const errMsg = err.response
+          ? err.response.data.message || "Network Error"
+          : err.message;
+        setError(errMsg);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchTasks();
+  }, [isTaskFormOpen,isAssignEmployeeFormOpen]);
   useEffect(() => {
     const fetchAdminMetaData = async () => {
       try {
@@ -66,7 +98,16 @@ function AdminDashboard() {
      navLinks,
      handleChangeActiveLink,
      setIsAssignEmployeeFormOpen,
-     selectedTask
+     selectedTask,
+     isTaskDetailsFormOpen,//task detail modal overlay togglee
+     setIsTaskDetailsFormOpen,
+     tasks,
+     isLoading,
+     error,
+     setTasks,
+     setIsLoading,
+     setError,
+     
   };
   return (
     <div className={`admin-app-wrapper${isTaskFormOpen ? "modal" : ""}`}>
@@ -77,6 +118,7 @@ function AdminDashboard() {
         {isCreateProjectFormOpen && <CreateProjectForm />}
         {isAssignTaskFormOpen && <AssignTask />}
         {isAssignEmployeeFormOpen &&<AssignEmployee/>}
+        {isTaskDetailsFormOpen &&<TaskDetails/>}
         <Outlet />
       </AdminDashBoardContext.Provider>
     </div>

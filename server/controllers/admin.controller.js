@@ -5,6 +5,7 @@ const { Task } = require("../models/task.model.js");
 const mailData = require("../utils/maildata.template.js");
 const generateUserPassword = require("../utils/random.password.generate.js");
 const sendEmail = require("../utils/sendmail.util.js");
+const nanoid= require("nanoid")
 
 const employeeRegistration = async (req, res) => {
   try {
@@ -46,7 +47,13 @@ const taskCreation = async (req, res) => {
   try {
     console.log("req, received");
     const { name, description, dueDate, priority } = req.body;
+    const alphabet = nanoid.customAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ",2)
+    const number = nanoid.customAlphabet("0123456789",6)
+    const alphabetId= alphabet()
+    const numberId= number()
+    console.log(alphabetId,numberId)
     const task = await Task.create({
+      id:`${alphabetId}-${numberId}`,
       name,
       description,
       dueDate,
@@ -78,7 +85,7 @@ const fetchAllEmployees = async (req, res) => {
   res.status(200).send(employees);
 };
 const fetchAllTasks = async (req, res) => {
-  const tasks = await Task.find();
+  const tasks = await Task.find().populate("assignedTo");
   res.status(200).send(tasks);
 };
 const fetchAllPendingTasks = async (req, res) => {
@@ -88,13 +95,13 @@ const fetchAllPendingTasks = async (req, res) => {
 };
 const fetchAdminMetaData = async (req, res) => {
   const employees = await Employee.find();
-  const pendingTasks = await Task.find({ status: "pending" });
+  const unAssignedTasks = await Task.find({ isAssigned:false});
   const tasks = await Task.find();
   res
     .status(200)
     .send({
       totalEmployees: employees.length,
-      totalPendingTasks: pendingTasks.length,
+      totalUnAssigned: unAssignedTasks.length,
       totalTasks: tasks.length,
     });
 };
@@ -107,8 +114,7 @@ const assignTask = async (req, res) => {
     return
   }
   task.isAssigned=true;
-  task.assignedTo.empId=employee._id;
-  task.assignedTo = {empId:employee._id,empName:employee.fullName}
+  task.assignedTo=employee._id;
   await task.save({validateBeforeSave:false})
   employee.assignedTasks.push(task)
   await employee.save({validateBeforeSave:false})

@@ -1,15 +1,20 @@
 import { RefreshCcwIcon } from "lucide-react";
 import React from "react";
 
-function AllTasksFilterGroup({ filterOptions, setFilterOptions }) {
+function AllTasksFilterGroup({ filterOptions, setFilterOptions,setSearchInput,searchInput }) {
   return (
     <div className="controls-container">
       <div className="task-search-bar-group">
         <input
           type="text"
+          value={searchInput}
           placeholder="Search tasks by name or ID..."
           className="alltasks-search-input"
-          // onChange={(e) => setSearchTerm(e.target.value)} // Logic placeholder
+          onChange={(e) =>
+             {setSearchInput(e.target.value)
+      
+             }
+            } // Logic placeholder
         />
         <div className="radio-filter-group">
           <span className="radio-label">Assignment:</span>

@@ -17,5 +17,13 @@ export const AdminDashBoardContext = createContext({
      navLinks:[],
       handleChangeActiveLink:()=>{},
     setIsAssignEmployeeFormOpen:()=>{},
+        isTaskDetailsFormOpen:false,//task detail modal overlay togglee
+     setIsTaskDetailsFormOpen:()=>{},
+       tasks:[],
+     isLoading:false,
+     error:null,
+     setTasks:()=>{},
+     setIsLoading:()=>{},
+     setError:()=>{},
    
 })

@@ -10,6 +10,7 @@ import {
   AlertCircle,
   UserPlus,
   Users,
+  UserMinus,
 } from "lucide-react";
 import { AdminDashBoardContext } from "../../contexts/AdminDashBoardContext";
 import { AntDContext } from "../../contexts/AntDContext";
@@ -37,22 +38,24 @@ const SortIcon = ({ direction = "none" }) => {
 };
 
 function AdminAllTasksMenu() {
-  const [tasks, setTasks] = useState([]);
+
   const [fileteredTasks, setFilteredTasks] = useState(null);
   const [filterOptions, setFilterOptions] = useState({
     priority: "all",
     status: "all",
     isAssigned: "all",
   });
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  
+  const [searchInput,setSearchInput]=useState("")
   const adminContextValues = useContext(AdminDashBoardContext);
+  const {tasks,isLoading,error,setTasks} = useContext(AdminDashBoardContext);
   const { showSuccess, showError } = useContext(AntDContext);
 
   // --- Action Handlers (Moved inside to access AntDContext) ---
-  const handleManageTask = (taskId) => {
-    console.log(`Managing task with ID: ${taskId}`);
-    showError(`Simulated: Ready to Manage/Edit Task ID: ${taskId}`, 3); // Using AntD notification
+  const handleManageTask = (task) => {
+     console.log(`task: ${task}`);
+    adminContextValues.selectedTask.current = task;
+      adminContextValues.setIsTaskDetailsFormOpen(true)
   };
 
   const handleViewAssignedList = (taskId, assignedTo) => {
@@ -71,39 +74,32 @@ function AdminAllTasksMenu() {
   };
 
   // useEffect for filter
+  
   useEffect(() => {
     // The filterTasks utility is called whenever the source tasks or filter options change.
-    filterTasks(tasks, setFilteredTasks, filterOptions);
-  }, [tasks, filterOptions]);
+  const seachTerms = ()=>{
+  if(searchInput==="") {
+    return [...tasks]
+  }
+  const searchResults = (tasks).filter(task=>
+  task.name.toLowerCase().includes(searchInput.toLowerCase())||
+  task.dueDate.toLowerCase().includes(searchInput.toLowerCase())||
+  (task.isAssigned && task.assignedTo?.empName?.toLowerCase().includes(searchInput.toLowerCase()))
+  )
+  return searchResults;
+  }
+    const tasksForFilter = seachTerms() //this function will return the array for filter
+    //because filter must be perfomed on the searchTasks, not all availble,
+    //if seachbox is empty then filter will apply on all tasks, else on the search results
+    filterTasks(tasksForFilter, setFilteredTasks, filterOptions);
+  }, [tasks, filterOptions,searchInput]);
+useEffect(()=>{
 
-  // --- Fetch Tasks (Initial Load) ---
-  useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const apiUrl = import.meta.env.VITE_API_URL;
-        if (!apiUrl) {
-          throw new Error(
-            "VITE_API_URL is not defined in environment variables."
-          );
-        }
-
-        const response = await axios.get(`${apiUrl}/tasks`);
-        setTasks(response.data);
-        setError(null);
-      } catch (err) {
-        console.error("Error fetching tasks:", err);
-        const errMsg = err.response
-          ? err.response.data.message || "Network Error"
-          : err.message;
-        setError(errMsg);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    adminContextValues.handleChangeActiveLink(2);
-    fetchTasks();
-  }, []);
-
+},[searchInput])
+ 
+useEffect(()=>{
+  adminContextValues.handleChangeActiveLink(2);
+},[])
   // --- DELETE Task Handler (With Optimistic Update and Rollback) ---
   const handleDeleteTask = async (taskId) => {
     // 1. Capture current state for rollback
@@ -170,7 +166,7 @@ function AdminAllTasksMenu() {
         </h1>
 
         {/* --- Filters and Sort Controls UI --- */}
-   <AllTasksFilterGroup filterOptions={filterOptions} setFilterOptions={setFilterOptions}/>
+   <AllTasksFilterGroup filterOptions={filterOptions} setFilterOptions={setFilterOptions} searchInput={searchInput} setSearchInput={setSearchInput}/>
         {/* --- END NEW UI --- */}
 
         <div className="task-table-wrapper">
@@ -182,6 +178,22 @@ function AdminAllTasksMenu() {
             <table className="task-table">
               <thead>
                 <tr>
+                  <th style={{ width: "5%" }} className="sortable-header">
+                    <button
+                      className="sort-btn" /* onClick={() => handleSort('name')} */
+                    >
+                      
+                     
+                    </button>
+                  </th>
+                  <th style={{ width: "10%" }} className="sortable-header">
+                    <button
+                      className="sort-btn" /* onClick={() => handleSort('name')} */
+                    >
+                      Task Id
+                      
+                    </button>
+                  </th>
                   <th style={{ width: "30%" }} className="sortable-header">
                     <button
                       className="sort-btn" /* onClick={() => handleSort('name')} */
@@ -229,8 +241,14 @@ function AdminAllTasksMenu() {
                 </tr>
               </thead>
               <tbody>
-                {(fileteredTasks || tasks).map((task) => (
+                {(fileteredTasks || tasks).map((task,i) => (
                   <tr key={task._id}>
+                    <td data-label="Task Name" className="task-sn-cell">
+                      {i+1}
+                    </td>
+                    <td data-label="Task Name" className="task-i-cell" >
+                      {task?.id||"task-100"}
+                    </td>
                     <td data-label="Task Name" className="task-name-cell">
                       {task.name}
                     </td>
@@ -238,7 +256,7 @@ function AdminAllTasksMenu() {
                       data-label="Assigned To"
                       className="assigned-to-cell hide-on-mobile"
                     >
-                      <button
+                      {task.isAssigned ?   <button
                         className="assigned-list-btn"
                         onClick={() =>
                           handleViewAssignedList(task._id, task.assignedTo)
@@ -247,9 +265,10 @@ function AdminAllTasksMenu() {
                       >
                         <Users size={16} className="icon-user" />
                         <span className="assigned-name">
-                          {task.isAssigned ? task.assignedTo.empName : "none"}
+                          {task.assignedTo.empName}
                         </span>
-                      </button>
+                      </button> : "none"}
+                   
                     </td>
                     <td data-label="Status" className="status-cell">
                       <span
@@ -278,16 +297,24 @@ function AdminAllTasksMenu() {
                       {formatDate(task.dueDate)}
                     </td>
                     <td data-label="Actions" className="actions-cell">
-                      <button
+                      {task.isAssigned?<button
+                        className="action-btn unassign-btn"
+                        // onClick={() => handleAssignEmployee(task)}
+                        title="Unassign Employee to Task"
+                      >
+                        <UserMinus size={16}/>
+                      </button>:  <button
                         className="action-btn assign-btn"
                         onClick={() => handleAssignEmployee(task)}
                         title="Assign Employee to Task"
                       >
                         <UserPlus size={16} />
-                      </button>
+                      </button>}
+                    
+                      
                       <button
                         className="action-btn manage-btn"
-                        onClick={() => handleManageTask(task._id)}
+                        onClick={() => handleManageTask(task)}
                         title="Manage/Edit Task"
                       >
                         <Edit size={16} />

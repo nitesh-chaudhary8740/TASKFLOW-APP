@@ -14,13 +14,14 @@
 /* --- Modal Overlay and Container --- */
 .modal-overlay {
     position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    /* top: 0; */
+    /* right: 0; */
+    /* bottom: 0; */
+    /* left: 0; */
     background-color: rgba(0, 0, 0, 0.6); 
-    z-index: 9999;
+    z-index: 99990;
     display: flex;
+    /* width: 100vh; */
     align-items: center;
     justify-content: center;
     padding: 1rem;
