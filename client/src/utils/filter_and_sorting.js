@@ -84,8 +84,5 @@ export const sortTasks = (filteredArray,filteredArraySetter,sortOptions) =>{
   filteredArraySetter(sortedArray)
   return;
    }
-  
-   
-   
  
 }

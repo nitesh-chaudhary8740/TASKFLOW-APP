@@ -1,4 +1,4 @@
-/* --- Global Variables for Theming --- */
+/* --- Global Variables for Theming (Ensure consistent naming if sharing with AssignEmployee.css) --- */
 :root {
     --color-primary: #4f46e5; /* Indigo 600 */
     --color-primary-dark: #4338ca; /* Indigo 700 */
@@ -7,21 +7,27 @@
     --color-background-light: #f9fafb; /* Gray 50 (Card background) */
     --color-border: #e5e7eb; /* Gray 200 (Input/Dividers) */
     --color-danger: #ef4444; /* Red 500 (Errors/Close) */
-    --color-success: #059669; /* Green 600 (Assignment success/info) */
+    --color-success: #059669; /* Green 600 */
     --color-accent-light: #e0e7ff; /* Indigo 100 (Hover/Divider accent) */
+
+    /* Task Specific Colors */
+    --color-status-completed: #10b981; /* Green 500 */
+    --color-status-in-progress: #3b82f6; /* Blue 500 */
+    --color-status-under-review: #f59e0b; /* Amber 500 */
+    --color-status-blocked: #ef4444; /* Red 500 */
+    --color-status-pending: #a8a29e; /* Stone 400 */
 }
 
-/* --- Modal Overlay and Container --- */
-.assign-employee-modal-overlay{
+/* --- Reused Modal Structure (Copy from AssignEmployee.css) --- */
+.modal-overlay {
     position: fixed;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
     background-color: rgba(0, 0, 0, 0.6); 
-    z-index: 999992;
+    z-index: 99990;
     display: flex;
-    width: 100vw;
     align-items: center;
     justify-content: center;
     padding: 1rem;
@@ -41,7 +47,7 @@
     position: relative;
 }
 
-/* --- Header and Close Button --- */
+/* --- Header and Close Button (Reused) --- */
 .modal-close-btn {
     position: absolute;
     top: 1rem;
@@ -80,19 +86,19 @@
     font-weight: 500;
 }
 
-/* --- Search Bar --- */
+/* --- Search Bar (Reused structure) --- */
 .search-bar-group {
     position: relative;
     margin-bottom: 1.5rem;
 }
-.assign-search-icon {
+.task-search-icon {
     position: absolute;
     left: 1rem;
     top: 50%;
     transform: translateY(-50%);
     color: var(--color-muted);
 }
-.assign-search-input {
+.task-search-input {
     width: 100%;
     padding: 0.75rem 1rem 0.75rem 3rem; 
     border: 1px solid var(--color-border);
@@ -102,32 +108,20 @@
     outline: none;
     font-size: 1rem;
 }
-.assign-search-input:focus {
+.task-search-input:focus {
     border-color: var(--color-primary);
     box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
 }
 
-/* --- Employee List & Scrolling --- */
-.employee-list {
+/* --- Task List & Scrolling --- */
+.task-list-wrapper {
     overflow-y: auto;
     flex-grow: 1;
     padding-right: 0.25rem; 
 }
-/* Custom Scrollbar */
-.employee-list::-webkit-scrollbar {
-    width: 8px;
-}
-.employee-list::-webkit-scrollbar-thumb {
-    background-color: #cbd5e1; 
-    border-radius: 4px;
-}
-.employee-list::-webkit-scrollbar-track {
-    background: #f1f5f9; 
-}
 
-
-/* --- Employee Item Card (Responsive) --- */
-.employee-item {
+/* --- Task Item Card (Adapted from employee-item) --- */
+.task-item {
     display: flex;
     flex-direction: column; 
     align-items: flex-start;
@@ -139,81 +133,112 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
     transition: background-color 0.2s ease-in-out;
 }
-.employee-item:hover {
+.task-item:hover {
     background-color: var(--color-accent-light);
 }
 
 @media (min-width: 640px) { 
-    .employee-item {
+    .task-item {
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
     }
 }
 
-.employee-info {
+.task-info {
     flex-grow: 1;
     margin-right: 1.5rem;
     margin-bottom: 0;
     width: 100%; 
 }
 @media (max-width: 639px) { 
-    .employee-info {
+    .task-info {
         margin-bottom: 0.75rem;
     }
 }
 
-.employee-name {
+.task-name {
     font-size: 1.125rem;
     font-weight: 600;
     color: var(--color-text);
     margin-bottom: 0.25rem;
 }
 
-.employee-role {
-    display: flex;
+.task-status-tag {
+    display: inline-flex;
     align-items: center;
-    font-size: 0.875rem;
-    color: var(--color-primary-dark);
-    font-weight: 500;
-    margin-bottom: 0.25rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 12px;
+    margin-bottom: 0.75rem;
+    line-height: 1;
 }
 
-.employee-email {
+/* Status Tag Colors */
+.status-completed { background-color: #d1fae5; color: var(--color-status-completed); }
+.status-in-progress { background-color: #dbeafe; color: var(--color-status-in-progress); }
+.status-under-review { background-color: #fef3c7; color: var(--color-status-under-review); }
+.status-blocked { background-color: #fee2e2; color: var(--color-status-blocked); }
+.status-pending { background-color: #f3f4f6; color: var(--color-status-pending); }
+
+.task-meta {
+    display: flex;
+    gap: 15px;
     font-size: 0.875rem;
     color: var(--color-muted);
 }
+.task-meta span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
 
-/* --- Assign Button --- */
-.assign-action-btn {
+/* --- View Details Button (Adapted from assign-action-btn) --- */
+.emp-taks-action-btns-group{
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+    width: 31%;
+}
+.emp-taks-action-btns {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
     padding: 0.75rem 1.5rem;
-    background-color: var(--color-primary);
-    color: white;
     font-weight: 600;
     border-radius: 0.5rem;
+    color: white;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     transition: background-color 0.15s ease-in-out, transform 0.1s;
     border: none;
     cursor: pointer;
-    width: 100%; 
     flex-shrink: 0;
 }
-.assign-action-btn:hover {
-    background-color: var(--color-primary-dark);
+.view-details-btn {
+    background-color: #10b981; 
+}
+.unassign-task-btn{
+    background-color: #ef4444;
+}
+.unassign-task-btn:hover{
+    background-color: #a82b2b;
+    transform: translateY(-1px);
+}
+.view-details-btn:hover {
+    background-color: #059669;
     transform: translateY(-1px);
 }
 @media (min-width: 640px) {
-    .assign-action-btn {
+    .view-details-btn {
         width: auto;
     }
 }
 
 /* --- List States (Loading/Empty) --- */
-.employee-list-state {
+.task-list-state {
+    /* Reuse styles from .employee-list-state */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -226,7 +251,7 @@
     margin-top: 1rem;
 }
 
-.employee-list-state p {
+.task-list-state p {
     margin-top: 0.75rem;
     font-size: 1rem;
 }
@@ -241,7 +266,7 @@
     color: #f59e0b; 
 }
 
-/* Keyframe for Loader Spin */
+/* Keyframe for Loader Spin (Reused) */
 @keyframes spin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }

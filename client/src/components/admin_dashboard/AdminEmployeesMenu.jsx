@@ -1,5 +1,4 @@
-import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   Users,
   Mail,
@@ -13,68 +12,53 @@ import {
 import "../../assets/css/AdminEmployeesMenu.css";
 import { AdminDashBoardContext } from "../../contexts/AdminDashBoardContext";
 import { AntDContext } from "../../contexts/AntDContext";
+import AllEmployeesFilterGroup from "./alltasks-menu-sub-comp/AllEmployeesFilterGroup";
+import { useState } from "react";
+import { filterTasks } from "../../utils/filter_and_sorting";
 // Placeholder functions for actions
 
 function AdminEmployeesMenu() {
-  const [employees, setEmployees] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const adminContextValues = useContext(AdminDashBoardContext);
-const { showSuccess, showError } = useContext(AntDContext);
- 
-  const handleDeleteEmployee = async (employeeId) => {
-      
-        const originalEmpList = employees;  
-        const tempArr = employees.filter(emp => emp._id !== employeeId);
-        setEmployees(tempArr);
-        try {
-            const apiUrl = import.meta.env.VITE_API_URL;
-            await axios.delete(`${apiUrl}/delete-employee/${employeeId}`);
-            showSuccess("Employee deleted successfully!", 3);          
-        } catch (err) {
-            console.error("Error deleting task:", err.response?.data || err.message);
-            setEmployees(originalEmpList); 
-            const errMsg = err.response?.data?.message || "Failed to delete employee. Network error.";
-            showError(errMsg, 5); // Show a persistent error
-        }
-    };
-
+  const {
+    isLoading,
+    allEmployees,
+    error,
+    selectedEmployee,
+    handleChangeActiveLink,
+    setIsEmployeeDetailsFormOpen,
+    handleDeleteEmployee
+  } = useContext(AdminDashBoardContext);
+ const [fileteredEmployees, setFilteredEmployees] = useState(allEmployees);
+  const [filterOptions, setFilterOptions] = useState({
+    priority: "all",
+    designation:"all"
+  });
+  
+  const [searchInput,setSearchInput]=useState("")
   const handleManageEmployee = (employee) => {
-    console.log(employee);
-    adminContextValues.selectedEmployee.current = employee;
-    adminContextValues.setIsAssignTaskFormOpen(true);
+    // console.log(employee);
+    selectedEmployee.current = employee;
+    setIsEmployeeDetailsFormOpen(true);
   };
   useEffect(() => {
-    adminContextValues.handleChangeActiveLink(1);
+    handleChangeActiveLink(1);
   }, []);
+
   useEffect(() => {
-    const fetchEmployees = async () => {
-      try {
-        // Ensure environment variable is defined
-        const apiUrl = import.meta.env.VITE_API_URL;
-        if (!apiUrl) {
-          throw new Error(
-            "VITE_API_URL is not defined in environment variables."
-          );
-        }
-
-        const response = await axios.get(`${apiUrl}/employees`);
-        setEmployees(response.data);
-        setError(null);
-      } catch (err) {
-        console.error("Error fetching employees:", err);
-        const errMsg = err.response ? err.response.data : err.message;
-        setError(errMsg);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchEmployees();
-  }, []);
-
-  // Mock data for development when API is unavailable
-
+    // The filterTasks utility is called whenever the source tasks or filter options change.
+  const seachTerms = ()=>{
+  if(searchInput==="") {
+    return [...allEmployees]
+  }
+  const searchResults = (allEmployees).filter(employee=>
+  employee.fullName.toLowerCase().includes(searchInput.toLowerCase())||
+  employee.userName.toLowerCase().includes(searchInput.toLowerCase())||
+  employee.designation.toLowerCase().includes(searchInput.toLowerCase())
+ )
+  return searchResults;
+  }
+    const employeessForFilter = seachTerms() 
+    filterTasks(employeessForFilter, setFilteredEmployees, filterOptions);
+  }, [allEmployees, filterOptions,searchInput]);
   if (isLoading) {
     return (
       <div className="employee-menu-container loading-state">
@@ -99,11 +83,11 @@ const { showSuccess, showError } = useContext(AntDContext);
     <div className="employee-menu-container">
       <h1 className="employee-list-title">
         <Users size={32} style={{ marginRight: "10px" }} />
-        Employee Directory ({employees.length})
+        Employee Directory ({allEmployees.length})
       </h1>
-
+      <AllEmployeesFilterGroup filterOptions={filterOptions} setFilterOptions={setFilterOptions} searchInput={searchInput} setSearchInput={setSearchInput}/>
       <div className="employee-table-wrapper">
-        {employees.length === 0 ? (
+        {allEmployees.length === 0 ? (
           <div className="no-data">
             No employees found. Please add a new employee.
           </div>
@@ -119,7 +103,7 @@ const { showSuccess, showError } = useContext(AntDContext);
               </tr>
             </thead>
             <tbody>
-              {employees.map((employee) => (
+              {fileteredEmployees.map((employee) => (
                 <tr key={employee._id}>
                   <td data-label="Name" className="employee-name-cell">
                     <User size={18} className="icon-name" />

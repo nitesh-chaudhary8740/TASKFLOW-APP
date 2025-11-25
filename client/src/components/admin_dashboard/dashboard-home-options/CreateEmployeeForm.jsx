@@ -7,6 +7,8 @@ import {
   X,
   Send,
   User,
+  Phone,
+  MapPin,
 } from "lucide-react";
 // import { AdminDashBoardContext } from './AdminDashboard';
 import "./CreateEmployeeForm.css";
@@ -22,16 +24,19 @@ export const CreateEmployeeForm = () => {
   // Consume the context to get the close function
   // const { closeEmployeeForm } = useContext(AdminDashBoardContext);
   const roles = ["Manager", "Engineer", "Designer", "Tester", "HR"];
+  const [isCreating,setIsCreating]=useState(false)
   const [employeeData, setEmployeeData] = useState({
     fullName: "",
     userName: "",
     email: "",
     designation: "",
+    phone:"",
+    address:""
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setIsCreating(true)
     try {
       console.log("Employee Data Ready for Submission:", employeeData);
       if (
@@ -47,21 +52,25 @@ export const CreateEmployeeForm = () => {
         `${import.meta.env.VITE_API_URL}/emp-create`,employeeData);
       console.log(response.data);
       antDContextValues.showSuccess("New employee added successfully!")
+      setIsCreating(false)
         const showNotificationTO = setTimeout(() => {
                 antDContextValues.showNotification("info","A new employee has been created!",`${(new Date).toDateString}`)
                 clearTimeout(showNotificationTO)
         }, 2000);
     } catch (error) {
-      antDContextValues.showError("error in creating employee",error)
+      console.log(error)
+      antDContextValues.showError("error in creating employee",2)
     }
     finally{
       adminContextValues.setIsCreateEmpFormOpen(false); //close the form after submission if failed/success
       navigate('/admin-dashboard')
       setEmployeeData({ //empty all the fields even if success/fail
       fullName: "",
-      userName: "",
-      email: "",
-      designation: "",
+    userName: "",
+    email: "",
+    designation: "",
+    phone:"",
+    address:""
     });
     }
 
@@ -70,7 +79,7 @@ export const CreateEmployeeForm = () => {
   };
 
   return (
-    <div className="modal-overlay">
+    <div className="create-employee-modal-overlay">
       <div className="task-form-container modal-content">
         {/* Cross Button to Close the Form */}
         <button
@@ -139,6 +148,36 @@ export const CreateEmployeeForm = () => {
               className="form-input"
             />
           </div>
+          <div className="form-group">
+            <label htmlFor="phone">
+              <Phone size={16} /> Phone No.
+            </label>
+            <input
+              type="number"
+              id="phone"
+              name="phone"
+              value={employeeData.phone}
+              onChange={inputOnChange(setEmployeeData)}
+              placeholder="+91"
+              required
+              className="form-input"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="address">
+              <MapPin size={16} /> Address
+            </label>
+            <input
+              type="text"
+              id="address"
+              name="address"
+              value={employeeData.address}
+              onChange={inputOnChange(setEmployeeData)}
+              placeholder="bhopal, MP"
+              required
+              className="form-input"
+            />
+          </div>
 
           {/* 4. Designation (Modified to Dropdown) */}
           <div className="form-group">
@@ -164,9 +203,11 @@ export const CreateEmployeeForm = () => {
             </select>
           </div>
 
-          <button type="submit" className="form-submit-btn">
+          <button
+            disabled={isCreating} 
+           type="submit" className="form-submit-btn">
             <UserPlus size={18} style={{ marginRight: "8px" }} />
-            Add Employee
+           {isCreating?"Adding...":" Add Employee"}
           </button>
         </form>
       </div>

@@ -28,9 +28,7 @@ function EmployeeDashboardProvider({children}) {
            } catch (error) {
             console.log(error)
             if(error?.response?.data) showError(error.response.data)
-                else showError("error is fetching tasks")
-            
-
+                else showError("error is fetching tasks")    
            }
         }
         fetchEmpTasks()

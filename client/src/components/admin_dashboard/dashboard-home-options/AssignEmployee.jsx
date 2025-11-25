@@ -1,49 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { X, Search, User, Briefcase, Info, Loader } from 'lucide-react';
 import { AdminDashBoardContext } from '../../../contexts/AdminDashBoardContext'; 
-import { AntDContext } from '../../../contexts/AntDContext'; // Assuming you have AntD context for messages
+import { AntDContext } from '../../../contexts/AntDContext'; 
 import axios from 'axios';
-import './AssignEmployee.css'; // New CSS file for this modal
-
+import './AssignEmployee.css'; 
 
 export const AssignEmployee = () => {
-    // Assuming context provides modal control and the selected Task ID
-    const values = useContext(AdminDashBoardContext); 
-    const { showSuccess, showError } = useContext(AntDContext); // For AntD messages
-
-    const [allEmployees, setAllEmployees] = useState([]);
+    const {allEmployees,selectedTask,setIsAssignEmployeeFormOpen,error,isLoading} = useContext(AdminDashBoardContext); 
+    const { showSuccess, showError } = useContext(AntDContext); 
     const [filteredEmployees, setFilteredEmployees] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    const task = values.selectedTask?.current; // Get the ID of the Task being assigned
-
-    // 1. Fetch Employees
-    useEffect(() => {
-        const fetchEmployees = async () => {
-            setIsLoading(true);
-            try {
-                // Adjust API endpoint to fetch Employees
-                const response = await axios.get(`${import.meta.env.VITE_API_URL}/employees`); 
-                const fetchedEmployees = response.data;
-                
-                setAllEmployees(fetchedEmployees);
-                setFilteredEmployees(fetchedEmployees);
-                setError(null);
-            } catch (err) {
-                console.error("Error fetching employees:", err);
-                showError("Failed to load employee list.", 3);
-                setError("Failed to load employees.");
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        fetchEmployees();
-    }, [showError]);
-
-
-    // 2. Filter Employees based on search term (by name or email)
+    const task = selectedTask.current;
     useEffect(() => {
         if (!searchTerm) {
             setFilteredEmployees(allEmployees);
@@ -66,13 +33,14 @@ export const AssignEmployee = () => {
             showError("No task selected for assignment.", 3);
             return;
         }
-        const employeeId = employee._id; // Assuming employee ID is '_id'
+        const employeeId = employee._id;
         const apiUrl = `${import.meta.env.VITE_API_URL}/assign-task/${employeeId}/${task._id}`;
         try {
-            // API call to assign the selected employee to the selected task
+            
             const response = await axios.post(apiUrl);
             console.log(response.data)
-            showSuccess(`Successfully assigned Task ${task} to ${employee.name}.`, 3);
+            showSuccess(`Successfully assigned Task ${task.name} to ${employee.userName}.`, 3);
+             selectedTask.current={...selectedTask.current,isAssigned:true,assignedTo:employee}
             handleClose(); 
         } catch (error) {
             console.error("Assignment failed:", error);
@@ -83,12 +51,13 @@ export const AssignEmployee = () => {
     // 4. Handle Modal Close
     const handleClose = () => {
         // Assume the context state variable is named 'setIsAssignEmployeeFormOpen'
-        values.setIsAssignEmployeeFormOpen(false); 
+        setIsAssignEmployeeFormOpen(false); 
+      
     }
 
 
     return (
-        <div className="modal-overlay"> 
+        <div className="assign-employee-modal-overlay"> 
             <div className="assign-employee-container modal-content"> 
                 
                 {/* Close Button */}

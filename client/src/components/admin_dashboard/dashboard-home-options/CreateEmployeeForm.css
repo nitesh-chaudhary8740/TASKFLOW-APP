@@ -13,14 +13,14 @@
 /* --- MODAL STYLES --- */
 
 /* Modal Overlay (The transparent backdrop) */
-.modal-overlay {
+.create-employee-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.6); 
-    z-index: 1000; 
+    z-index: 9999; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -30,8 +30,9 @@
 /* Modal Content Container (The actual form card) */
 .task-form-container {
     position: relative; 
-    max-width: 800px;
+    max-width: 1000px;
     width: 90%; 
+    overflow: scroll;
     margin: 40px auto; 
     padding: 30px;
     background-color: var(--white);
@@ -75,13 +76,13 @@
     align-items: center;
     font-size: 1.8rem;
     color: var(--secondary);
-    margin-bottom: 25px;
+    margin-bottom: 5px;
     padding-bottom: 10px;
     border-bottom: 2px solid var(--border-color);
 }
 
 .task-form .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .task-form label {
@@ -90,8 +91,8 @@
     font-weight: 600;
     color: var(--secondary);
     margin-bottom: 8px;
-    gap: 5px;
-    font-size: 0.95rem;
+    gap: 2px;
+    font-size: 0.7rem;
 }
 
 /* Input, Textarea, and Select Styles */
@@ -99,10 +100,10 @@
 .form-textarea,
 .form-select {
     width: 100%;
-    padding: 12px;
+    padding: 5px;
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    font-size: 1rem;
+    font-size: 0.2rem;
     color: var(--secondary);
     transition: border-color 0.2s, box-shadow 0.2s;
     box-sizing: border-box; 
@@ -165,7 +166,11 @@
 .form-submit-btn:hover {
     background-color: var(--primary-dark);
 }
-
+.form-submit-btn:disabled { 
+background-color: var(--primary-dark);
+    opacity: 0.8; 
+    pointer-events: none; 
+}
 /* Messages (Success/Info) */
 .form-message {
     padding: 12px;
@@ -185,6 +190,7 @@
     color: #2563eb; 
     border: 1px solid #3b82f6; 
 }
+
 
 /* --- Mobile Responsiveness --- */
 @media (max-width: 768px) {

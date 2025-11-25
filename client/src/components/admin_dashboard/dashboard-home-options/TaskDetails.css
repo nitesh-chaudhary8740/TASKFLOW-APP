@@ -5,7 +5,7 @@
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.65); 
-    z-index: 9999;
+    z-index: 99991;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -14,7 +14,8 @@
     overflow-y: auto;
 }
 
-.task-details-card {
+/* --- Base Card Styling (Used for both View and Edit mode) --- */
+.task-details-card, .task-edit-card {
     background-color: #ffffff;
     border-radius: 16px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
@@ -30,7 +31,7 @@
     to { opacity: 1; transform: scale(1); }
 }
 
-/* --- Header Styling --- */
+/* --- Header Styling (View Mode) --- */
 .card-header {
     display: flex;
     justify-content: space-between;
@@ -53,6 +54,10 @@
     padding: 8px;
     border-radius: 50%;
     transition: background-color 0.15s;
+    /* Ensure icon button sizing is consistent */
+    display: flex; 
+    align-items: center;
+    justify-content: center;
 }
 
 .close-button:hover {
@@ -60,7 +65,7 @@
     color: #1f2937;
 }
 
-/* --- Body Styling --- */
+/* --- Body Styling (View Mode) --- */
 .card-body {
     padding: 24px;
     flex-grow: 1;
@@ -96,6 +101,8 @@
 .badge-low { background-color: #d1fae5; color: #059669; } /* Green */
 .badge-in-progress { background-color: #eef2ff; color: #4f46e5; } /* Indigo */
 .badge-pending { background-color: #f5f5f4; color: #78716c; } /* Gray */
+.badge-completed { background-color: #dbeafe; color: #2563eb; } /* Blue (Added for clarity) */
+
 
 .detail-section-title {
     font-size: 1rem;
@@ -141,7 +148,7 @@
     color: #1f2937;
 }
 
-/* --- Footer Styling --- */
+/* --- Footer Styling (View Mode) --- */
 .card-footer {
     padding: 24px;
     border-top: 1px solid #e5e7eb;
@@ -150,6 +157,7 @@
     gap: 12px;
 }
 
+/* --- Action Buttons (Used in both View and Edit Mode Footer) --- */
 .action-button {
     padding: 10px 16px;
     border-radius: 8px;
@@ -180,10 +188,6 @@
     border-color: #ef4444; /* Red 500 */
     box-shadow: 0 4px 10px rgba(239, 68, 68, 0.1);
 }
-.action-button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
 
 /* Secondary Action: Unassign (Neutral Gray) */
 .unassign-button {
@@ -195,4 +199,130 @@
     background-color: #f3f4f6; /* Very Light Gray Background on hover */
     border-color: #9ca3af; /* Slightly Darker Gray Border on hover */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.action-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+/* ================================================= */
+/* 🚀 TASK EDIT FORM STYLES (task-edit- prefix) 🚀 */
+/* ================================================= */
+
+/* Header */
+.task-edit-header {
+    /* Inherits card-header look */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.task-edit-title {
+    /* Inherits header-title look */
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+/* Body */
+.task-edit-body {
+    /* Inherits card-body look */
+    padding: 24px;
+    flex-grow: 1;
+}
+
+/* Labels/Titles */
+.task-edit-label {
+    /* Corresponds to .detail-section-title */
+    display: block;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #374151;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #f3f4f6;
+    padding-bottom: 4px;
+}
+
+.task-edit-sublabel {
+    /* Corresponds to .detail-label */
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #9ca3af;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.task-edit-value {
+    /* Corresponds to .detail-value */
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+/* Grid */
+.task-edit-grid {
+    /* Corresponds to .detail-grid */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+}
+
+.task-edit-item {
+    /* Corresponds to .detail-item */
+    padding: 12px 0;
+}
+
+/* Form Inputs */
+.task-edit-input, .task-edit-textarea, .task-edit-select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 1rem;
+    color: #1f2937;
+    margin-top: 4px;
+    box-sizing: border-box; 
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.task-edit-input:focus, .task-edit-textarea:focus, .task-edit-select:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    outline: none;
+}
+
+.task-edit-textarea {
+    resize: vertical;
+}
+
+/* Select Styling with Badge Integration */
+.task-edit-select.badge {
+    padding-right: 20px;
+    appearance: none;
+    /* Custom down arrow SVG */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23374151' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    font-weight: 600;
+}
+
+/* Footer */
+.task-edit-footer {
+    /* Corresponds to .card-footer */
+    padding: 24px;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: flex-end; 
+    gap: 12px;
+}
+.not-allowed{
+    cursor: not-allowed;
 }

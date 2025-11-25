@@ -56,7 +56,6 @@ export const AssignTask = () => {
 
     // 3. Handle Assignment Action
     const handleAssign =async (task) => {
-        console.log(values.selectedEmployee.current)
         console.log(`Attempting to assign employee to task: ${task.name} (ID: ${task._id})`);
         try {
             const response = await axios.get(`${import.meta.env.VITE_API_URL}/assign-task/${values.selectedEmployee.current}/${task._id}`);

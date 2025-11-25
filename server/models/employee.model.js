@@ -29,12 +29,22 @@ const empSchema = new mongoose.Schema({
         required: true,
       
     },
+    phone: {
+        type: String,
+        required: true,
+      
+    },
+    address: {
+        type: String,
+        required: true,
+      
+    },
     assignedTasks:[
         {
-            task:{
+           
                 type:mongoose.Schema.Types.ObjectId,
                 ref:"Task"
-            }
+            
         }
     ]
 }, { 

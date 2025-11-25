@@ -54,7 +54,12 @@ const SummaryCard = ({ title, value, icon: Icon, colorClass,metaData}) => (
 
 
 function AdminDashBoardContent() {
-
+  const todayDate = new Date().toLocaleDateString("en-US", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    });
     const adminContextValues = useContext(AdminDashBoardContext)
     useEffect(()=>{
          adminContextValues.handleChangeActiveLink(0)
@@ -85,9 +90,13 @@ function AdminDashBoardContent() {
             
             {/* 1. Header Section */}
             <header className="dashboard-header">
+                <div>
+
                 <h1 className="organization-name">
                     Welcome, {currentUser.orgnization||"**TaskFlow Management Admin**"}
                 </h1>
+            <p>{todayDate}</p>
+                </div>
                 <p className="dashboard-subtitle">
                     Overview and quick actions for your organization's tasks and personnel.
                 </p>

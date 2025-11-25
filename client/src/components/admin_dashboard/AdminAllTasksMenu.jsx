@@ -17,6 +17,7 @@ import { AntDContext } from "../../contexts/AntDContext";
 import { filterTasks } from "../../utils/filter_and_sorting";
 import AllTasksFilterGroup from "./alltasks-menu-sub-comp/AllTasksFilterGroup";
 
+
 const SortIcon = ({ direction = "none" }) => {
   let color = direction === "none" ? "var(--text-light)" : "var(--primary)";
   let opacity = direction === "none" ? 0.4 : 1;
@@ -48,14 +49,14 @@ function AdminAllTasksMenu() {
   
   const [searchInput,setSearchInput]=useState("")
   const adminContextValues = useContext(AdminDashBoardContext);
-  const {tasks,isLoading,error,setTasks} = useContext(AdminDashBoardContext);
+  const {tasks,isLoading,error,setTasks,handleUnassignTask} = useContext(AdminDashBoardContext);
   const { showSuccess, showError } = useContext(AntDContext);
 
   // --- Action Handlers (Moved inside to access AntDContext) ---
   const handleManageTask = (task) => {
-     console.log(`task: ${task}`);
+    console.log(`task: ${task}`);
     adminContextValues.selectedTask.current = task;
-      adminContextValues.setIsTaskDetailsFormOpen(true)
+    adminContextValues.setIsTaskDetailsFormOpen(true)
   };
 
   const handleViewAssignedList = (taskId, assignedTo) => {
@@ -84,7 +85,7 @@ function AdminAllTasksMenu() {
   const searchResults = (tasks).filter(task=>
   task.name.toLowerCase().includes(searchInput.toLowerCase())||
   task.dueDate.toLowerCase().includes(searchInput.toLowerCase())||
-  (task.isAssigned && task.assignedTo?.empName?.toLowerCase().includes(searchInput.toLowerCase()))
+  (task.id.toLowerCase().includes(searchInput.toLowerCase()))
   )
   return searchResults;
   }
@@ -124,10 +125,11 @@ useEffect(()=>{
       setTasks(originalTasks);
 
       const errMsg =
-        err.response?.data?.message || "Failed to delete task. Network error.";
+      err.response?.data|| "Failed to delete task. Network error.";
       showError(errMsg, 5);
     }
   };
+
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -265,7 +267,7 @@ useEffect(()=>{
                       >
                         <Users size={16} className="icon-user" />
                         <span className="assigned-name">
-                          {task.assignedTo.empName}
+                          {task.assignedTo.userName}
                         </span>
                       </button> : "none"}
                    
@@ -299,7 +301,7 @@ useEffect(()=>{
                     <td data-label="Actions" className="actions-cell">
                       {task.isAssigned?<button
                         className="action-btn unassign-btn"
-                        // onClick={() => handleAssignEmployee(task)}
+                        onClick={() => handleUnassignTask(task._id)}
                         title="Unassign Employee to Task"
                       >
                         <UserMinus size={16}/>

@@ -1,0 +1,226 @@
+/* ================================================= */
+/* Base Modal Styles (Shared) */
+/* ================================================= */
+
+.employee-details-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.65); 
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.employee-details-card, .employee-edit-card {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 550px; /* Slightly smaller than task modal */
+    animation: fadeIn 0.3s ease-out;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Header Styling --- */
+.employee-card-header, .employee-edit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.employee-header-title, .employee-edit-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.employee-close-button {
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.15s;
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+}
+
+.employee-close-button:hover {
+    background-color: #f3f4f6;
+    color: #1f2937;
+}
+
+/* ================================================= */
+/* 1. VIEW MODE STYLES (.employee- prefix) */
+/* ================================================= */
+
+.employee-card-body {
+    padding: 24px;
+    flex-grow: 1;
+}
+
+.employee-full-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 4px;
+}
+
+.employee-username {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #6b7280;
+    margin-bottom: 24px;
+}
+
+.employee-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.employee-detail-item {
+    padding: 10px 0;
+}
+
+.employee-detail-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #9ca3af;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.employee-detail-value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1f2937;
+    word-break: break-all;
+}
+
+.employee-detail-value a {
+    color: #4f46e5;
+    text-decoration: none;
+}
+
+/* --- Footer Styling --- */
+.employee-card-footer {
+    padding: 20px 24px;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between; 
+    gap: 12px;
+}
+
+.employee-action-button {
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    border: 1px solid transparent;
+}
+
+.employee-view-tasks-button {
+    background-color: #eef2ff;
+    color: #4f46e5;
+    border-color: #c7d2fe;
+}
+.employee-view-tasks-button:hover {
+    background-color: #e0e7ff;
+}
+
+.employee-delete-button {
+    background-color: #ffffff;
+    color: #b91c1c; 
+    border-color: #fca5a5; 
+}
+.employee-delete-button:hover {
+    background-color: #fef2f2; 
+    border-color: #ef4444; 
+}
+
+
+/* ================================================= */
+/* 2. EDIT MODE STYLES (.employee-edit- prefix) */
+/* ================================================= */
+
+.employee-edit-body {
+    padding: 24px;
+    flex-grow: 1;
+}
+
+.employee-edit-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px 20px;
+    margin-bottom: 10px;
+}
+
+.employee-edit-label {
+    /* Used for input labels */
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.employee-edit-item {
+    padding: 8px 0;
+}
+
+.employee-edit-input, .employee-edit-select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 1rem;
+    color: #1f2937;
+    margin-top: 4px;
+    box-sizing: border-box; 
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.employee-edit-input:focus, .employee-edit-select:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    outline: none;
+}
+
+/* Footer for Edit Form (uses action-button styles above) */
+.employee-edit-footer {
+    padding: 20px 24px;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: flex-end; 
+    gap: 12px;
+}
+
+.employee-save-button {
+    background-color: #4f46e5; /* Primary Indigo */
+    color: #ffffff;
+}
+.employee-save-button:hover:not(:disabled) {
+    background-color: #4338ca;
+    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+}

@@ -21,15 +21,15 @@ const PriorityBadge = ({ priority }) => {
 };
 
 function OngoingTasksTable({TODAY}) {
-    const {employeeAllTasks} = useContext(EmployeeDashboardContext)
-  return (
+const {employeeAllTasks} = useContext(EmployeeDashboardContext)
+return (
 
     <>
     <div>
 
         <h2 className="box-title task-title-icon">
             <ListTodo className="icon-mr" />
-            My In Progress Tasks ({employeeAllTasks.filter(t => t.status.toLowerCase() === 'in-progress').length})
+            My In Progress Tasks ({employeeAllTasks?.filter(t => t.status.toLowerCase() === 'in-progress').length})
         </h2>
         
         <div className="overflow-scroll">
