@@ -16,9 +16,9 @@ import { AdminDashBoardContext } from "../../../contexts/AdminDashBoardContext";
 import { inputOnChange } from "../../../utils/utility.functions";
 import axios from "axios";
 import { AntDContext } from "../../../contexts/AntDContext";
-import { useNavigate } from "react-router-dom";
+
 export const CreateEmployeeForm = () => {
-  const navigate = useNavigate()
+  
   const adminContextValues = useContext(AdminDashBoardContext);
   const antDContextValues = useContext(AntDContext)
   // Consume the context to get the close function
@@ -59,20 +59,12 @@ export const CreateEmployeeForm = () => {
         }, 2000);
     } catch (error) {
       console.log(error)
-      antDContextValues.showError("error in creating employee",2)
+      antDContextValues.showError(error?.response?.data,2)
     }
     finally{
-      adminContextValues.setIsCreateEmpFormOpen(false); //close the form after submission if failed/success
-      navigate('/admin-dashboard')
-      setEmployeeData({ //empty all the fields even if success/fail
-      fullName: "",
-    userName: "",
-    email: "",
-    designation: "",
-    phone:"",
-    address:""
-    });
+      setIsCreating(false)
     }
+   
 
    
    

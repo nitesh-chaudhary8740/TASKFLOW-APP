@@ -3,9 +3,15 @@ import { X, Save, Clock, AlertTriangle,Calendar } from 'lucide-react';
 // Assuming TASK_STATUS is available somewhere, or define it locally for the form
 const TASK_STATUS = ["Pending", "In-Progress", "Under-Review", "Completed", "Blocked", "Overdue"];
 const PRIORITY_LEVELS = ["Low", "Medium", "High"];
+import axios from "axios"
+import { useContext } from 'react';
+import { AntDContext } from '../../../contexts/AntDContext';
+import { AdminDashBoardContext } from '../../../contexts/AdminDashBoardContext';
 
 function TaskEditForm({ task, setIsEditing }) {
     // Initialize form state with current task data
+    const {showSuccess,showError} = useContext(AntDContext)
+    const adminContextValues=useContext(AdminDashBoardContext)
     const [formData, setFormData] = useState({
         name: task.name,
         description: task.description,
@@ -23,14 +29,29 @@ function TaskEditForm({ task, setIsEditing }) {
         }));
     };
 
-    const handleSave = (e) => {
+    const handleSave = async(e) => {
         e.preventDefault();
+        adminContextValues.setIsTaskDetailsFormOpen(false)
         
-        // 🚨 IMPORTANT: You need to implement your actual API call here.
-        console.log("Saving updated task data:", formData);
+        try {
+            const apiUrl = import.meta.env.VITE_API_URL;
+            // 🚨 IMPORTANT: Replace with your actual endpoint
+            const response = await axios.put(`${apiUrl}/task-update/${task._id}`, formData); 
+            console.log("response",response.data.task)        
+            adminContextValues.selectedTask.current=response.data.task;
+            showSuccess(response.data.message, 3);
+            
+        } catch (err) {      
+            console.error("Error updating task:", err.response?.data || err.message);
+            const errMsg = err.response?.data?.message || "Failed to save changes.";
+            showError(errMsg, 5); 
+        } finally {
+            
+            setIsEditing(false); // Close the edit form
+            adminContextValues.setIsTaskDetailsFormOpen(true)
+        }
         
         // After successful save:
-        setIsEditing(false); // Close the edit form
     };
 
     return (
@@ -148,6 +169,7 @@ function TaskEditForm({ task, setIsEditing }) {
                         className="action-button reassign-button"
                         type="submit"
                         title="Save all changes to the task"
+                        onClick={()=>handleSave}
                     >
                         <Save size={20} style={{marginRight: '8px'}} />
                         Save Changes

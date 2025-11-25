@@ -63,7 +63,7 @@ function AdminDashboard() {
     };
     
     fetchTasks();
-  }, [isTaskFormOpen,isAssignEmployeeFormOpen]);
+  }, [isTaskFormOpen,isAssignEmployeeFormOpen,isTaskDetailsFormOpen]);
      useEffect(() => {
           const fetchEmployees = async () => {
               setIsLoading(true);
@@ -82,7 +82,7 @@ function AdminDashboard() {
               }
           };
           fetchEmployees();
-      }, [showError,isCreateEmpFormOpen]);
+      }, [showError,isCreateEmpFormOpen,isEmployeeDetailsFormOpen]);
   useEffect(() => {
     const fetchAdminMetaData = async () => {
       try {
@@ -114,6 +114,7 @@ function AdminDashboard() {
     const tempArr = tasks.map(task=>{
       if(task._id===taskId) return {...task,
         isAssigned:false,
+        status:"Un-Assigned",
         assignedTo:null
       }
       else return task;
@@ -156,7 +157,35 @@ function AdminDashboard() {
               showError(errMsg, 5); // Show a persistent error
           }
     };
-  
+   const handleDeleteTask = async (taskId) => {
+    // 1. Capture current state for rollback
+    const originalTasks = tasks;
+
+    // 2. Optimistic Update: Immediately filter out the task from the local state
+    const tempArr = tasks.filter((task) => task._id !== taskId);
+    setTasks(tempArr);
+
+    try {
+      // 3. API Call to Delete
+      const apiUrl = import.meta.env.VITE_API_URL;
+      await axios.delete(`${apiUrl}/delete-task/${taskId}`);
+
+      // 4. Success: Confirmation message (UI is already updated)
+      showSuccess("Task deleted successfully!", 3);
+      selectedTask.current=null;
+      
+    } catch (err) {
+      // 5. Failure: Rollback UI and show error message
+      console.error("Error deleting task:", err.response?.data || err.message);
+
+      // Revert state back to original tasks list
+      setTasks(originalTasks);
+
+      const errMsg =
+      err.response?.data|| "Failed to delete task. Network error.";
+      showError(errMsg, 5);
+    }
+  };
   const values = {
     selectedEmployee,
     isTaskFormOpen,
@@ -167,23 +196,24 @@ function AdminDashboard() {
     isCreateProjectFormOpen,
     setIsCreateProjectFormOpen,
     isEmployeeTasksFormOpen, setIsEmployeeTasksFormOpen,
-     acticeNavLink,//nav links
-     setActiveNavLink,
-     navLinks,
-     handleChangeActiveLink,
-     setIsAssignEmployeeFormOpen,
-     selectedTask,
-     isTaskDetailsFormOpen,//task detail modal overlay togglee
-     setIsTaskDetailsFormOpen,
-     isEmployeeDetailsFormOpen, setIsEmployeeDetailsFormOpen,
-     tasks,//all tasks
-     isLoading,//api loading
-     error,//api error
-     setTasks,
-     setIsLoading,
-     setError,
-     allEmployees,//all employees
-      setAllEmployees,
+    acticeNavLink,//nav links
+    setActiveNavLink,
+    navLinks,
+    handleChangeActiveLink,
+    setIsAssignEmployeeFormOpen,
+    selectedTask,
+    isTaskDetailsFormOpen,//task detail modal overlay togglee
+    setIsTaskDetailsFormOpen,
+    isEmployeeDetailsFormOpen, setIsEmployeeDetailsFormOpen,
+    tasks,//all tasks
+    isLoading,//api loading
+    error,//api error
+    setTasks,
+    setIsLoading,
+    setError,
+    allEmployees,//all employees
+    setAllEmployees,
+    handleDeleteTask,
      handleUnassignTask,
      handleDeleteEmployee
   };

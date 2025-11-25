@@ -16,7 +16,7 @@ function AllTasksFilterGroup({ filterOptions, setFilterOptions,setSearchInput,se
              }
             } // Logic placeholder
         />
-        <div className="radio-filter-group">
+       {filterOptions.status.toLowerCase()==="all" && <div className="radio-filter-group">
           <span className="radio-label">Assignment:</span>
           <div className="radio-options-wrapper">
             <label
@@ -80,7 +80,7 @@ function AllTasksFilterGroup({ filterOptions, setFilterOptions,setSearchInput,se
               Unassigned
             </label>
           </div>
-        </div>
+        </div> }
       </div>
 
       <div className="filter-group">
@@ -103,7 +103,7 @@ function AllTasksFilterGroup({ filterOptions, setFilterOptions,setSearchInput,se
             }}
           />
         </div>
-        <select
+        {/* <select
           className="filter-select"
         //   defaultValue="all"
         value={filterOptions.status}
@@ -118,8 +118,10 @@ function AllTasksFilterGroup({ filterOptions, setFilterOptions,setSearchInput,se
           <option value="in-progress">In Progress</option>
           <option value="pending">Pending</option>
           <option value="completed">Completed</option>
-          <option value="on-hold">On Hold</option>
-        </select>
+          <option value="overdue">Overdue</option>
+          <option value="under-review">UnderReview</option>
+          <option value="under-review">Blocked</option>
+        </select> */}
 
         {/* Priority Filter */}
         <select

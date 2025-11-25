@@ -56,6 +56,7 @@ function EmployeeEditForm({ employee, setIsEditing }) {
             showError(errMsg, 5); 
         } finally {
             setIsSaving(false);
+            adminContextValues.isEmployeeDetailsFormOpen(true)
         }
     };
 

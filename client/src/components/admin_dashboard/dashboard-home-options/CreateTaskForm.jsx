@@ -4,13 +4,14 @@ import "./CreateTaskForm.css"
 import { AdminDashBoardContext } from '../../../contexts/AdminDashBoardContext';
 import { inputOnChange } from '../../../utils/utility.functions';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { AntDContext } from '../../../contexts/AntDContext';
+
 
 
 
  export const CreateTaskForm = () => { 
 const values = useContext(AdminDashBoardContext)
-const navigate = useNavigate()
+const {showError,showSuccess} =useContext(AntDContext)
 
     const [taskData, setTaskData] = useState({
         name: '',
@@ -30,7 +31,7 @@ const navigate = useNavigate()
         e.preventDefault();
         console.log("Task Data Ready for Submission:", taskData);
         
-        // Simulate a successful API response
+       
       try {
          if(!taskData.description||!taskData.dueDate||!taskData.priority){
           alert("all fields required")
@@ -38,20 +39,11 @@ const navigate = useNavigate()
          }
           const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/task-create`,taskData);
-            console.log(response.data);
+            showSuccess(response.data.msg,3)
       } catch (error) {
-        alert(error.response.data.msg)
+        showError(error.response?.data?.msg,3)
       }
-      finally{
-        navigate('/admin-dashboard')
-            setTaskData({
-                name: '',
-                description: '',
-                dueDate: '',
-                priority: 'medium',
-            });
-            values.setIsTaskFormOpen(false)
-      }
+     
 
          
             

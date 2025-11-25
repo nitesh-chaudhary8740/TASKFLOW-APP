@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 // Define the allowed values for the status field
 const TASK_STATUS = [
+  "Un-Assigned",
   "Pending",
   "In-Progress",
   "Under-Review",
@@ -40,7 +41,7 @@ const taskSchema = new mongoose.Schema(
     // 🚀 ENUM IMPLEMENTATION HERE 🚀
     status: {
       type: String,
-      default: "Pending", // Set the default status to one of the enum values
+      default: "Un-Assigned", // Set the default status to one of the enum values
       trim: true,
       // The enum array restricts the possible values for this field
       enum: TASK_STATUS,

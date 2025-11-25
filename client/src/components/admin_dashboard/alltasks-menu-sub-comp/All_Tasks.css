@@ -1,0 +1,80 @@
+/* --- New Selection Column/Cell Styles --- */
+
+/* Ensures the SN/Checkbox column is centered */
+.task-table th.select-header,
+.task-table td.task-sn-cell {
+    text-align: center;
+    padding: 10px 5px; /* Adjust padding for smaller cell */
+}
+
+/* Style for the button that holds the checkbox/SN number */
+.select-row-checkbox-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 18px;
+    width: 18px;
+    transition: transform 0.1s;
+}
+
+.task-sn-number {
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+/* Highlight the entire row when it is selected */
+.task-table tbody tr.task-row-selected {
+    background-color: #e6f7ff; /* Light blue tint */
+    border-left: 4px solid var(--primary); /* Primary color left border for emphasis */
+}
+
+/* --- Header Controls (Select All / Exit) --- */
+
+.select-header {
+    /* Use pointer cursor to hint that clicking here can initiate selection */
+    cursor: pointer; 
+}
+
+/* Container for the Select All / Exit buttons in the header */
+.select-header > span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Style for the Select All button */
+.select-all-btn,
+.exit-select-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s;
+}
+
+.select-all-btn:hover,
+.exit-select-btn:hover {
+    opacity: 0.8;
+}
+
+/* Override padding for the first cell when in mobile view to align correctly */
+@media (max-width: 768px) {
+    /* Ensure the mobile label for the first cell is hidden, as it now holds the checkbox */
+    .task-table td.task-sn-cell::before {
+        content: "";
+    }
+    
+    /* Center the content of the selection column on mobile */
+    .task-table td.task-sn-cell {
+        text-align: center;
+        /* Ensure the SN number or checkbox is visible */
+        justify-content: center; 
+    }
+}

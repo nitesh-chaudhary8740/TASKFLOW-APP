@@ -135,6 +135,11 @@ function TaskDetails() {
                         // onClick={handleDelete}
                         className="action-button delete-button"
                         title="Delete this task permanently"
+                        onClick={()=>{
+                            values.handleDeleteTask(values.selectedTask.current._id)
+                           
+                        }
+                        }
                     >
                         <Trash2 size={20} style={{marginRight: '8px'}} />
                         Delete Task

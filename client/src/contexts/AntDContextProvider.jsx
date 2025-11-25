@@ -2,12 +2,16 @@ import React from 'react';
 import { message, notification } from "antd"; // Import notification
 // Assuming AntDContext.js defines the context and useAntDContext hook
 import { AntDContext } from './AntDContext.js'; 
-
+  message.config(
+        {
+            zIndex:999999
+        }
+    )
 // ----------------------------------------------------
 // 1. Context Provider Setup
 // ----------------------------------------------------
 function AntDContextProvider({children}) {
-    
+  
     // --- Message API Setup (Ephemeral Alerts) ---
     const [messageApi, msgContextHolder] = message.useMessage();
 
@@ -18,7 +22,7 @@ function AntDContextProvider({children}) {
     // ----------------------------------------------------
     // 2. Message Methods (Exposed via Context)
     // ----------------------------------------------------
-
+    
     const showMessage = (type, content, duration = 3) => {
         messageApi.open({
             type,

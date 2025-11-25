@@ -280,11 +280,43 @@ white-space: nowrap;
 text-transform: capitalize;
 }
 
-/* Status Colors */
-.in-progress { background-color: #fef3c7; color: #b45309; }
-.pending { background-color: #fee2e2; color: #ef4444; }
-.completed { background-color: #d1fae5; color: #059669; }
-.on-hold { background-color: #e0f2fe; color: #0284c7; }
+/* Status Colors (Standard UI/UX Scheme) */
+
+/* ✅ Green: Success, Done */
+.task-status-completed { 
+    background-color: #D1FAE5; 
+    color: #065F46; 
+} 
+
+/* ❌ Red: Critical, Error, Urgent */
+.task-status-overdue { 
+    background-color: #FEE2E2; 
+    color: #B91C1C; 
+} 
+
+/* 🟡 Yellow/Amber: Active, Working */
+.task-status-in-progress { 
+    background-color: #FEF9C3; 
+    color: #A16207; 
+} 
+
+/* 🔵 Blue: Informational, Neutral, Waiting */
+.task-status-pending { 
+    background-color: #EFF6FF; 
+    color: #1D4ED8; 
+} 
+
+/* 🧊 Teal: Stalled, Dependency */
+.task-status-blocked { 
+    background-color: #E0F7FA; 
+    color: #0E7490; 
+} 
+
+/* 🟣 Purple: Transitional, Evaluation */
+.task-status-under-review { 
+    background-color: #EDE9FE; 
+    color: #5B21B6; 
+}
 
 /* Priority Colors */
 .high { background-color: #ffe4e6; color: #e11d48; font-weight: 700; }
@@ -464,4 +496,99 @@ width: 100%;
 }
 
 
+}
+/* --- TASK CATEGORY BUTTONS (Tabs/Pills) --- */
+
+.task-categories-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 25px;
+    padding: 10px;
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.task-category-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    background-color: var(--background);
+    color: var(--text-light);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: capitalize;
+}
+
+.task-category-btn:hover {
+    background-color: #e5e7eb;
+    color: var(--secondary);
+}
+
+/* Active State for Selected Category */
+.task-category-btn.active-category {
+    background-color: var(--primary);
+    color: var(--white);
+    border-color: var(--primary);
+    box-shadow: 0 2px 4px rgba(70, 134, 229, 0.3);
+}
+
+.task-category-btn.active-category:hover {
+    background-color: var(--primary-dark);
+}
+
+/* ---------------- BADGE/NOTIFICATION STYLES ---------------- */
+
+.task-badge {
+    min-width: 24px;
+    height: 24px;
+    padding: 0 6px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+    transition: background-color 0.2s;
+}
+
+/* Badge Color for High Attention (Pending, Overdue, Under Review) */
+.badge-attention {
+    background-color: #ef4444; /* Bright Red */
+    color: var(--white);
+}
+
+/* Badge Color for Neutral/Positive Statuses (All, Completed, In Progress, Blocked) */
+.badge-neutral {
+    background-color: #ccc; /* Gray */
+    color: var(--secondary);
+}
+
+/* When the entire button is active, the badge should also adopt the primary color */
+.task-category-btn.active-category .task-badge {
+    background-color: var(--white); /* White badge on active blue button */
+    color: var(--primary); /* Primary text color */
+}
+
+/* For Active Categories that need attention (e.g., Active Overdue) */
+.task-category-btn.active-category .badge-attention {
+    background-color: #fca5a5; /* Lighter red for visibility on blue */
+    color: #b91c1c; /* Dark Red text */
+}
+
+/* Specific styling to match the All category with the primary color */
+.task-category-all {
+    /* No specific color needed here, defaults to neutral */
+}
+
+.task-category-all.active-category {
+    /* Uses the generic active-category styles */
 }

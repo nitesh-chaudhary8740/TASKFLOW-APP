@@ -35,4 +35,7 @@ export const AdminDashBoardContext = createContext({
   handleDeleteEmployee: (empId) => {
     empId;
   },
+  handleDeleteTask: (taskId) => {
+    taskId;
+  },
 });
