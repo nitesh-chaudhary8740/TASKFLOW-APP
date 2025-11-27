@@ -23,6 +23,7 @@ import EmployeeMyTasks from "./components/employee-dashboard/emp-menus/EmployeeM
 import EmployeeAssignedProjects from "./components/employee-dashboard/emp-menus/EmployeeAssignedProjects";
 import PendingTasksTable from "./components/employee-dashboard/emp-menus/emp-dashboard-content-sub-comp/PendingTasksTable";
 import OngoingTasksTable from "./components/employee-dashboard/emp-menus/emp-dashboard-content-sub-comp/OngoingTasksTable";
+import EmployeeDetailsFull from "./components/admin_dashboard/dashboard-home-options/EmployeeDetailsFull";
 
 
 function App() {
@@ -46,6 +47,8 @@ function App() {
                 <Route index element={<AdminDashBoardContent />} /> 
                 
                 <Route path="employees" element={<AdminEmployeesMenu />} />
+                <Route path="employee-details" element={<EmployeeDetailsFull/>} />
+                
                 <Route path="all-tasks" element={<AdminAllTasksMenu />} />
                 <Route path="projects" element={<AdminProjectsMenu />} />
               </Route>
@@ -55,15 +58,10 @@ function App() {
                 <Route path="/employee-dashboard" element={<EmpDashboardContent/>}>
                       <Route path="/employee-dashboard/pending-tasks" element={<PendingTasksTable/>}/>
                       <Route path="/employee-dashboard/on-going-tasks" element={<OngoingTasksTable/>}/>
-                </Route>
-                
+                </Route>             
                 <Route path="my-tasks" element={<EmployeeMyTasks/>}/>
-                <Route path="assigned-projects" element={<EmployeeAssignedProjects/>}/>
-              
+                <Route path="assigned-projects" element={<EmployeeAssignedProjects/>}/>           
               </Route>
-             
-             
-              
             </Routes>
           </TaskManageMentProvider>
         </AntDContextProvider>

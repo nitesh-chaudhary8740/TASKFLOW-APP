@@ -15,6 +15,7 @@ import { AntDContext } from "../../contexts/AntDContext";
 import AllEmployeesFilterGroup from "./alltasks-menu-sub-comp/AllEmployeesFilterGroup";
 import { useState } from "react";
 import { filterTasks } from "../../utils/filter_and_sorting";
+import { useNavigate } from "react-router-dom";
 // Placeholder functions for actions
 
 function AdminEmployeesMenu() {
@@ -24,7 +25,7 @@ function AdminEmployeesMenu() {
     error,
     selectedEmployee,
     handleChangeActiveLink,
-    setIsEmployeeDetailsFormOpen,
+    // setIsEmployeeDetailsFormOpen,
     handleDeleteEmployee
   } = useContext(AdminDashBoardContext);
  const [fileteredEmployees, setFilteredEmployees] = useState(allEmployees);
@@ -34,10 +35,12 @@ function AdminEmployeesMenu() {
   });
   
   const [searchInput,setSearchInput]=useState("")
+  const navigate = useNavigate()
   const handleManageEmployee = (employee) => {
     // console.log(employee);
     selectedEmployee.current = employee;
-    setIsEmployeeDetailsFormOpen(true);
+    // setIsEmployeeDetailsFormOpen(true);
+    navigate("/admin-dashboard/employee-details")
   };
   useEffect(() => {
     handleChangeActiveLink(1);

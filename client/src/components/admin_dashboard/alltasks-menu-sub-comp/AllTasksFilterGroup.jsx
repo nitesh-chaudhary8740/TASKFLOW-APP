@@ -29,11 +29,12 @@ function AllTasksFilterGroup({ filterOptions, setFilterOptions,setSearchInput,se
                 name="isAssignedFilter"
                 value="all"
                 checked={filterOptions.isAssigned === "all"}
-                onChange={(e) =>
+                onChange={(e) =>{
                   setFilterOptions((prev) => ({
                     ...prev,
                     isAssigned: e.target.value,
                   }))
+                }
                 }
                 className="hidden-radio"
               />

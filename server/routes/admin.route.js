@@ -1,5 +1,5 @@
 const express = require("express");
-const { employeeRegistration, adminLogin ,taskCreation, fetchAllTasks, fetchAllEmployees, fetchAdminMetaData, fetchAllPendingTasks, assignTask, deleteTask, deleteEmployee, unAssignTask, upDateEmployeeDetails, updateTask} = require("../controllers/admin.controller");
+const { employeeRegistration, adminLogin ,taskCreation, fetchAllTasks, fetchAllEmployees, fetchAdminMetaData, fetchAllPendingTasks, assignTask, deleteTask, deleteEmployee, unAssignTask, upDateEmployeeDetails, updateTask, bulkDeleteTasks, bulkAssignTasks} = require("../controllers/admin.controller");
 const adminRouter = express.Router();
 adminRouter.route('/login').post(adminLogin)
 adminRouter.route('/emp-create').post(employeeRegistration)
@@ -14,4 +14,6 @@ adminRouter.route('/assign-task/:empId/:taskId').post(assignTask)
 adminRouter.route('/unassign-task/:taskId').patch(unAssignTask)
 adminRouter.route('/delete-task/:taskId').delete(deleteTask)
 adminRouter.route('/delete-employee/:empId').delete(deleteEmployee)
+adminRouter.route('/bulk-delete-tasks').delete(bulkDeleteTasks)
+adminRouter.route('/bulk-assign-tasks/:empId').patch(bulkAssignTasks)
 module.exports = adminRouter

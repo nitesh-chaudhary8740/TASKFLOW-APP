@@ -1,0 +1,344 @@
+/* --- Base Page Layout --- */
+.employee-details-page {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+}
+
+/* --- Breadcrumb/Navigation --- */
+.details-breadcrumb {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.breadcrumb-link {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: none;
+    padding: 0;
+    margin: 0;
+}
+
+.breadcrumb-link:hover {
+    text-decoration: underline;
+}
+
+.breadcrumb-separator {
+    margin: 0 5px;
+    color: #ccc;
+}
+
+.breadcrumb-current-name {
+    font-weight: 600;
+    color: #333;
+}
+
+/* --- Header Section --- */
+.details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.employee-name {
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+    margin: 0;
+}
+
+.delete-button {
+    background-color: #dc3545;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.delete-button:hover {
+    background-color: #c82333;
+}
+
+/* --- Task Summary Grid --- */
+.task-summary-section {
+    margin-bottom: 30px;
+}
+
+.summary-heading {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+}
+
+.status-card {
+    padding: 15px;
+    border-radius: 6px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.card-label {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.card-value {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* Specific Card Colors */
+.status-total {
+    background-color: #e6f7ff; /* Light Blue */
+    border-left: 5px solid #1890ff;
+}
+.status-completed {
+    background-color: #f6ffed; /* Light Green */
+    border-left: 5px solid #52c41a;
+}
+.status-pending {
+    background-color: #fffbe6; /* Light Yellow */
+    border-left: 5px solid #faad14;
+}
+.status-overdue {
+    background-color: #fff1f0; /* Light Red */
+    border-left: 5px solid #f5222d;
+}
+.status-default {
+    background-color: #f0f2f5; /* Light Gray */
+    border-left: 5px solid #999;
+}
+
+/* --- Assigned Tasks Table --- */
+.assigned-tasks-section {
+    margin-top: 30px;
+}
+
+.tasks-heading {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.tasks-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+}
+
+.tasks-table th, 
+.tasks-table td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+
+.tasks-table-header th {
+    background-color: #fafafa;
+    font-weight: 600;
+    color: #555;
+}
+
+.tasks-table-row:hover {
+    background-color: #f5f5f5;
+}
+
+.no-tasks-message {
+    padding: 20px;
+    text-align: center;
+    color: #999;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    background-color: #fff;
+}
+
+/* --- Status Badges in Table --- */
+.status-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+/* Define colors for status badges */
+.status-pending { background-color: #ffe58f; color: #ad6800; }
+.status-in_progress { background-color: #bae0ff; color: #0050b3; }
+.status-under_review { background-color: #ffc069; color: #a8071a; }
+.status-completed { background-color: #b7eb8f; color: #237804; }
+.status-blocked { background-color: #ff7875; color: #820014; }
+.status-overdue { background-color: #ff4d4f; color: white; }
+/* Assuming your Task model defaults to "Un-Assigned" */
+.status-un_assigned { background-color: #e6f7ff; color: #096dd9; }
+/* --- Header Actions --- */
+.header-actions {
+    display: flex;
+    gap: 10px; /* Space between Edit and Delete buttons */
+}
+
+.edit-button {
+    background-color: #1890ff; /* Ant Design Blue */
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.edit-button:hover {
+    background-color: #40a9ff;
+}
+
+/* --- Employee Contact Info --- */
+.employee-info-section {
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid #e6e6e6;
+    border-radius: 6px;
+    background-color: #fcfcfc;
+}
+
+.info-heading {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns for details */
+    gap: 10px 20px;
+    font-size: 15px;
+    color: #555;
+}
+
+/* --- Task Summary Card Colors (New Statuses) --- */
+/* Add these new specific card colors to the existing list */
+.status-in-progress {
+    background-color: #e6f7ff;
+    border-left: 5px solid #0050b3;
+}
+.status-under-review {
+    background-color: #fff2e8;
+    border-left: 5px solid #fa8c16;
+}
+.status-blocked {
+    background-color: #fff1f0;
+    border-left: 5px solid #cf1322;
+}
+
+
+/* --- Tasks Toolbar (Search/Filter Bar) --- */
+.tasks-toolbar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    align-items: center;
+}
+
+.toolbar-search-input,
+.toolbar-select {
+    padding: 8px 12px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.toolbar-search-input {
+    flex-grow: 1; /* Allows search bar to take up more space */
+    max-width: 350px;
+}
+
+/* --- Table Enhancements --- */
+.tasks-table th:first-child,
+.tasks-table td:first-child {
+    width: 50px; /* S/N column width */
+    text-align: center;
+}
+
+.tasks-table th:last-child,
+.tasks-table td:last-child {
+    width: 120px; /* Actions column width */
+    text-align: center;
+}
+
+
+/* --- Table Enhancements --- */
+/* ... (Existing table styles) ... */
+
+.tasks-table th:last-child,
+.tasks-table td:last-child {
+    width: 220px; /* Increased width to accommodate two buttons */
+    text-align: center;
+}
+
+.task-actions-cell {
+    display: flex;
+    gap: 8px; /* Space between buttons */
+    justify-content: center;
+    width: 10vw;
+}
+
+/* --- View Details Button (Primary Blue) --- */
+.view-details-button { /* Renamed from .view-task-button */
+    background-color: #1890ff; /* Primary Blue */
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background-color 0.3s;
+}
+
+.view-details-button:hover {
+    background-color: #40a9ff;
+}
+
+/* --- View Report Button (Matching Primary Blue) --- */
+.view-report-button {
+    /* Same style as view-details-button for consistency */
+       background-color: #5cb85c; /* Green/Success color */
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+
+    cursor: pointer;
+    font-size: 13px;
+    transition: background-color 0.3s;
+}
+
+.view-report-button:hover {
+   background-color: #4cae4c;
+   
+
+}
+.view-report-button:disabled {
+   background-color: #dbdedb;
+   cursor: default;
+}

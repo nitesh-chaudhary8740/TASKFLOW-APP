@@ -9,9 +9,17 @@ const TASK_STATUS = [
   "Completed",
   "Blocked",
   "Overdue"
-  // Added a common status for real-world tasks
+ 
 ];
-
+ const TASK_STATUS_OBJECT = {
+  UN_ASSIGNED: "Un-Assigned",
+  PENDING: "Pending",
+  IN_PROGRESS: "In-Progress",
+  UNDER_REVIEW: "Under-Review",
+  COMPLETED: "Completed",
+  BLOCKED: "Blocked",
+  OVERDUE: "Overdue",
+};
 // Define the schema for the Task model
 const taskSchema = new mongoose.Schema(
   {
@@ -67,4 +75,4 @@ const taskSchema = new mongoose.Schema(
 const Task = mongoose.model("Task", taskSchema);
 
 
-module.exports = { Task };
+module.exports = { Task,TASK_STATUS_OBJECT };

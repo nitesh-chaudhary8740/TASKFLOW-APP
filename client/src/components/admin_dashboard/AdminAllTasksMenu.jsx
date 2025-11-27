@@ -1,7 +1,7 @@
 import "../../assets/css/AdminAllTasksMenu.css";
 
 import React, { useContext, useEffect, useState } from "react";
-import {ListChecks,Calendar,Edit,Trash2,Loader,AlertCircle,UserPlus,Users,UserMinus,} from "lucide-react";
+import {ListChecks,Calendar,Edit,Trash2,Loader,AlertCircle,UserPlus,Users,UserMinus, Plus,} from "lucide-react";
 import { AdminDashBoardContext } from "../../contexts/AdminDashBoardContext";
 import { AntDContext } from "../../contexts/AntDContext";
 import { filterTasks } from "../../utils/filter_and_sorting";
@@ -57,7 +57,6 @@ const SortIcon = ({ direction = "none" }) => {
 
   // --- Action Handlers (Moved inside to access AntDContext) ---
   const handleManageTask = (task) => {
-  
     adminContextValues.selectedTask.current = task;
     adminContextValues.setIsTaskDetailsFormOpen(true)
   };
@@ -185,13 +184,27 @@ useEffect(()=>{
   return (
     <>
       <div className="task-menu-container">
-        <div className="task-categories-group">
+        <div className="task-categories-create-task">
+          
 
+        <button className="task-category-btn create-task-btn"
+        onClick={()=>{
+          adminContextValues.setIsTaskFormOpen(true)
+        }}
+        >Create new task +</button>
+        
+        <div className="task-categories-btns">
         {TaskCategories}
+        </div>
+
         </div>
         <h1 className="task-list-title">
           <ListChecks size={32} style={{ marginRight: "10px" }} />
-          {selectedTaskCategory} ({fileteredTasks.length})
+       
+          {selectedTaskCategory}
+          {(selectedTaskCategory===taskCategories.ALL_TASKS&&filterOptions.isAssigned==='true')&& " Assigned "} 
+          {(selectedTaskCategory===taskCategories.ALL_TASKS&&filterOptions.isAssigned==='false')&& " Unassigned "} 
+          ({selectedTaskCategory===taskCategories.ALL_TASKS&&filterOptions.isAssigned==="all"?`${tasks.length}`:`${fileteredTasks.length}`})
         </h1>
         {/* --- Filters and Sort Controls UI --- */}
       <AllTasksFilterGroup filterOptions={filterOptions} setFilterOptions={setFilterOptions} searchInput={searchInput} setSearchInput={setSearchInput}/>
@@ -208,8 +221,10 @@ useEffect(()=>{
     formatDate = {formatDate}
     isSelecting ={isSelecting}
     setIsSelecting ={setIsSelecting}
+    selectedTaskCategory={selectedTaskCategory}
     selectedTasksArray={selectedTasksArray}
     setSelectedTasksArray={setSelectedTasksArray}
+    filterOptions={filterOptions}
      />
      
       </div>

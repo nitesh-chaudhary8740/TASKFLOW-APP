@@ -1,6 +1,6 @@
 const { Admin } = require("../models/admin.model.js");
 const { Employee } = require("../models/employee.model");
-const { Task } = require("../models/task.model.js");
+const { Task, TASK_STATUS_OBJECT } = require("../models/task.model.js");
 // const { User } = require("../models/user.model.js")
 const mailData = require("../utils/maildata.template.js");
 const generateUserPassword = require("../utils/random.password.generate.js");
@@ -221,7 +221,7 @@ const assignTask = async (req, res) => {
   }
   task.isAssigned = true;
   task.assignedTo = employee._id;
-  task.status="Pending";
+  task.status = TASK_STATUS_OBJECT.PENDING;
   await task.save({ validateBeforeSave: false });
   employee.assignedTasks.push(task._id);
   await employee.save({ validateBeforeSave: false });
@@ -248,15 +248,15 @@ const unAssignTask = async (req, res) => {
     task.assignedTo = null;
     await task.save({ validateBeforeSave: false });
     return res
-    .status(200)
-    .send("Task unassigned, assigned employee not found.");
+      .status(200)
+      .send("Task unassigned, assigned employee not found.");
   }
-  
+
   // 3. Update Task (De-assign)
   task.isAssigned = false;
   task.assignedTo = null;
-  
-  task.status="Un-Assigned"
+
+  task.status = "Un-Assigned";
   // 4. Update Employee (Filter Task out)
   // Use .equals() method for safe ObjectId comparison
   employee.assignedTasks = employee.assignedTasks.filter(
@@ -295,6 +295,106 @@ const deleteTask = async (req, res) => {
   await Task.findByIdAndDelete(task._id);
   res.status(200).send("task deleted successfully");
 };
+const bulkDeleteTasks = async (req, res) => {
+  try {
+    // 1. Destructure the array of IDs correctly
+    const { selectedTasks } = req.body;
+    if (!selectedTasks || selectedTasks.length === 0) {
+      return res.status(400).json({ msg: "No tasks selected for deletion." });
+    }
+
+    // 2. CRITICAL FIX: Use 'selectedTasks' in the query
+    const result = await Task.deleteMany({
+      $and: [
+        { _id: { $in: selectedTasks } },
+        { isAssigned: false }, // Ensures only unassigned tasks are deleted
+      ],
+    });
+
+    // Optional: Check if any tasks were actually deleted
+    if (result.deletedCount === 0) {
+      return res
+        .status(400)
+        .json({
+          msg: "Selected tasks were not deleted. They might be assigned.",
+        });
+    }
+
+    // 3. Respond with the updated list of tasks
+    const tasks = await Task.find({});
+    res.status(200).json({
+      tasks: tasks,
+      msg: `${result.deletedCount} task(s) deleted successfully`,
+    });
+  } catch (error) {
+    console.error("Error deleting multiple tasks:", error);
+    res.status(500).json({ msg: "Error in deleting multiple tasks." });
+  }
+};
+
+const bulkAssignTasks = async (req, res) => {
+  try {
+    const { empId } = req.params;
+    const { selectedTasks } = req.body;
+    if (!empId || !selectedTasks || selectedTasks.length === 0) {
+      return res
+        .status(400)
+        .json({ msg: "No employee or tasks selected for assignment." });
+    }
+    const emp = await Employee.findById(empId);
+    if (!emp) {
+      return res.status(404).json({ msg: "Employee not found." });
+    }
+    // 2. Perform the Bulk Update
+    const updatedResults = await Task.updateMany(
+      {
+        // Find all tasks that were selected AND are currently unassigned
+        _id: { $in: selectedTasks },
+        isAssigned: false,
+      },
+      {
+        // SET NEW VALUES: CRITICAL to set isAssigned and status!
+        assignedTo: emp._id,
+        isAssigned: true,
+        status: TASK_STATUS_OBJECT.PENDING,
+      }
+    );
+
+    // 3. Handle Case: Zero Tasks Assigned
+    if (updatedResults.modifiedCount < 1) {
+      return res.status(400).json({
+        msg: "None of the selected tasks were assigned. They might have been assigned already.",
+      });
+    }
+
+    // 4. Success: Retrieve and return all tasks
+    const findAssignedTasksIds = await Task.find({ _id:{ $in: selectedTasks },assignedTo:emp._id}).select("_id");
+    const taskIdsToAppend = findAssignedTasksIds.map((task) => task._id);
+    await Employee.updateOne(
+      { _id: emp._id },
+      { $addToSet: { assignedTasks: { $each: taskIdsToAppend } } }
+    );
+
+    const tasks = await Task.find({});
+
+    res.status(200).json({
+      tasks: tasks,
+      msg: `${updatedResults.modifiedCount} task(s) assigned to ${emp.fullName} successfully.`,
+    });
+  } catch (error) {
+    console.error("Error in bulk assigning tasks:", error);
+    return res.status(500).json({ msg: "Error in bulk assigning tasks." });
+  }
+};
+const bulkUnassignTasks = async (req, res) => {
+  const { selectedTasks } = req.body;
+
+  const findSelectedTasks = await Task.find({
+    $and: [{ _id: { $in: selectedTasks } }, { isAssigned: false }],
+  });
+  console.log("seletect", findSelectedTasks);
+  res.send(okay);
+};
 module.exports = {
   employeeRegistration,
   upDateEmployeeDetails,
@@ -309,4 +409,7 @@ module.exports = {
   deleteEmployee,
   deleteTask,
   unAssignTask,
+  bulkDeleteTasks,
+  bulkAssignTasks,
+  bulkUnassignTasks,
 };

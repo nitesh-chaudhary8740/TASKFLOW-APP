@@ -1,0 +1,103 @@
+/* --- 1. Overlay (Background and Positioning) --- */
+.prompt-overlay{
+    /* Fixes the modal to the viewport */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.65); /* Dark semi-transparent backdrop */
+  z-index: 1000; /* Ensure it's above all other elements and modals */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* --- 2. Prompt Card (The Modal Box) --- */
+.prompt-card{
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  width: 100%;
+  max-width: 450px; /* Standard size for a confirmation modal */
+  animation: fadeIn 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
+    padding: 25px;
+    gap: 20px;
+}
+
+/* Optional: Animation for smooth entry */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* --- 3. Message Text --- */
+.prompt-message {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #4b5563; /* Dark gray text for readability */
+    line-height: 1.5;
+    text-align: left; /* Align message text */
+    margin-bottom: 5px; /* Space above buttons */
+}
+
+/* --- 4. Action Buttons Container --- */
+.prompt-actions {
+    display: flex;
+    justify-content: flex-end; /* Buttons aligned to the right */
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* --- 5. Base Button Styles --- */
+.prompt-actions button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, opacity 0.2s;
+    font-size: 0.95rem;
+}
+
+/* Style for the Cancel Button */
+.cancel-btn {
+    background-color: #f3f4f6; /* Light gray background */
+    color: #4b5563;
+}
+.cancel-btn:hover {
+    background-color: #e5e7eb;
+}
+
+/* --- 6. Confirmation Button (Action-Specific Styling) --- */
+
+/* Default/Unassign (Blue - Non-Destructive Action) */
+.confirm-btn.default, .confirm-btn.assign {
+    background-color: #3b82f6; /* Blue primary color */
+    color: white;
+}
+.confirm-btn.default, .confirm-btn.warning {
+    background-color: #deab01; /* Blue primary color */
+    color: white;
+}
+.confirm-btn.warning:hover {
+    background-color: #b28a05ea;; /* Blue primary color */
+    
+}
+.confirm-btn.default:hover, .confirm-btn.assign:hover {
+    background-color: #2563eb;
+}
+
+/* Delete (Red - Destructive Action) */
+.confirm-btn.delete {
+    background-color: #ef4444; /* Red danger color */
+    color: white;
+}
+.confirm-btn.delete:hover {
+    background-color: #dc2626;
+}

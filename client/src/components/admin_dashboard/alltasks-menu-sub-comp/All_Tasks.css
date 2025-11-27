@@ -36,7 +36,7 @@
 
 .select-header {
     /* Use pointer cursor to hint that clicking here can initiate selection */
-    cursor: pointer; 
+    cursor: pointer;
 }
 
 /* Container for the Select All / Exit buttons in the header */
@@ -75,6 +75,154 @@
     .task-table td.task-sn-cell {
         text-align: center;
         /* Ensure the SN number or checkbox is visible */
-        justify-content: center; 
+        justify-content: center;
     }
+}
+/* --- Bulk Action Bar Styles --- */
+
+.bulk-actions-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    margin-bottom: 15px;
+    background-color: var(--primary-light); /* Light background for visibility */
+    border: 1px solid var(--primary-border);
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.selected-info-section {
+    display: flex;
+    flex-direction: column; /* Stack count and warning */
+    gap: 5px;
+}
+
+.selected-count {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 0.95rem;
+}
+
+.bulk-warning {
+    font-size: 0.8rem;
+    color: #9a3412; /* Darker red-brown for warning text */
+    background-color: #fef3c7; /* Light yellow background */
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid #fcd34d;
+}
+
+.bulk-action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.bulk-action-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background-color 0.2s, opacity 0.2s;
+}
+
+.bulk-action-btn svg {
+    margin-right: 2px;
+}
+
+/* Bulk Delete Styles */
+.bulk-delete-btn {
+    background-color: #fef2f2; /* Light red for Delete */
+    color: #ef4444; /* Red text/icon */
+    border-color: #fee2e2;
+}
+
+.bulk-delete-btn:hover:not(:disabled) {
+    background-color: #fee2e2;
+}
+
+/* Bulk Assign Styles */
+.bulk-assign-btn {
+    background-color: #eff6ff; /* Light blue for Assign */
+    color: #3b82f6; /* Blue text/icon */
+    border-color: #dbeafe;
+}
+
+.bulk-assign-btn:hover:not(:disabled) {
+    background-color: #dbeafe;
+}
+
+/* Bulk Unassign Styles (NEW) */
+.bulk-unassign-btn {
+    background-color: #ecfdf5; /* Light green for Unassign */
+    color: #10b981; /* Green text/icon */
+    border-color: #d1fae5;
+}
+
+.bulk-unassign-btn:hover:not(:disabled) {
+    background-color: #d1fae5;
+}
+
+/* Bulk Action Disabled State */
+.bulk-action-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    /* This overrides the specific colors, making it greyed out */
+    background-color: #f3f4f6 !important; 
+    color: #9ca3af !important;
+    border-color: #e5e7eb !important;
+}
+/* Add these styles to your All_Tasks.css file */
+
+/* General Info Style for Assign/Unassign filtering */
+.bulk-info-assign,
+.bulk-info-unassign {
+    font-size: 0.8rem;
+    padding: 3px 8px;
+    border-radius: 4px;
+    
+}
+
+/* Specific style for Assign filtering info (targets unassigned) */
+.bulk-info-assign {
+    color: #1e40af; /* Darker blue */
+    background-color: #dbeafe; /* Lighter blue */
+    border: 1px solid #93c5fd;
+}
+
+/* Specific style for Unassign filtering info (targets assigned) */
+.bulk-info-unassign {
+    color: #065f46; /* Darker green */
+    background-color: #d1fae5; /* Lighter green */
+    border: 1px solid #6ee7b7;
+}
+/* --- Individual Action Button Disabled State (as requested) --- */
+
+/* Style for individual action buttons in the last table cell */
+.actions-cell .action-btn {
+    transition: opacity 0.2s;
+}
+
+/* Pseudo-class to disable the individual buttons when isSelecting is true */
+.actions-cell .action-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.4; /* Make them semi-transparent */
+    background-color: transparent !important; /* Ensure no background change */
+}
+
+/* Ensure the icon color also reflects the disabled state */
+.actions-cell .action-btn:disabled svg {
+    color: var(--text-dark); /* Use a lighter text color for the icon */
+}
+
+/* Optional: Placeholder for the action cell when in selection mode */
+.actions-cell .actions-placeholder {
+    /* display: block; */
+    text-align: center;
+    color: var(--text-light);
 }

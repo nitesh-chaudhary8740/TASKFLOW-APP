@@ -499,8 +499,9 @@ width: 100%;
 }
 /* --- TASK CATEGORY BUTTONS (Tabs/Pills) --- */
 
-.task-categories-group {
+.task-categories-create-task{
     display: flex;
+    justify-content: space-between;
     flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 25px;
@@ -509,7 +510,11 @@ width: 100%;
     border-radius: 12px;
     box-shadow: var(--shadow);
 }
-
+.task-categories-btns{
+    display: flex;
+    justify-content: space-evenly;
+    gap: 2vh;
+}
 .task-category-btn {
     display: flex;
     align-items: center;
@@ -525,10 +530,17 @@ width: 100%;
     transition: all 0.2s;
     text-transform: capitalize;
 }
-
+.create-task-btn{
+    color: white;
+    background-color: #10b981;
+}
 .task-category-btn:hover {
     background-color: #e5e7eb;
     color: var(--secondary);
+}
+.create-task-btn:hover{
+    color: rgb(255, 255, 255);
+    background-color: #046e4b;
 }
 
 /* Active State for Selected Category */
@@ -588,7 +600,6 @@ width: 100%;
 .task-category-all {
     /* No specific color needed here, defaults to neutral */
 }
-
 .task-category-all.active-category {
     /* Uses the generic active-category styles */
 }

@@ -6,11 +6,12 @@ import axios from 'axios';
 import './AssignEmployee.css'; 
 
 export const AssignEmployee = () => {
-    const {allEmployees,selectedTask,setIsAssignEmployeeFormOpen,error,isLoading} = useContext(AdminDashBoardContext); 
+    const {allEmployees,selectedTask,setIsAssignEmployeeFormOpen,error,isLoading,selectedTasks,handleBulkAssignTasks} = useContext(AdminDashBoardContext); 
     const { showSuccess, showError } = useContext(AntDContext); 
-    const [filteredEmployees, setFilteredEmployees] = useState([]);
+    const [filteredEmployees, setFilteredEmployees] = useState([...allEmployees]);
     const [searchTerm, setSearchTerm] = useState('');
     const task = selectedTask.current;
+    const tasks = selectedTasks.current
     useEffect(() => {
         if (!searchTerm) {
             setFilteredEmployees(allEmployees);
@@ -28,19 +29,22 @@ export const AssignEmployee = () => {
 
     // 3. Handle Assignment Action
     const handleAssign = async (employee) => {
-        if (!task) {
-            console.log(task,"is")
-            showError("No task selected for assignment.", 3);
+        const employeeId = employee._id;
+        if (!task && !tasks) {
+            showError("No tasks selected for assignment.", 3);
             return;
         }
-        const employeeId = employee._id;
+        if(tasks && !task){
+            handleBulkAssignTasks(tasks,employee)
+            return;
+        }
         const apiUrl = `${import.meta.env.VITE_API_URL}/assign-task/${employeeId}/${task._id}`;
         try {
             
             const response = await axios.post(apiUrl);
             console.log(response.data)
             showSuccess(`Successfully assigned Task ${task.name} to ${employee.userName}.`, 3);
-             selectedTask.current={...selectedTask.current,isAssigned:true,assignedTo:employee}
+            selectedTask.current={...selectedTask.current,isAssigned:true,assignedTo:employee}
             handleClose(); 
         } catch (error) {
             console.error("Assignment failed:", error);

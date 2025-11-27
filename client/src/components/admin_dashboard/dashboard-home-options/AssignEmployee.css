@@ -19,7 +19,7 @@
     bottom: 0;
     left: 0;
     background-color: rgba(0, 0, 0, 0.6); 
-    z-index: 999992;
+    z-index: 2;
     display: flex;
     width: 100vw;
     align-items: center;
