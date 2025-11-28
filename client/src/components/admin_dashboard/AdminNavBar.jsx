@@ -27,11 +27,11 @@ function AdminNavBar() {
 
         {/* Main Navigation Menu */}
         <div className="navbar-menu">
-          {adminContextValues.acticeNavLink.map((link)=> (
+          {adminContextValues.acticeNavLink.map((link,i)=> (
             <Link 
               key={link.name} 
               to={link.href} 
-              
+              onClick={()=>adminContextValues.handleChangeActiveLink(i)}
               className={`nav-link ${link.active ? 'active' : ''}`}
             >
               <link.icon size={18} style={{ marginRight: '6px' }} />

@@ -19,7 +19,7 @@
     bottom: 0;
     left: 0;
     background-color: rgba(0, 0, 0, 0.6); 
-    z-index: 2;
+    z-index: 9;
     display: flex;
     width: 100vw;
     align-items: center;
@@ -163,7 +163,7 @@
     }
 }
 
-.employee-name {
+.assign-employee-name {
     font-size: 1.125rem;
     font-weight: 600;
     color: var(--color-text);

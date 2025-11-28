@@ -364,7 +364,7 @@ function All_Tasks({
                       className="assigned-list-btn"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleViewAssignedList(task._id, task.assignedTo);
+                        handleViewAssignedList(task.assignedTo);
                       }}
                       title="View Assigned Employees List"
                     >

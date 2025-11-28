@@ -7,6 +7,7 @@ import { AntDContext } from "../../contexts/AntDContext";
 import { filterTasks } from "../../utils/filter_and_sorting";
 import AllTasksFilterGroup from "./alltasks-menu-sub-comp/AllTasksFilterGroup";
 import All_Tasks from "./alltasks-menu-sub-comp/All_Tasks";
+import { useNavigate } from "react-router-dom";
 
 
 const SortIcon = ({ direction = "none" }) => {
@@ -45,6 +46,7 @@ const SortIcon = ({ direction = "none" }) => {
   const [selectedTaskCategory,setSelectedTaskCategory]=useState(taskCategories.ALL_TASKS)
   const adminContextValues = useContext(AdminDashBoardContext);
   const [fileteredTasks, setFilteredTasks] = useState(adminContextValues.tasks);
+  const navigate = useNavigate()
   const [filterOptions, setFilterOptions] = useState({
     priority: "all",
     status: "all",
@@ -53,7 +55,7 @@ const SortIcon = ({ direction = "none" }) => {
   
   const [searchInput,setSearchInput]=useState("")
   const {tasks,isLoading,error,handleUnassignTask,handleDeleteTask} = useContext(AdminDashBoardContext);
-  const {  showError } = useContext(AntDContext);
+
 
   // --- Action Handlers (Moved inside to access AntDContext) ---
   const handleManageTask = (task) => {
@@ -61,13 +63,10 @@ const SortIcon = ({ direction = "none" }) => {
     adminContextValues.setIsTaskDetailsFormOpen(true)
   };
 
-  const handleViewAssignedList = (taskId, assignedTo) => {
-  
-    const assignedName = assignedTo?.empName || "No one";
-    showError(
-      `Simulated: Task ${taskId} is assigned to: ${assignedName}. (Viewing full list not implemented)`,
-      5
-    ); // Using AntD notification
+  const handleViewAssignedList = (employee) => {
+    adminContextValues.selectedEmployee.current = employee;
+      adminContextValues.handleChangeActiveLink(1);
+    navigate("/admin-dashboard/employee-details")
   };
 
   const handleAssignEmployee = (task) => {
@@ -146,9 +145,7 @@ useEffect(()=>{
 
 },[searchInput])
  
-useEffect(()=>{
-  adminContextValues.handleChangeActiveLink(2);
-},[])
+
   // --- DELETE Task Handler (With Optimistic Update and Rollback) ---
  
 

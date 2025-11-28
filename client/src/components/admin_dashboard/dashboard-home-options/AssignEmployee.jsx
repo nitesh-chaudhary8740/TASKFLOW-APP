@@ -109,7 +109,8 @@ export const AssignEmployee = () => {
                         {filteredEmployees.map(employee => (
                             <div key={employee._id} className="employee-item">
                                 <div className="employee-info">
-                                    <h4 className="employee-name">{employee.fullName}</h4>
+                                    <h4 className="assign-employee-name">{employee.fullName}</h4>
+                                    <h5>{employee.userName}</h5>
                                     <p className="employee-role">
                                         <Briefcase size={14} style={{ marginRight: '5px' }} />
                                         {employee.designation}

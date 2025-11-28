@@ -202,7 +202,7 @@ function AdminDashboard() {
      */
     const handleDeleteEmployee = async (employeeId, skipPrompt = false) => {
         const employee = allEmployees.find(e => e._id === employeeId);
-        const employeeName = employee?.name || 'this employee';
+        const employeeName = employee?.fullName || 'this employee';
 
         if (!skipPrompt) {
             configPrompt({
@@ -292,7 +292,7 @@ function AdminDashboard() {
             })
             return;
         }
-        console.log('bulk delete', tasksArr)
+     
         try {
          const apiUrl = import.meta.env.VITE_API_URL;
          const response = await axios.patch(`${apiUrl}/bulk-assign-tasks/${emp._id}`,{selectedTasks:tasksArr});
@@ -312,8 +312,38 @@ function AdminDashboard() {
             selectedTasks.current=null
         }
     }
-    const handleBulkUnassignTasks = async (tasksArr) => {
+    const handleBulkUnassignTasks = async (tasksArr,skipPrompt=false) => {
         console.log('bulk-unassign', tasksArr)
+         if(!skipPrompt){
+            configPrompt({
+                msg:`Do you want to Unassign ${tasksArr.length!==1?tasksArr.length+" tasks":tasksArr.length+" task"} ?`,
+                confirmText:`Unassign(${tasksArr.length})`,
+                cancelText:`Cancel`,
+                type:"assign",
+                onConfirm:()=>handleBulkUnassignTasks(tasksArr,true)
+            })
+            return;
+        }
+     
+        try {
+         const apiUrl = import.meta.env.VITE_API_URL;
+         const response = await axios.patch(`${apiUrl}/bulk-unassign-tasks/`,{selectedTasks:tasksArr});
+        
+        //  setTasks(response?.data?.tasks)
+        //  showSuccess(`${response.data.msg}`, 3);
+         showSuccess(`${response.data}`, 3);
+        
+           
+        } catch (err) {
+            // 5. Failure: Rollback UI and show error message
+            console.error("Error in deleting tasks:", err.response?.data?.msg || err.message);
+           
+            const errMsg = err.response?.data.msg || "Failed to delete tasks. Network error.";
+            showError(errMsg, 5);
+        }
+        finally{
+            selectedTasks.current=null
+        }
     }
     const handleBulkDeleteTasks = async (tasksArr,skipPrompt=false) => {
         if(!skipPrompt){

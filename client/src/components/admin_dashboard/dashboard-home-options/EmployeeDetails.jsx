@@ -8,11 +8,11 @@ import { AdminDashBoardContext } from '../../../contexts/AdminDashBoardContext';
 function EmployeeDetails() {
     const adminContextValues = useContext(AdminDashBoardContext);
     // State to toggle between View and Edit mode
-    const [isEditing, setIsEditing] = useState(false); 
+    const [isEditing, setIsEditing] = useState(true); 
     
     // Get the employee data from the ref
     const employee = adminContextValues.selectedEmployee.current;
-    const assignedTasks = adminContextValues.tasks?.filter(task=>task.assignedTo?._id===employee._id)
+
     const handleClose = () => {
         adminContextValues.setIsEmployeeDetailsFormOpen(false);
         setIsEditing(false); // Reset edit state on close
@@ -117,7 +117,7 @@ function EmployeeDetails() {
                 </div>
 
                 {/* Footer - Actions Section */}
-                <div className='employee-card-footer'>
+                {/* <div className='employee-card-footer'>
                     <button 
                         // You will likely need to fetch and display the number of tasks
                         className="employee-action-button employee-view-tasks-button"
@@ -140,7 +140,7 @@ function EmployeeDetails() {
                         <Trash2 size={20} style={{marginRight: '8px'}} />
                         Delete Employee
                     </button>
-                </div>
+                </div> */}
 
             </div>
         </div>

@@ -11,9 +11,9 @@ import { USER_ROLES } from '../../enums/roles'
 import { AntDContext } from '../../contexts/AntDContext.js'
 import { useEffect } from 'react'
 function SignIn() {
-  const navigate = useNavigate();
-  const {showError,showSuccess} = useContext(AntDContext)
-  const appContextValues = useContext(TASK_MANAGEMENT_HOME)
+const navigate = useNavigate();
+const {showError,showSuccess} = useContext(AntDContext)
+const appContextValues = useContext(TASK_MANAGEMENT_HOME)
  
   const [formdata,setFormData]= useState({
     userNameOrEmail:"",
@@ -24,8 +24,8 @@ function SignIn() {
   const user = JSON.parse(localStorage.getItem("currentUser"))
  useEffect(()=>{
   
-  if(user){
-     if(user?.role===USER_ROLES.ADMIN){
+  if(user?._id){
+    if(user?.role===USER_ROLES.ADMIN){
     navigate('/admin-dashboard')
     return;
   }
@@ -38,12 +38,12 @@ function SignIn() {
   
 const adminLogin = async()=>{
     try {
-       const response = await axios.post(`${import.meta.env.VITE_API_URL}/login`,formdata)
+       const response = await axios.post(`${import.meta.env.VITE_API_URL}/login`,formdata,{withCredentials:true})
         console.log(response.data)
-        appContextValues.setCurrentUser(response.data)
-        localStorage.setItem("currentUser",JSON.stringify(response.data))
+        // appContextValues.setCurrentUser(response.data)
+        // localStorage.setItem("currentUser",JSON.stringify(response.data))
         showSuccess("login successful",3)
-        navigate('/admin-dashboard')
+        // navigate('/admin-dashboard')
     } catch (error) {
       console.log(error)
       if(error.response.data){

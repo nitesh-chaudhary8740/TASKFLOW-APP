@@ -342,3 +342,39 @@
    background-color: #dbdedb;
    cursor: default;
 }
+/* --- Table Enhancements (UPDATE WIDTHS) --- */
+/* Adjust widths for the new checkbox column */
+
+/* --- Selected Row Highlight --- */
+.selected-row {
+    background-color: #e6f7ff; /* Light blue highlight */
+    border-left: 3px solid #1890ff; 
+}
+
+/* --- Bulk Actions Bar --- */
+.bulk-actions-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    background-color: #ffe58f; /* Light warning color */
+    border: 1px solid #faad14;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.bulk-unassign-button {
+    background-color: #faad14; /* Warning yellow */
+    color: white;
+    padding: 6px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.bulk-unassign-button:hover {
+    background-color: #d4930d;
+}

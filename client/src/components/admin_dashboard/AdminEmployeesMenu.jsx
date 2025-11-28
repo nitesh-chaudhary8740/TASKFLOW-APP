@@ -24,7 +24,6 @@ function AdminEmployeesMenu() {
     allEmployees,
     error,
     selectedEmployee,
-    handleChangeActiveLink,
     // setIsEmployeeDetailsFormOpen,
     handleDeleteEmployee
   } = useContext(AdminDashBoardContext);
@@ -42,9 +41,7 @@ function AdminEmployeesMenu() {
     // setIsEmployeeDetailsFormOpen(true);
     navigate("/admin-dashboard/employee-details")
   };
-  useEffect(() => {
-    handleChangeActiveLink(1);
-  }, []);
+
 
   useEffect(() => {
     // The filterTasks utility is called whenever the source tasks or filter options change.

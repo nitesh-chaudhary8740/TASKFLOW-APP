@@ -25,6 +25,7 @@ const adminSchema = new mongoose.Schema({
         required: true,
       
     },
+    refreshToken:{  type: String,trim:true},
     password: {
         type: String,
         required: true,
