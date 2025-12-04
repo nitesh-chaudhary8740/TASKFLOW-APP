@@ -7,7 +7,7 @@ import { AntDContext } from "../../contexts/AntDContext";
 import { filterTasks } from "../../utils/filter_and_sorting";
 import AllTasksFilterGroup from "./alltasks-menu-sub-comp/AllTasksFilterGroup";
 import All_Tasks from "./alltasks-menu-sub-comp/All_Tasks";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 const SortIcon = ({ direction = "none" }) => {
@@ -41,6 +41,9 @@ const SortIcon = ({ direction = "none" }) => {
   }
   
   function AdminAllTasksMenu() {
+    const location = useLocation()
+    const locationStates = location?.state
+    
   const [isSelecting,setIsSelecting]=useState(false)
   const [selectedTasksArray,setSelectedTasksArray]=useState([])
   const [selectedTaskCategory,setSelectedTaskCategory]=useState(taskCategories.ALL_TASKS)
@@ -55,7 +58,13 @@ const SortIcon = ({ direction = "none" }) => {
   
   const [searchInput,setSearchInput]=useState("")
   const {tasks,isLoading,error,handleUnassignTask,handleDeleteTask} = useContext(AdminDashBoardContext);
-
+useEffect(()=>{
+  if(locationStates){
+   setFilterOptions(prev=>(Object.assign({},prev,locationStates)))
+   console.log(locationStates)
+  }
+  adminContextValues.handleChangeActiveLink(2)
+},[])
 
   // --- Action Handlers (Moved inside to access AntDContext) ---
   const handleManageTask = (task) => {
@@ -104,8 +113,9 @@ const TaskCategories = Object.keys(taskCategories).map(categoryKey => {
             key={`category-${categoryKey}`}
             onClick={() => {
                 setSelectedTaskCategory(categoryName);
-                setFilterOptions(prev => ({
-                    ...prev,
+                setFilterOptions(({
+                    priority:"all",
+                    isAssigned:"all",
                     status: categoryName
                 }))
             }}
@@ -204,7 +214,7 @@ useEffect(()=>{
           ({selectedTaskCategory===taskCategories.ALL_TASKS&&filterOptions.isAssigned==="all"?`${tasks.length}`:`${fileteredTasks.length}`})
         </h1>
         {/* --- Filters and Sort Controls UI --- */}
-      <AllTasksFilterGroup filterOptions={filterOptions} setFilterOptions={setFilterOptions} searchInput={searchInput} setSearchInput={setSearchInput}/>
+      <AllTasksFilterGroup filterOptions={filterOptions} setFilterOptions={setFilterOptions} searchInput={searchInput} setSearchInput={setSearchInput} selectedTaskCategory={selectedTaskCategory}/>
         {/* --- END NEW UI --- */}
     <All_Tasks 
     fileteredTasks ={fileteredTasks} 

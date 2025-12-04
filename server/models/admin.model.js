@@ -17,12 +17,15 @@ const adminSchema = new mongoose.Schema({
     role: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        enum: ['admin'],
+        default: 'admin'
     },
     
     email: {
         type: String,
         required: true,
+        unique:true
       
     },
     refreshToken:{  type: String,trim:true},

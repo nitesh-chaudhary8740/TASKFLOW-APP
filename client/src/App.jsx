@@ -24,6 +24,7 @@ import EmployeeAssignedProjects from "./components/employee-dashboard/emp-menus/
 import PendingTasksTable from "./components/employee-dashboard/emp-menus/emp-dashboard-content-sub-comp/PendingTasksTable";
 import OngoingTasksTable from "./components/employee-dashboard/emp-menus/emp-dashboard-content-sub-comp/OngoingTasksTable";
 import EmployeeDetailsFull from "./components/admin_dashboard/dashboard-home-options/EmployeeDetailsFull";
+import ProtectedDashboard from "./components/admin_dashboard/dashboard-home-options/ProtectedDashboard";
 
 
 function App() {
@@ -42,7 +43,7 @@ function App() {
               <Route path="/signup" element={<SignUp />} />
 
               {/* 2. Admin Dashboard Layout Route */}
-              <Route path="/admin-dashboard" element={<AdminDashboard />}>
+              <Route path="/admin-dashboard" element={<ProtectedDashboard />}>
                 
                 <Route index element={<AdminDashBoardContent />} /> 
                 

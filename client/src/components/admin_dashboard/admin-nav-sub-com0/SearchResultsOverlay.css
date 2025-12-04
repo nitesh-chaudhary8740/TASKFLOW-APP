@@ -1,0 +1,69 @@
+/* src/components/admin/admin-nav-sub-com0/SearchResultsOverlay.css */
+
+.search-results-overlay {
+    position: absolute;
+    top: 100%; /* Position right below the search bar */
+    left: 0;
+    width: 100%;
+    min-width: 280px; /* Optional: Make it slightly wider than the input */
+    max-height: 250px; /* Size for approximately 4-5 results */
+    margin-top: 5px; /* Small space below input */
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    z-index: 10; /* Ensure it floats above other elements */
+    overflow-y: auto; /* Make it scrollable for many results */
+}
+
+.results-list {
+    padding: 8px 0;
+}
+
+.result-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.result-item:hover {
+    background-color: rgba(128, 128, 128, 0.623);
+}
+
+.result-icon {
+    margin-right: 10px;
+}
+
+.task-icon {
+    color: var(--color-blue);
+}
+
+.employee-icon {
+    color: var(--color-green);
+}
+
+.item-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.item-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--secondary);
+}
+
+.item-subtitle {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    margin-top: 2px;
+}
+
+.no-results {
+    padding: 10px 15px;
+    text-align: center;
+    color: var(--text-light);
+    font-style: italic;
+}

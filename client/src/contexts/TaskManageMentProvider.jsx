@@ -4,8 +4,8 @@ import { USER_ROLES } from "../enums/roles.js";
 
 
 function TaskManageMentProvider({ children }) {
- 
-  const [currentUser,setCurrentUser] = useState(null)
+  const user=JSON.parse (localStorage.getItem("currentUser"))
+  const [currentUser,setCurrentUser] = useState(user||null)
   const selectedAuthRole = useRef(USER_ROLES.ADMIN)
 
 

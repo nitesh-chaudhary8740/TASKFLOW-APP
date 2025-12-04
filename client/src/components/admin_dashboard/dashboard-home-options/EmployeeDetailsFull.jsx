@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { AdminDashBoardContext } from '../../../contexts/AdminDashBoardContext';
 import { useNavigate } from 'react-router-dom';
 import './EmployeeDetailsFull.css'; 
@@ -21,6 +21,7 @@ function EmployeeDetailsFull() {
         setIsEmployeeDetailsFormOpen, 
         setIsTaskDetailsFormOpen, 
         selectedTask,
+        handleChangeActiveLink,
         // Assuming this handler exists in context for bulk action
         handleBulkUnassignTasks
     } = useContext(AdminDashBoardContext);
@@ -44,8 +45,11 @@ function EmployeeDetailsFull() {
         TASK_STATUS_OBJECT.OVERDUE 
         // Note: BLOCKED, UN_ASSIGNED, etc., should also generally not have reports
     ];
-
+useEffect(()=>{
+    handleChangeActiveLink(1)
+},[])
     if (!employee) {
+    
         return <div>
         <span>
             <h1 className="employee-name">Not any employee is selected</h1>

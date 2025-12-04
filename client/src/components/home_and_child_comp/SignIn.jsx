@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 // ⚠️ Ensure this path is correct based on where you saved the universal CSS
 import "../../assets/css/auth.css" 
 import { Link, Navigate, useNavigate } from 'react-router-dom'
@@ -9,55 +9,47 @@ import { inputOnChange } from '../../utils/utility.functions'
 import axios from 'axios'
 import { USER_ROLES } from '../../enums/roles'
 import { AntDContext } from '../../contexts/AntDContext.js'
-import { useEffect } from 'react'
+
+
 function SignIn() {
 const navigate = useNavigate();
 const {showError,showSuccess} = useContext(AntDContext)
-const appContextValues = useContext(TASK_MANAGEMENT_HOME)
+const {setCurrentUser,selectedAuthRole,currentUser} = useContext(TASK_MANAGEMENT_HOME)
  
   const [formdata,setFormData]= useState({
     userNameOrEmail:"",
     password:"",
-    role:appContextValues.selectedAuthRole.current
+    role:selectedAuthRole.current
   })
-//redirect to dashboard if user is login
-  const user = JSON.parse(localStorage.getItem("currentUser"))
- useEffect(()=>{
-  
-  if(user?._id){
-    if(user?.role===USER_ROLES.ADMIN){
-    navigate('/admin-dashboard')
-    return;
-  }
-  else{
-    navigate("/employee-dashboard")
-  }
-  }
-  
- },[navigate,user])
-  
+useEffect(()=>{
+    if(!currentUser) return;
+    if(currentUser.role==='admin') {return   navigate('/admin-dashboard')}
+    if(currentUser.role==='employee') {return   navigate('/employee-dashboard')}
+
+},[])
+
+
 const adminLogin = async()=>{
     try {
        const response = await axios.post(`${import.meta.env.VITE_API_URL}/login`,formdata,{withCredentials:true})
-        console.log(response.data)
-        // appContextValues.setCurrentUser(response.data)
-        // localStorage.setItem("currentUser",JSON.stringify(response.data))
+        console.log(response?.data)
+        setCurrentUser(response.data.admin)
         showSuccess("login successful",3)
-        // navigate('/admin-dashboard')
+        localStorage.setItem("currentUser",JSON.stringify(response.data.admin))
+        navigate('/admin-dashboard')
     } catch (error) {
-      console.log(error)
-      if(error.response.data){
-        showError(error.response.data)
+      console.log("error is",error)
+      if(error?.response?.data){
+        showError(error.response?.data.msg)
       }
       
     }
 }
 const empLogin = async()=>{
-
    try {
       const response = await axios.post(`${import.meta.env.VITE_EMP_API_URL}/login`,formdata)
        console.log(response.data)
-       appContextValues.setCurrentUser(response.data)
+       setCurrentUser(response.data)
        localStorage.setItem("currentUser",JSON.stringify(response.data))
        console.log("emp login")
        showSuccess("login successful",3)
@@ -76,11 +68,11 @@ const empLogin = async()=>{
         alert("fill all the fields")
         return
       }
-      if(appContextValues.selectedAuthRole.current===USER_ROLES.EMPLOYEE) {
+      if(selectedAuthRole.current===USER_ROLES.EMPLOYEE) {
           empLogin()
           return
       }
-     else if(appContextValues.selectedAuthRole.current===USER_ROLES.ADMIN) {
+     else if(selectedAuthRole.current===USER_ROLES.ADMIN) {
         adminLogin()
           return
       }

@@ -223,8 +223,9 @@ function All_Tasks({
                 className="bulk-action-btn bulk-unassign-btn"
                 // Pass only the IDs of the assigned tasks
                 onClick={() => {
+                  console.log(assignedTaskIds)
                     setIsSelecting(false)
-                    handleUnassignTask(assignedTaskIds)
+                  adminContextValues.handleBulkUnassignTasks(assignedTaskIds)
                 }}
                 disabled={isUnassignDisabled}
                 title={

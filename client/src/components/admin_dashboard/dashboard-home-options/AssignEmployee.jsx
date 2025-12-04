@@ -6,7 +6,7 @@ import axios from 'axios';
 import './AssignEmployee.css'; 
 
 export const AssignEmployee = () => {
-    const {allEmployees,selectedTask,setIsAssignEmployeeFormOpen,error,isLoading,selectedTasks,handleBulkAssignTasks} = useContext(AdminDashBoardContext); 
+    const {allEmployees,selectedTask,setIsAssignEmployeeFormOpen,error,isLoading,selectedTasks,handleBulkAssignTasks,triggerRefetch} = useContext(AdminDashBoardContext); 
     const { showSuccess, showError } = useContext(AntDContext); 
     const [filteredEmployees, setFilteredEmployees] = useState([...allEmployees]);
     const [searchTerm, setSearchTerm] = useState('');
@@ -41,10 +41,11 @@ export const AssignEmployee = () => {
         const apiUrl = `${import.meta.env.VITE_API_URL}/assign-task/${employeeId}/${task._id}`;
         try {
             
-            const response = await axios.post(apiUrl);
+            const response = await axios.post(apiUrl,{},{withCredentials:true});
             console.log(response.data)
             showSuccess(`Successfully assigned Task ${task.name} to ${employee.userName}.`, 3);
-            selectedTask.current={...selectedTask.current,isAssigned:true,assignedTo:employee}
+            // selectedTask.current={...selectedTask.current,isAssigned:true,assignedTo:employee}
+            triggerRefetch()
             handleClose(); 
         } catch (error) {
             console.error("Assignment failed:", error);

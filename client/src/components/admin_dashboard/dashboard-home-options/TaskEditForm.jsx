@@ -36,11 +36,11 @@ function TaskEditForm({ task, setIsEditing }) {
         try {
             const apiUrl = import.meta.env.VITE_API_URL;
             // 🚨 IMPORTANT: Replace with your actual endpoint
-            const response = await axios.put(`${apiUrl}/task-update/${task._id}`, formData); 
+            const response = await axios.put(`${apiUrl}/task-update/${task._id}`, formData,{withCredentials:true}); 
             console.log("response",response.data.task)        
             adminContextValues.selectedTask.current=response.data.task;
             showSuccess(response.data.message, 3);
-            
+            adminContextValues.triggerRefetch()
         } catch (err) {      
             console.error("Error updating task:", err.response?.data || err.message);
             const errMsg = err.response?.data?.message || "Failed to save changes.";

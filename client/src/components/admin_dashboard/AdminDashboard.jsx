@@ -24,6 +24,7 @@ const navLinks = [
 
 function AdminDashboard() {
     const { showError, showSuccess } = useContext(AntDContext); // For AntD messages
+    const [refetch,setRefetch]=useState(false)
     const [adminMetaData, setAdminmetaData] = useState(null);
     const [acticeNavLink, setActiveNavLink] = useState([...navLinks])
     const [isTaskFormOpen, setIsTaskFormOpen] = useState(false);
@@ -48,7 +49,7 @@ function AdminDashboard() {
         taskId: "",
         confirmText: ""
     })
-
+    const triggerRefetch = ()=>setRefetch(prev=>!prev)
     // --- Fetch Tasks ---
     useEffect(() => {
         const fetchTasks = async () => {
@@ -60,8 +61,8 @@ function AdminDashboard() {
                     );
                 }
 
-                const response = await axios.get(`${apiUrl}/tasks`);
-                setTasks(response.data);
+                const response = await axios.get(`${apiUrl}/tasks`,{withCredentials:true});
+                setTasks(response.data.tasks);
                 setError(null);
             } catch (err) {
                 console.error("Error fetching tasks:", err);
@@ -75,14 +76,14 @@ function AdminDashboard() {
         };
 
         fetchTasks();
-    }, [isTaskFormOpen, isAssignEmployeeFormOpen, isTaskDetailsFormOpen]);
+    }, [refetch]);
 
     // --- Fetch Employees ---
     useEffect(() => {
         const fetchEmployees = async () => {
             setIsLoading(true);
             try {
-                const response = await axios.get(`${import.meta.env.VITE_API_URL}/employees`);
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/employees`,{withCredentials:true});
                 const fetchedEmployees = response.data;
                 setAllEmployees(fetchedEmployees);
                 setError(null);
@@ -95,21 +96,22 @@ function AdminDashboard() {
             }
         };
         fetchEmployees();
-    }, [showError, isCreateEmpFormOpen, isEmployeeDetailsFormOpen]);
+    }, [showError,refetch]);
 
     // --- Fetch Admin Metadata ---
     useEffect(() => {
         const fetchAdminMetaData = async () => {
             try {
                 const apiUrl = import.meta.env.VITE_API_URL;
-                const response = await axios.get(`${apiUrl}/metadata`);
+                const response = await axios.get(`${apiUrl}/metadata`,{withCredentials:true});
                 setAdminmetaData(response.data);
             } catch (error) {
-                alert(error.response.data);
+                showError("metadata")
+                showError(error.response.data.msg);
             }
         };
         fetchAdminMetaData();
-    }, [tasks, allEmployees, acticeNavLink]);
+    }, [showError,refetch]);
 
 
     /**
@@ -182,7 +184,7 @@ function AdminDashboard() {
 
         try {
             const apiUrl = import.meta.env.VITE_API_URL;
-            await axios.patch(`${apiUrl}/unassign-task/${taskId}`);
+            await axios.patch(`${apiUrl}/unassign-task/${taskId}`,{},{withCredentials:true});
             showSuccess(<span>Task "<strong>{taskName}</strong> unassigned successfully!"</span>, 3);
             // Close TaskDetails view if it's open
             setIsTaskDetailsFormOpen(false);
@@ -220,7 +222,7 @@ function AdminDashboard() {
         setAllEmployees(tempArr);
         try {
             const apiUrl = import.meta.env.VITE_API_URL;
-            await axios.delete(`${apiUrl}/delete-employee/${employeeId}`);
+            await axios.delete(`${apiUrl}/delete-employee/${employeeId}`,{withCredentials:true});
             showSuccess("Employee deleted successfully!", 3);
             setIsEmployeeDetailsFormOpen(false)
             // Note: Tasks list should also be refreshed or updated to reflect unassigned tasks
@@ -264,13 +266,14 @@ function AdminDashboard() {
         try {
             // 3. API Call to Delete
             const apiUrl = import.meta.env.VITE_API_URL;
-            await axios.delete(`${apiUrl}/delete-task/${taskId}`);
+            await axios.delete(`${apiUrl}/delete-task/${taskId}`,{withCredentials:true});
 
             // 4. Success: Confirmation message (UI is already updated)
             showSuccess(`Task "${taskName}" deleted successfully!`, 3);
             selectedTask.current = null;
             // Crucial: Close the Task Details modal after successful deletion
             setIsTaskDetailsFormOpen(false);
+            triggerRefetch()
         } catch (err) {
             // 5. Failure: Rollback UI and show error message
             console.error("Error deleting task:", err.response?.data || err.message);
@@ -295,11 +298,12 @@ function AdminDashboard() {
      
         try {
          const apiUrl = import.meta.env.VITE_API_URL;
-         const response = await axios.patch(`${apiUrl}/bulk-assign-tasks/${emp._id}`,{selectedTasks:tasksArr});
+         const response = await axios.patch(`${apiUrl}/bulk-assign-tasks/${emp._id}`,{selectedTasks:tasksArr},{withCredentials:true});
         
          setTasks(response?.data?.tasks)
          showSuccess(`${response.data.msg}`, 3);
         setIsAssignEmployeeFormOpen(false)
+        triggerRefetch()
            
         } catch (err) {
             // 5. Failure: Rollback UI and show error message
@@ -327,12 +331,12 @@ function AdminDashboard() {
      
         try {
          const apiUrl = import.meta.env.VITE_API_URL;
-         const response = await axios.patch(`${apiUrl}/bulk-unassign-tasks/`,{selectedTasks:tasksArr});
+         const response = await axios.patch(`${apiUrl}/bulk-unassign-tasks/`,{selectedTasks:tasksArr},{withCredentials:true});
         
         //  setTasks(response?.data?.tasks)
         //  showSuccess(`${response.data.msg}`, 3);
-         showSuccess(`${response.data}`, 3);
-        
+         showSuccess(`${response.data.msg}`, 3);
+            triggerRefetch()
            
         } catch (err) {
             // 5. Failure: Rollback UI and show error message
@@ -361,10 +365,10 @@ function AdminDashboard() {
           try {
  
          const apiUrl = import.meta.env.VITE_API_URL;
-         const response = await axios.delete(`${apiUrl}/bulk-delete-tasks`,{data:{selectedTasks:tasksArr}});
+         const response = await axios.delete(`${apiUrl}/bulk-delete-tasks`,{data:{selectedTasks:tasksArr},withCredentials:true});
          setTasks(response.data.tasks)
          showSuccess(`Tasks deleted successfully!`, 3);
-           
+           triggerRefetch()
         } catch (err) {
             // 5. Failure: Rollback UI and show error message
             console.error("Error in deleting tasks:", err.response?.data?.msg || err.message);
@@ -409,6 +413,7 @@ function AdminDashboard() {
         configPrompt,
         setIsPromptOpen,
         selectedTasks,
+        triggerRefetch,
     };
     return (
         <div className={`admin-app-wrapper${isTaskFormOpen ? "modal" : ""}`}>

@@ -14,11 +14,21 @@ import {
 
 import EmpFilterGroup from './EmpFilterGroup';
 import { filterTasks, sortTasks,  } from '../../../utils/filter_and_sorting';
+import EmpMyTasksCategory from './EmpMyTasksCategory';
+ const taskCategories = {
+    ALL_TASKS:"All",
+    PENDING_TASKS:"Pending",
+    COMPLTED_TASKS:"Completed",
+    IN_PROGRESS_TASKS:"In-Progress",
+    UNDER_REVIEW_TASKS:"Under-Review",
+    OVERDUE_TASKS:"Overdue",
+    BLOCKED_TASKS:"blocked"
+    
+  }
 const SortIcon = ({ direction = "none" }) => {
   let color = direction === "none" ? "var(--text-light)" : "var(--primary)";
   let opacity = direction === "none" ? 0.4 : 1;
   let Icon = direction === "asc" ? "▲" : direction === "desc" ? "▼" : "⇅";
-
   return (
     <span
       style={{
@@ -41,8 +51,11 @@ const SortIcon = ({ direction = "none" }) => {
     });
   };
 function EmployeeMyTasks() {
-  const {employeeAllTasks}=useContext(EmployeeDashboardContext)
-  const [filteredTasks,setFilteredTasks] = useState([])
+  const {employeeAllTasks,handleChangeActiveLink}=useContext(EmployeeDashboardContext)
+        // const [selectedTasksArray,setSelectedTasksArray]=useState([])
+  const [selectedTaskCategory,setSelectedTaskCategory]=useState(taskCategories.ALL_TASKS)
+  const [filteredTasks,setFilteredTasks] = useState(employeeAllTasks)
+  const [searchInput,setSearchInput] = useState("")
   const [filterOptions, setFilterOptions] = useState({
     priority: "all",
     status: "all",
@@ -52,24 +65,45 @@ function EmployeeMyTasks() {
     order: "none",
   });
 useEffect(()=>{
-setFilteredTasks(employeeAllTasks)
-},[employeeAllTasks])
+handleChangeActiveLink(1)
+},[])
 useEffect(()=>{
-  filterTasks(employeeAllTasks,setFilteredTasks,filterOptions)
-  sortTasks(employeeAllTasks,setFilteredTasks,sortOptions)
-},[employeeAllTasks,filterOptions,sortOptions])
+   const seachTerms = ()=>{
+  if(searchInput==="") {
+    return [...employeeAllTasks]
+  }
+  const searchResults = (employeeAllTasks).filter(task=>
+  task.name.toLowerCase().includes(searchInput.toLowerCase())||
+  task.dueDate.toLowerCase().includes(searchInput.toLowerCase())||
+  (task.id.toLowerCase().includes(searchInput.toLowerCase()))
+  )
+  return searchResults;
+  }
+    const tasksForFilter = seachTerms() 
+  filterTasks(tasksForFilter,setFilteredTasks,filterOptions)
+  sortTasks(tasksForFilter,setFilteredTasks,sortOptions)
+},[employeeAllTasks,filterOptions,sortOptions,searchInput])
 
 
   return (
        <>
-      <div className="task-menu-container">
-        <h1 className="task-list-title">
-          <ListChecks size={32} style={{ marginRight: "10px" }} />
-          All Project Tasks ({filteredTasks.length})
-        </h1>
+  <div className="task-menu-container">
 
+<EmpMyTasksCategory 
+tasks={employeeAllTasks} 
+setFilterOptions= {setFilterOptions} 
+selectedTaskCategory={selectedTaskCategory}
+setSelectedTaskCategory={setSelectedTaskCategory}
+taskCategories={taskCategories}/>
         {/* --- Filters and Sort Controls UI --- */}
-   <EmpFilterGroup filterOptions={filterOptions} setFilterOptions={setFilterOptions} sortOptions={sortOptions} setSortOptions={setSortOptions}/>
+   <EmpFilterGroup 
+   filterOptions={filterOptions} 
+   setFilterOptions={setFilterOptions} 
+   sortOptions={sortOptions} 
+   setSortOptions={setSortOptions}
+   searchInput={searchInput}
+   setSearchInput={setSearchInput}
+   />
         {/* --- END NEW UI --- */}
 
         <div className="task-table-wrapper">
@@ -81,6 +115,24 @@ useEffect(()=>{
             <table className="task-table">
               <thead>
                 <tr>
+                  <th style={{ width: "5%" }} className="sortable-header">
+                    <button
+                      className="sort-btn" 
+                     
+                    >
+                      SN.
+                      <SortIcon direction={"asc"}  />
+                    </button>
+                  </th>
+                  <th style={{ width: "10%" }} className="sortable-header">
+                    <button
+                      className="sort-btn" 
+                     
+                    >
+                      Task Id
+                      <SortIcon direction={"asc"}  />
+                    </button>
+                  </th>
                   <th style={{ width: "30%" }} className="sortable-header">
                     <button
                       className="sort-btn" 
@@ -122,14 +174,20 @@ useEffect(()=>{
                       <SortIcon direction={"none"} />
                     </button>
                   </th>
-                  <th style={{ width: "10%" }} className="actions-column">
+                  <th style={{ width: "16%" }} className="actions-column">
                     Actions
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {filteredTasks.map((task) => (
+                {filteredTasks.map((task,i) => (
                   <tr key={task._id}>
+                    <td data-label="Task Name" className="task-name-cell">
+                      {i+1}
+                    </td>
+                    <td data-label="Task Name" className="task-name-cell">
+                      {task.id}
+                    </td>
                     <td data-label="Task Name" className="task-name-cell">
                       {task.name}
                     </td>
@@ -161,17 +219,17 @@ useEffect(()=>{
                       {formatDate(task.dueDate)}
                     </td>
                     <td data-label="Actions" className="actions-cell">
-                      <button
+                   {task.status==="Pending"}   <button
                         className="action-btn assign-btn"
                         title="View task details"
                       >
-                        <Menu size={16} />
+                      start work
                       </button>
                       <button
                         className="action-btn manage-btn"
                         title="submit task report"
-                      >
-                        <Edit size={16} />
+                        >
+                        view details
                       </button>
                     
                     </td>

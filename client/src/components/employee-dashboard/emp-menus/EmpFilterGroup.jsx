@@ -1,15 +1,16 @@
 import { RefreshCcwIcon } from "lucide-react";
 import React from "react";
 
-function EmpFilterGroup({ filterOptions, setFilterOptions,sortOptions,setSortOptions }) {
+function EmpFilterGroup({searchInput,setSearchInput, filterOptions, setFilterOptions,sortOptions,setSortOptions }) {
   return (
     <div className="controls-container">
       <div className="task-search-bar-group">
         <input
           type="text"
+          value={searchInput}
           placeholder="Search tasks by name or ID..."
           className="alltasks-search-input"
-          // onChange={(e) => setSearchTerm(e.target.value)} // Logic placeholder
+          onChange={(e) => setSearchInput(e.target.value)} // Logic placeholder
         />
         {/* <div className="radio-filter-group">
           <span className="radio-label">Assignment:</span>
@@ -124,23 +125,7 @@ function EmpFilterGroup({ filterOptions, setFilterOptions,sortOptions,setSortOpt
           />
             </span>
         </div>
-        <select
-          className="filter-select"
-        //   defaultValue="all"
-        value={filterOptions.status}
-          onChange={(e) => {
-            setFilterOptions((prev) => ({
-              ...prev,
-              status: e.target.value,
-            }));
-          }}
-        >
-          <option value="all">Filter by Status</option>
-          <option value="in-progress">In Progress</option>
-          <option value="pending">Pending</option>
-          <option value="completed">Completed</option>
-          <option value="on-hold">On Hold</option>
-        </select>
+      
 
         {/* Priority Filter */}
         <select

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { X, Save, Mail, BriefcaseBusiness, Phone, MapPin } from 'lucide-react';
 
 
@@ -24,7 +24,9 @@ function EmployeeEditForm({ employee, setIsEditing }) {
     
     const [isSaving, setIsSaving] = useState(false);
 
-
+  useEffect(()=>{
+      adminContextValues.handleChangeActiveLink(1)
+  },[])
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevData => ({
@@ -40,14 +42,14 @@ function EmployeeEditForm({ employee, setIsEditing }) {
         try {
             const apiUrl = import.meta.env.VITE_API_URL;
             // 🚨 IMPORTANT: Replace with your actual endpoint
-            const response = await axios.put(`${apiUrl}/emp-update/${employee._id}`, formData);
+            const response = await axios.put(`${apiUrl}/emp-update/${employee._id}`, formData,{withCredentials:true});
             
             
             
             // 1. Update the local context ref with the new data
             adminContextValues.selectedEmployee.current = response.data.employee;
             showSuccess(response.data.message, 3);
-            
+            adminContextValues.triggerRefetch()
             setIsEditing(false); // Exit edit mode
         } catch (err) {
             alert(err)

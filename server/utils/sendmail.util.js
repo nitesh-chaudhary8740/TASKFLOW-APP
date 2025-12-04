@@ -36,8 +36,8 @@ const sendEmail = async (to, subject, htmlContent, textContent) => {
 
     try {
         let info = await transporter.sendMail(mailOptions);
-        console.log('Message sent: %s', info.messageId);
-        console.log('Message sent: %s', info);
+        // console.log('Message sent: %s', info.messageId);
+        // console.log('Message sent: %s', info);
         // Helpful for testing: log the preview URL for test accounts (e.g. Ethereal)
         // console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
     } catch (error) {

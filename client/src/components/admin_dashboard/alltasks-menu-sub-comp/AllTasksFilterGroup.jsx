@@ -1,7 +1,7 @@
 import { RefreshCcwIcon } from "lucide-react";
 import React from "react";
 
-function AllTasksFilterGroup({ filterOptions, setFilterOptions,setSearchInput,searchInput }) {
+function AllTasksFilterGroup({ filterOptions, setFilterOptions,setSearchInput,searchInput,selectedTaskCategory }) {
   return (
     <div className="controls-container">
       <div className="task-search-bar-group">
@@ -16,7 +16,7 @@ function AllTasksFilterGroup({ filterOptions, setFilterOptions,setSearchInput,se
              }
             } // Logic placeholder
         />
-       {filterOptions.status.toLowerCase()==="all" && <div className="radio-filter-group">
+       {selectedTaskCategory.toLowerCase()==="all" && <div className="radio-filter-group">
           <span className="radio-label">Assignment:</span>
           <div className="radio-options-wrapper">
             <label

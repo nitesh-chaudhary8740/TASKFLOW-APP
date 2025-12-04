@@ -4,11 +4,15 @@ import { Link } from 'react-router-dom';
 import { AdminDashBoardContext } from '../../contexts/AdminDashBoardContext';
 import { useState } from 'react';
 import { ProfileMenu } from './admin-nav-sub-com0/ProfileMenu';
+import { TASK_MANAGEMENT_HOME } from '../../contexts/TaskManageMent.context';
+import { SearchResultsOverlay } from './admin-nav-sub-com0/SearchResultsOverlay';
 
 function AdminNavBar() {
   const [showProfileMenu,setShowProfileMenu] = useState(false)
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
   const adminContextValues = useContext(AdminDashBoardContext)  
-  const user = JSON.parse(localStorage.getItem("currentUser"));
+  const {currentUser} = useContext(TASK_MANAGEMENT_HOME)
 
 
   return (
@@ -43,16 +47,31 @@ function AdminNavBar() {
 
       {/* 2. RIGHT SECTION (Search, Actions, Profile) */}
       <div className="navbar-right-section">
-        
-        {/* 🔍 SEARCH BAR PLACED HERE 🔍 */}
-        <div className="navbar-search">
-          <Search size={18} className="search-icon" />
-          <input 
-            type="text" 
-            placeholder="Search tasks, employees..." 
-            className="search-input"
-          />
-        </div>
+                
+                {/* 🔍 SEARCH BAR CONTAINER 🔍 */}
+                {/* Use a relative container to position the absolute search results overlay */}
+                <div className="navbar-search-container"> 
+                    <div className="navbar-search">
+                        <Search size={18} className="search-icon" />
+                        <input
+                            type="text"
+                            placeholder="Search tasks, employees..."
+                            className="search-input"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            onFocus={() => setIsSearchFocused(true)} // ⬅️ SET FOCUS STATE
+                            onBlur={() => {
+                                // Delay hide to allow click on a result item
+                                setTimeout(() => setIsSearchFocused(false), 150); 
+                            }}
+                        />
+                    </div>
+                    
+                    {/* ⬅️ RENDER SEARCH RESULTS OVERLAY */}
+                    {isSearchFocused && (
+                        <SearchResultsOverlay searchTerm={searchTerm} />
+                    )}
+                </div>
 
         {/* Vertical Separator between Search and Actions */}
         <div className="nav-separator"></div>
@@ -76,7 +95,7 @@ function AdminNavBar() {
         {showProfileMenu?<ProfileMenu showProfileMenu={showProfileMenu} setShowProfileMenu={setShowProfileMenu}/>
         : <div className="profile-avatar">
             <img
-              src={`https://placehold.co/100x100/4f46e5/ffffff?text=${user?.name?.charAt(0).toUpperCase()}`}
+              src={`https://placehold.co/100x100/4f46e5/ffffff?text=${currentUser?.name?.charAt(0).toUpperCase()}`}
               alt="Admin Avatar"
             />
           </div>

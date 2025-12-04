@@ -597,9 +597,3 @@ width: 100%;
 }
 
 /* Specific styling to match the All category with the primary color */
-.task-category-all {
-    /* No specific color needed here, defaults to neutral */
-}
-.task-category-all.active-category {
-    /* Uses the generic active-category styles */
-}

@@ -57,7 +57,7 @@ export function filterTasks(mainArray, filterArraySetter, filterOptions) {
     filterArraySetter(filteredArray);
 }
 export const sortTasks = (filteredArray,filteredArraySetter,sortOptions) =>{
-     const sortedArray =  [...filteredArray]
+    const sortedArray =  [...filteredArray]
     const {order,by}=sortOptions
    if(order==="none"||by==="none") return;
    if(order==="asc"){

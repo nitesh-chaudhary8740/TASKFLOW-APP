@@ -7,10 +7,7 @@ import axios from 'axios';
 import { AntDContext } from '../../../contexts/AntDContext';
 import { TASK_MANAGEMENT_HOME } from '../../../contexts/TaskManageMent.context';
 
-
-
-
- export const CreateTaskForm = () => { 
+export const CreateTaskForm = () => { 
 const values = useContext(AdminDashBoardContext)
 const {currentUser,selectedAuthRole} =useContext(TASK_MANAGEMENT_HOME)
 console.log(currentUser,selectedAuthRole)
@@ -20,13 +17,13 @@ const {showError,showSuccess} =useContext(AntDContext)
         name: '',
         description: '',
         dueDate: '',
-        priority: 'medium',
+        priority: 'Medium',
     });
 
     const priorityOptions = [
-        { value: 'high', label: 'High Priority' },
-        { value: 'medium', label: 'Medium Priority' },
-        { value: 'low', label: 'Low Priority' },
+        { value: 'High', label: 'High Priority' },
+        { value: 'Medium', label: 'Medium Priority' },
+        { value: 'Low', label: 'Low Priority' },
     ];
 
 
@@ -41,9 +38,11 @@ const {showError,showSuccess} =useContext(AntDContext)
           return
          }
           const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/task-create`,taskData);
+        `${import.meta.env.VITE_API_URL}/task-create`,taskData,{withCredentials:true});
             showSuccess(response.data.msg,3)
+            values.triggerRefetch()
       } catch (error) {
+        console.log(error)
         showError(error.response?.data?.msg,3)
       }
      

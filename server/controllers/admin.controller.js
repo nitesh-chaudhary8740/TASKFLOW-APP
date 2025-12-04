@@ -24,13 +24,16 @@ const generateAdminTokens = async (adminId) => {
   const accessToken = await jwt.sign(
     {
     _id:admin._id,
+    role:admin.role
   }
   
   , process.env.ACCESS_TOKEN_SECRET, {
     expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
   });
   const refreshToken = await jwt.sign(
-    {_id:admin._id},
+    {_id:admin._id,
+      role:admin.role
+    },
     process.env.REFRESH_TOKEN_SECRET,
     { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
   );
@@ -46,12 +49,12 @@ const adminLogin = async (req, res) => {
     });
     
     if (!fetchedAdmin) {
-      res.status(404).send("No admin user found");
+      res.status(404).json({msg:"No admin user found",success:false});
       return;
     }
     const isPasswordCorrect = await bcrypt.compare(password,fetchedAdmin.password)
     if (!isPasswordCorrect) {
-      res.status(401).send("wrong password");
+      res.status(401).json({msg:"wrong password",success:false});
       return;
     }
     const {accessToken,refreshToken} = await generateAdminTokens(fetchedAdmin._id)
@@ -63,12 +66,51 @@ const adminLogin = async (req, res) => {
     res.status(200)
     .cookie("accessToken",accessToken,options)
     .cookie("refreshToken",refreshToken,options)
-    .send(admin);
+    .json({msg:"admin login successful",admin,success:true});
   } catch (error) {
     console.log(error)
-    res.status(200).send("error in admin login")
+    res.status(200).json({msg:"error in admin login",success:false})
   }
 };
+const adminLogout = async(req,res)=>{
+  try {
+  //   await Admin.findByIdAndUpdate(req.user._id,{
+  //     $set:{
+  //       refreshToken:null
+  //     }
+  //   },{new:true})
+    const options={
+      httpOnly:true,
+      secure:true
+    }
+    res.status(200)
+    .clearCookie("accessToken",options)
+    .clearCookie("refreshToken",options)
+    .json({msg:"admin logout successfully",success:true})
+  } catch (error) {
+    console.log("logout error",error)
+    res.status(500).json({msg:"Server error occurred during logout.",success:false})
+  }
+}
+const currentUser = async(req,res)=>{
+  try {
+  if(req.user.role==="admin"){
+    const adminUser = await Admin.findById(req.user._id).select("-password -refreshToken");
+    return res.status(200).json({msg:"user fetched successfully",user:adminUser,success:true})
+  }
+  if(req.user.role==="employee"){
+    const empUser = await Employee.findById(req.user._id).select("-password -refreshToken");
+    return res.status(200).json({msg:"user fetched successfully",user:empUser,success:true}) 
+  }
+  
+  return res.status(404).json({msg:"user not found",success:false}) 
+  } catch (error) {
+    if (!req.user) {
+            return res.status(401).json({ success: false, msg: "User ID not found in request." });
+        }
+    res.status(500).json({msg:"Server error occurred during fetching user.",success:false})
+  }
+}
 
 const employeeRegistration = async (req, res) => {
   try {
@@ -78,21 +120,19 @@ const employeeRegistration = async (req, res) => {
     });
     console.log(existingUser);
     if (existingUser) {
-      res.status(400).send("this username and email already exists");
+      res.status(400).json({msg:"this username and email already exists",success:false});
       return;
     }
     const password = generateUserPassword(8);
     req.body.password = password;
-    try {
+
       await sendEmail(
         email,
         "MY APP",
         mailData(fullName, userName, password),
         "Welcome to app"
       );
-    } catch (error) {
-      console.log(error);
-    }
+ 
     const emp = await Employee.create({
       userName,
       fullName,
@@ -101,10 +141,12 @@ const employeeRegistration = async (req, res) => {
       phone,
       address,
       designation,
+      createdBy:req.user._id
     });
-    res.status(201).send({ msg: "user successfully created", emp });
+    res.status(201).json({ msg: "user successfully created", emp });
   } catch (error) {
-    res.status(400).json({ success: false, err: error.message });
+    console.log("error",error)
+    res.status(400).json({ success: false, msg: "" });
   }
 };
 
@@ -163,15 +205,17 @@ const upDateEmployeeDetails = async (req, res) => {
 
 const taskCreation = async (req, res) => {
   try {
-    const { name, description, dueDate, priority, createdBy } = req.body;
-
+    const { name, description, dueDate, priority } = req.body;
+    console.log("priot",priority)
     // --- 1. Input Validation ---
-    const requiredFields = { name, description, dueDate, priority, createdBy };
+    const taskCreator = await Admin.findById(req.user._id)
+
+    const requiredFields = { name, description, dueDate, priority };
     for (const [key, value] of Object.entries(requiredFields)) {
       if (!value) {
         return res.status(400).json({
           success: false,
-          message: `Validation Error: Missing required field - ${key}`,
+          msg: `Validation Error: Missing required field - ${key}`,
         });
       }
     }
@@ -180,7 +224,7 @@ const taskCreation = async (req, res) => {
     if (!TASK_PRIORITIES.includes(priority)) {
       return res.status(400).json({
         success: false,
-        message: `Validation Error: Priority must be one of: ${TASK_PRIORITIES.join(
+        msg: `Validation Error: Priority must be one of: ${TASK_PRIORITIES.join(
           ", "
         )}`,
       });
@@ -190,32 +234,32 @@ const taskCreation = async (req, res) => {
     if (isNaN(new Date(dueDate).getTime())) {
       return res.status(400).json({
         success: false,
-        message: "Validation Error: Invalid date format for dueDate.",
+        mesg: "Validation Error: Invalid date format for dueDate.",
       });
     }
 
     // --- 2. Task Creation ---
     // The sequential 'id' field will be automatically generated by the taskSchema.pre('save') middleware.
+    console.log("task cration")
     const task = await Task.create({
-      name,
-      description,
-      // Convert dueDate string to Date object for the schema
+      name:validators.noExtraSpaces(name),
+      description:validators.noExtraSpaces(description),
+
       dueDate: new Date(dueDate),
       priority,
-      createdBy, // Reference to the Admin/Manager ID
+      createdBy:taskCreator._id, // Reference to the Admin/Manager ID
     });
 
     // --- 3. Success Response ---
     res.status(201).json({
       success: true,
-      message: "Task successfully created.",
+      msg: "Task successfully created.",
       task: task,
     });
   } catch (error) {
     console.error("Task Creation Error:", error);
 
-    // Handle MongoDB duplicate key error for the unique 'id' field
-    // (though the Counter logic should prevent this)
+
     if (error.code === 11000) {
       return res.status(409).json({
         success: false,
@@ -234,6 +278,9 @@ const taskCreation = async (req, res) => {
 };
 const updateTask = async (req, res) => {
   const { name, description, dueDate, priority, status } = req.body;
+   if ([name,description,dueDate,priority,status].some(field=>field==="")) {
+    return res.status(400).json({ message: "empty input fields" });
+  }
   const { taskId } = req.params;
   const task = await Task.findById(taskId);
   if (!task) {
@@ -244,10 +291,8 @@ const updateTask = async (req, res) => {
       .status(400)
       .json({ message: "task is assigned(unassign task before update" });
   }
-  const isAnyFieldEmpty = checkForEmptyFieldsInReqBody(req);
-  if (isAnyFieldEmpty) {
-    return res.status(400).json({ message: "empty input fields" });
-  }
+
+ 
   try {
     const updatedTask = await Task.findByIdAndUpdate(
       taskId,
@@ -284,7 +329,7 @@ const fetchAllEmployees = async (req, res) => {
 };
 const fetchAllTasks = async (req, res) => {
   const tasks = await Task.find().populate("assignedTo");
-  res.status(200).send(tasks);
+  res.status(200).send({msg:"tasks fetched successfully",tasks});
 };
 const fetchAllPendingTasks = async (req, res) => {
   const pendingTasks = await Task.find({ status: "pending" });
@@ -292,12 +337,13 @@ const fetchAllPendingTasks = async (req, res) => {
   res.status(200).send(pendingTasks);
 };
 const fetchAdminMetaData = async (req, res) => {
+  console.log("req reci")
   const employees = await Employee.find();
   const unAssignedTasks = await Task.find({ isAssigned: false });
   const tasks = await Task.find();
   res.status(200).send({
     totalEmployees: employees.length,
-    totalUnAssigned: unAssignedTasks.length,
+    totalUnAssignedTasks: unAssignedTasks.length,
     totalTasks: tasks.length,
   });
 };
@@ -306,7 +352,7 @@ const assignTask = async (req, res) => {
   const employee = await Employee.findById(empId);
   const task = await Task.findById(taskId);
   if (task.isAssigned) {
-    res.status(400).send("this task is already assigned");
+    res.status(400).json({msg:"task is already assigned"});
     return;
   }
   task.isAssigned = true;
@@ -463,7 +509,7 @@ const bulkAssignTasks = async (req, res) => {
     const taskIdsToAppend = findAssignedTasksIds.map((task) => task._id);
     await Employee.updateOne(
       { _id: emp._id },
-      { $addToSet: { assignedTasks: { $each: taskIdsToAppend } } }
+      { $addToSet: { assignedTasks: { $each: taskIdsToAppend } } }//add unique
     );
 
     const tasks = await Task.find({});
@@ -478,18 +524,46 @@ const bulkAssignTasks = async (req, res) => {
   }
 };
 const bulkUnassignTasks = async (req, res) => {
-  try {
-    const { selectedTasks } = req.body;
+ console.log("unassigned");
+ try {
+  const { selectedTasks } = req.body;
 
-    const findSelectedTasks = await Task.find({ _id: { $in: selectedTasks } });
-    console.log("seletect", findSelectedTasks);
-    res.send("okay");
-  } catch (error) {}
+  // 1. Check if selectedTasks is provided and is an array
+  if (!selectedTasks || !Array.isArray(selectedTasks) || selectedTasks.length === 0) {
+   return res.status(400).json({ msg: "No tasks selected for unassignment." });
+  }
+  const fetchedSelectedTasks = await Task.find({_id: { $in: selectedTasks } })
+  console.log('yhid ifh')
+  const employeesIds =  fetchedSelectedTasks.map(task=>task.assignedTo)
+  const tasksIdsForUnassign =  fetchedSelectedTasks.map(task=>task._id)
+  const updateResult = await Task.updateMany(
+   { _id: { $in: tasksIdsForUnassign } ,isAssigned:true, status:TASK_STATUS_OBJECT.PENDING},
+   { $set: { assignedTo: null,isAssigned:false,status:TASK_STATUS_OBJECT.UN_ASSIGNED } } // Corrected and completed update operation
+  );
+const rollbackEmployeeUnassignmentResults = await Employee.updateMany(
+  {_id:{$in:employeesIds}},
+  {$pullAll:{assignedTasks:tasksIdsForUnassign}})//complete this
+  console.log("Update Result:", updateResult);
+
+  // 3. Send a success response
+  if (updateResult.modifiedCount > 0) {
+   res.send({ msg: `Successfully unassigned ${updateResult.modifiedCount} tasks.` });
+  } else {
+   res.send({ msg: "No tasks were updated (they might already be unassigned or IDs were incorrect)." });
+  }
+
+ } catch (error) {
+  console.error("Error during bulk unassign:", error);
+  res.status(500).json({ msg: "Failed to unassign tasks due to a server error." });
+ }
 };
 module.exports = {
+  generateAdminTokens,
+  adminLogin,
+  adminLogout,
+  currentUser,
   employeeRegistration,
   upDateEmployeeDetails,
-  adminLogin,
   taskCreation,
   updateTask,
   fetchAllEmployees,

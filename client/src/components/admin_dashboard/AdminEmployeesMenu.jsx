@@ -25,14 +25,18 @@ function AdminEmployeesMenu() {
     error,
     selectedEmployee,
     // setIsEmployeeDetailsFormOpen,
-    handleDeleteEmployee
+    handleDeleteEmployee,
+    handleChangeActiveLink
   } = useContext(AdminDashBoardContext);
  const [fileteredEmployees, setFilteredEmployees] = useState(allEmployees);
   const [filterOptions, setFilterOptions] = useState({
     priority: "all",
     designation:"all"
   });
+  useEffect(()=>{
   
+    handleChangeActiveLink(1)
+  },[])
   const [searchInput,setSearchInput]=useState("")
   const navigate = useNavigate()
   const handleManageEmployee = (employee) => {

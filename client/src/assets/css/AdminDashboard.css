@@ -157,6 +157,7 @@
 }
 
 .profile-avatar img {
+    cursor: pointer;
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -178,6 +179,25 @@
     opacity: 1;
     transform: rotate(0deg) translateX(0); /* Visible and normal orientation */
 }
+/* --- AdminNavBar Component Styling (Reverted Flexbox) --- */
+
+/* ... existing styles ... */
+
+/* 🔍 SEARCH BAR STYLES 🔍 */
+/* New Container for Search Bar + Results Overlay */
+.navbar-search-container {
+    position: relative; /* Crucial for positioning the absolute overlay */
+    width: 250px; /* Match the search bar width */
+}
+
+.navbar-search {
+    /* ... existing styles ... */
+    width: 100%; /* Take full width of the container */
+    /* Ensure the search bar itself looks normal */
+    z-index: 2; 
+}
+
+/* ... existing styles ... */
 /* ---------------------------------------------------- */
 /* --- AdminDashBoardContent Styles --- */
 /* ---------------------------------------------------- */
@@ -280,6 +300,7 @@
 }
 
 .summary-card {
+    cursor: pointer;
     padding: 20px;
     border-radius: 12px;
     color: var(--white); 

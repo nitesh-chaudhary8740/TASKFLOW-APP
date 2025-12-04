@@ -4,22 +4,34 @@ import { User, HelpCircle, LogOut, X } from 'lucide-react';
 import './ProfileMenu.css'; 
 import { useContext } from 'react';
 import { TASK_MANAGEMENT_HOME } from '../../../contexts/TaskManageMent.context';
-import { useNavigate } from 'react-router-dom';
 
-
+import axios from 'axios';
+import { AntDContext } from '../../../contexts/AntDContext';
 export function ProfileMenu() {
-    const user = JSON.parse(localStorage.getItem("currentUser"));;
- const  {selectedAuthRole} = useContext(TASK_MANAGEMENT_HOME)
-const navigate = useNavigate()
-  const handleAction = (name) => {
+   
+const  {selectedAuthRole,currentUser,setCurrentUser} = useContext(TASK_MANAGEMENT_HOME)
+const  {showError,showSuccess} = useContext(AntDContext)
+
+const handleAction = (name) => {
     console.log(`Action: ${name}`);
   };
-  const handleLogOut = ()=>{
-    console.log("logout")
-        selectedAuthRole.current = null;
-     
+  const handleLogOut = async()=>{
+    try {
+       const response = await axios.post(`${import.meta.env.VITE_API_URL}/logout`,{},{withCredentials:true})
+        console.log(response?.data)
         localStorage.removeItem("currentUser")
-        navigate("/")
+        setCurrentUser(null)
+        selectedAuthRole.current=null
+        showSuccess("logout successful",3)
+    
+    } catch (error) {
+      console.log("error is",error)
+      if(error?.response?.data){
+        showError(error.response?.data.msg)
+      }
+      
+    }
+        
   }
   
   const menuItems = [
@@ -34,25 +46,15 @@ const navigate = useNavigate()
       {/* User Info Header */}
       <div className="menu-header">
           <div className="avatar">
-              {user.name.charAt(0).toUpperCase()}
+              {currentUser.name.charAt(0).toUpperCase()}
           </div>
           <div>
-              <p style={{ fontSize: '14px', fontWeight: '600', color: '#1f2937' }}>{user.name}</p>
+              <p style={{ fontSize: '14px', fontWeight: '600', color: '#1f2937' }}>{currentUser.name}</p>
               <p style={{ fontSize: '12px', color: '#6b7280' }}>View profile</p>
           </div>
 
           {/* Close Button (X) */}
-          <button 
-            //   onClick={(e)=>{
-            //     e.stopPropagation()
-            //     console.log(showProfileMenu)
-            //             setShowProfileMenu(prev=>!prev)
-            //   }}
-              aria-label="Close menu"
-              className="close-btn"
-          >
-              <X size={18} />
-          </button>
+          <button aria-label="Close menu" className="close-btn"> <X size={18} /> </button>
       </div>
 
       {/* Menu Options */}

@@ -2,7 +2,7 @@ const { Employee } = require("../models/employee.model");
 const { Task } = require("../models/task.model");
 
 const employeeLogin = async(req,res)=>{
-    const { userNameOrEmail, password } = req.body;
+  const { userNameOrEmail, password } = req.body;
   const fetchedEmployee = await Employee.findOne({
     $or: [{ userName: userNameOrEmail }, { email: userNameOrEmail }],
   });
@@ -26,10 +26,14 @@ const fetchEmployeeTasks = async (req,res)=>{
          res.send("employee not found").status(400)
          return;
      }
-     const empTasks = await Task.find({'assignedTo.empId':empId})
-     res.send({empTasks,msg:"task fetched successfully"}).status(200)
+     const empTasks = await Task.find({assignedTo:empId})
+     res.status(200).json({empTasks,msg:"task fetched successfully"})
    } catch (error) {
     res.send("failed to fetch employee tasks").status(500)
    }
 }
-module.exports = {employeeLogin,fetchEmployeeTasks}
+const startWorking = async(req,res)=>{
+  const {empId,taskId} =req.body
+  res.status(200).json({msg: `started working in task`})
+}
+module.exports = {employeeLogin,fetchEmployeeTasks,startWorking}

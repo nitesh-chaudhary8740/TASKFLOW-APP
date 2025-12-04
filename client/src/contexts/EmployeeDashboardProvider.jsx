@@ -33,7 +33,7 @@ function EmployeeDashboardProvider({children}) {
         }
         fetchEmpTasks()
     },[showError])
-    const handleChangeActiveLink = (index) =>{
+  const handleChangeActiveLink = (index) =>{
    try {
      const tempNavLinks = [...activeEmpNavLinks];
      tempNavLinks.forEach(link=>link.active=false)

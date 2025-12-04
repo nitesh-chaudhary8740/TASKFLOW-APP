@@ -12,6 +12,7 @@ import { createContext } from "react";
 
 export const AdminDashBoardContext = createContext({
   // ... (All your existing state and setters, unchanged)
+  triggerRefetch:()=>{},
   isTaskFormOpen: false,
   setIsTaskFormOpen: () => {},
   isCreateEmpFormOpen: false,

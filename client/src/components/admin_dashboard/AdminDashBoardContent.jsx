@@ -1,6 +1,8 @@
 import React, { useContext, useEffect } from 'react'
 import { PlusCircle, UserPlus, ListPlus, FolderPlus, Activity, TrendingUp, Users, CheckCircle, Clock } from 'lucide-react';
 import { AdminDashBoardContext } from '../../contexts/AdminDashBoardContext';
+import { TASK_MANAGEMENT_HOME } from '../../contexts/TaskManageMent.context';
+import { Navigate, useNavigate } from 'react-router-dom';
 // import { TASK_MANAGEMENT_HOME } from '../../contexts/TaskManageMent.context';
 
 // Mock data for the summary cards
@@ -24,7 +26,7 @@ const summaryData = [
         colorClass: 'card-indigo' 
     },
     { 
-        title: "Pending Tasks", 
+        title: "Unassigned Tasks", 
         value: 'totalUnAssignedTasks',
         icon: Clock, 
         colorClass: 'card-red' 
@@ -42,8 +44,8 @@ const QuickActionButton = ({ icon: Icon, title, onClick }) => (
 
 // Helper component for the Summary Cards
 // eslint-disable-next-line no-unused-vars
-const SummaryCard = ({ title, value, icon: Icon, colorClass,metaData}) => (
-    <div className={`summary-card ${colorClass}`}>
+const SummaryCard = ({ title, value, icon: Icon, colorClass,metaData,navigateToAllTasks}) => (
+    <div className={`summary-card ${colorClass}`} onClick={()=>{navigateToAllTasks(value)}}>
         <div className="summary-card-header">
             <h3 className="summary-card-title">{title}</h3>
             <Icon size={20} className="summary-card-icon" />
@@ -54,18 +56,25 @@ const SummaryCard = ({ title, value, icon: Icon, colorClass,metaData}) => (
 
 
 function AdminDashBoardContent() {
+  const navigate = useNavigate()
+  const navigateToAllTasks = (value)=>{
+    console.log(value)
+    if(value==="totalUnAssignedTasks") navigate("all-tasks",{state:{ isAssigned: "false"}})
+    if(value==="totalEmployees") navigate("employees")
+    if(value==="totalTasks") navigate("all-tasks")
+  }
   const todayDate = new Date().toLocaleDateString("en-US", {
         weekday: "long",
         year: "numeric",
         month: "long",
         day: "numeric",
     });
+    const {currentUser} = useContext(TASK_MANAGEMENT_HOME)
     const adminContextValues = useContext(AdminDashBoardContext)
     useEffect(()=>{
          adminContextValues.handleChangeActiveLink(0)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
-    const currentUser= JSON.parse(localStorage.getItem("currentUser"))
     
     // Mock handlers for actions
     const handleAddEmployee = () => {
@@ -134,7 +143,7 @@ function AdminDashBoardContent() {
                 <h2>📈 Summary Metrics</h2>
                 <div className="metrics-grid">
                     {summaryData.map(data => (
-                        <SummaryCard key={data.title} {...data} metaData={adminContextValues.adminMetaData} />
+                        <SummaryCard key={data.title} {...data} metaData={adminContextValues.adminMetaData} navigateToAllTasks={navigateToAllTasks} />
                     ))}
                 </div>
             </section>}
