@@ -15,16 +15,21 @@ import AdminDashBoardContent from "./components/admin_dashboard/AdminDashBoardCo
 import AdminAllTasksMenu from "./components/admin_dashboard/AdminAllTasksMenu";
 import AdminEmployeesMenu from "./components/admin_dashboard/AdminEmployeesMenu";
 import AdminProjectsMenu from "./components/admin_dashboard/AdminProjectsMenu";
-import {CreateTaskForm} from "./components/admin_dashboard/dashboard-home-options/CreateTaskForm";
+// import {CreateTaskForm} from "./components/admin_dashboard/dashboard-home-options/CreateTaskForm";
 import AntDContextProvider from "./contexts/AntDContextProvider";
-import EmployeeDashboard from "./components/employee-dashboard/EmployeeDashboard";
+
 import EmpDashboardContent from "./components/employee-dashboard/emp-menus/EmpDashboardContent";
 import EmployeeMyTasks from "./components/employee-dashboard/emp-menus/EmployeeMyTasks";
-import EmployeeAssignedProjects from "./components/employee-dashboard/emp-menus/EmployeeAssignedProjects";
+// import EmployeeAssignedProjects from "./components/employee-dashboard/emp-menus/EmployeeAssignedProjects";
 import PendingTasksTable from "./components/employee-dashboard/emp-menus/emp-dashboard-content-sub-comp/PendingTasksTable";
 import OngoingTasksTable from "./components/employee-dashboard/emp-menus/emp-dashboard-content-sub-comp/OngoingTasksTable";
 import EmployeeDetailsFull from "./components/admin_dashboard/dashboard-home-options/EmployeeDetailsFull";
 import ProtectedDashboard from "./components/admin_dashboard/dashboard-home-options/ProtectedDashboard";
+import ProtectedEmployeeDashboard from "./components/employee-dashboard/ProtectedEmployeeDashboard";
+import TaskDetails from "./components/employee-dashboard/emp-menus/emp-mytasks/TaskDetails";
+import MyReports from "./components/employee-dashboard/emp-menus/MyReports";
+import ReportDetailsPage from "./components/employee-dashboard/emp-menus/my-reports/ReportDetailsPage";
+import EmployeeProfile from "./components/employee-dashboard/EmployeeProfile";
 
 
 function App() {
@@ -54,15 +59,19 @@ function App() {
                 <Route path="projects" element={<AdminProjectsMenu />} />
               </Route>
               {/* Employee Route */}
-              <Route path="/employee-dashboard" element={<EmployeeDashboard/>}>
+              <Route path="/employee-dashboard" element={<ProtectedEmployeeDashboard/>}>
 
                 <Route path="/employee-dashboard" element={<EmpDashboardContent/>}>
                       <Route path="/employee-dashboard/pending-tasks" element={<PendingTasksTable/>}/>
                       <Route path="/employee-dashboard/on-going-tasks" element={<OngoingTasksTable/>}/>
                 </Route>             
                 <Route path="my-tasks" element={<EmployeeMyTasks/>}/>
-                <Route path="assigned-projects" element={<EmployeeAssignedProjects/>}/>           
+                <Route path="task-details/:taskId" element={<TaskDetails/>}/>
+                <Route path="report-details/:reportId" element={<ReportDetailsPage/>}/>
+           
+                <Route path="my-reports" element={<MyReports/>}/>           
               </Route>
+                <Route path="/employee-profile" element={<EmployeeProfile/>}/>
             </Routes>
           </TaskManageMentProvider>
         </AntDContextProvider>

@@ -66,12 +66,12 @@
 }
 
 /* Style for the Cancel Button */
-.cancel-btn {
-    background-color: #f3f4f6; /* Light gray background */
+.prompt-cancel-btn {
+    background-color: #e8eaee; /* Light gray background */
     color: #4b5563;
 }
-.cancel-btn:hover {
-    background-color: #e5e7eb;
+.prompt-cancel-btn:hover {
+    background-color: #dddddde6;
 }
 
 /* --- 6. Confirmation Button (Action-Specific Styling) --- */
@@ -100,4 +100,11 @@
 }
 .confirm-btn.delete:hover {
     background-color: #dc2626;
+}
+.confirm-btn.success {
+    background-color: #10b981;
+    color: white;
+}
+.confirm-btn.success:hover {
+    background-color:#10b981c6;
 }

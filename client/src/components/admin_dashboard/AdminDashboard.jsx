@@ -14,6 +14,7 @@ import { AntDContext } from "../../contexts/AntDContext.js";
 import EmployeeDetails from "./dashboard-home-options/EmployeeDetails.jsx";
 import { EmployeeAssignedTasks } from "./dashboard-home-options/EmployeeAssignedTasks.jsx";
 import Prompt from "./dashboard-home-options/Prompt.jsx";
+import { TASK_MANAGEMENT_HOME } from "../../contexts/TaskManageMent.context.js";
 
 const navLinks = [
     { name: 'Dashboard', icon: LayoutDashboard, href: '/admin-dashboard', active: true },
@@ -24,6 +25,7 @@ const navLinks = [
 
 function AdminDashboard() {
     const { showError, showSuccess } = useContext(AntDContext); // For AntD messages
+    const {configPrompt} = useContext(TASK_MANAGEMENT_HOME)
     const [refetch,setRefetch]=useState(false)
     const [adminMetaData, setAdminmetaData] = useState(null);
     const [acticeNavLink, setActiveNavLink] = useState([...navLinks])
@@ -38,17 +40,17 @@ function AdminDashboard() {
     const [error, setError] = useState(null);
     const [tasks, setTasks] = useState([]);
     const [allEmployees, setAllEmployees] = useState([]);
-    const [isPromptOpen, setIsPromptOpen] = useState(false)
+    // const [isPromptOpen, setIsPromptOpen] = useState(false)
     const selectedEmployee = useRef(null);
     const selectedTask = useRef(null);
     const selectedTasks = useRef(null)
-    const promptData = useRef({
-        message: "",
-        onConfirm: () => { },
-        type: "",
-        taskId: "",
-        confirmText: ""
-    })
+    // const promptData = useRef({
+    //     message: "",
+    //     onConfirm: () => { },
+    //     type: "",
+    //     taskId: "",
+    //     confirmText: ""
+    // })
     const triggerRefetch = ()=>setRefetch(prev=>!prev)
     // --- Fetch Tasks ---
     useEffect(() => {
@@ -114,30 +116,23 @@ function AdminDashboard() {
     }, [showError,refetch]);
 
 
-    /**
- * @typedef {object} ConfigOptions
- * @property {string} msg - The main message to be displayed in the prompt.
- * @property {() => void} onConfirm - The function to execute when the confirmation button is clicked.
- * @property {'delete'|'unassign'|'warning'|'assign'} type - The type of prompt, used for styling and context.
- * @property {string} [confirmText='Okay'] - Optional: Text for the confirmation button.
- * @property {string} [cancelText='Cancel'] - Optional: Text for the cancel button.
- */
+ 
 
     /**
      * Configures and displays the generic confirmation prompt.
      * @param {ConfigOptions} configOptions - The configuration object.
      */
-    const configPrompt = (configOptions) => {
-        promptData.current = {
-            // Set the message, type, and the function to run on confirm
-            message: configOptions.msg,
-            onConfirm: configOptions.onConfirm,
-            type: configOptions.type,
-            confirmText: configOptions.confirmText || 'Okay',
-            cancelText: configOptions.cancelText || 'Cancel'
-        }
-        setIsPromptOpen(true)
-    }
+    // const configPrompt = (configOptions) => {
+    //     promptData.current = {
+    //         // Set the message, type, and the function to run on confirm
+    //         message: configOptions.msg,
+    //         onConfirm: configOptions.onConfirm,
+    //         type: configOptions.type,
+    //         confirmText: configOptions.confirmText || 'Okay',
+    //         cancelText: configOptions.cancelText || 'Cancel'
+    //     }
+    //     setIsPromptOpen(true)
+    // }
 
     const handleChangeActiveLink = (index) => {
         try {
@@ -411,7 +406,7 @@ function AdminDashboard() {
         handleBulkUnassignTasks,
         handleBulkDeleteTasks,
         configPrompt,
-        setIsPromptOpen,
+  
         selectedTasks,
         triggerRefetch,
     };
@@ -426,8 +421,9 @@ function AdminDashboard() {
                 {isAssignEmployeeFormOpen && <AssignEmployee />}
                 {isTaskDetailsFormOpen && <TaskDetails />}
                 {isEmployeeDetailsFormOpen && <EmployeeDetails />}
-                {isPromptOpen && <Prompt promptData={promptData.current} />}
-                <Outlet />
+                {/* {isPromptOpen && <Prompt promptData={promptData.current} />}
+                */}
+                 <Outlet />
             </AdminDashBoardContext.Provider>
         </div>
     );

@@ -1,0 +1,162 @@
+/* MyReports.css */
+
+/* --- Variables for Consistency --- */
+:root {
+    --primary-blue: #4686e5;
+    --text-dark: #1f2937;
+    --text-medium: #4b5563;
+    --text-light: #6b7280;
+    --border-light: #e5e7eb;
+    --bg-light: #f9fafb;
+    --white: #ffffff;
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+
+.my-reports-container {
+    padding: 30px;
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.my-reports-container h1 {
+    display: flex;
+    align-items: center;
+    color: var(--text-dark);
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--border-light);
+    padding-bottom: 10px;
+}
+
+.reports-table-wrapper {
+    overflow-x: auto; /* Ensures horizontal scrolling on smaller screens */
+}
+
+.reports-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 8px; /* Space between rows */
+    font-size: 0.9rem;
+}
+
+/* Table Header */
+.reports-table thead th {
+    background-color: var(--bg-light);
+    color: var(--text-medium);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 12px 15px;
+    border-bottom: 2px solid var(--border-light);
+    text-align: left;
+}
+
+/* Table Body Rows */
+.reports-table tbody tr {
+    background-color: var(--white);
+    transition: box-shadow 0.2s, background-color 0.2s;
+    box-shadow: var(--shadow-sm);
+    border-radius: 8px;
+}
+
+.reports-table tbody tr:hover {
+    background-color: #f5f8fd; /* Light hover effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.reports-table td {
+    padding: 12px 15px;
+    text-align: left;
+    color: var(--text-dark);
+}
+
+.reports-table td strong {
+    font-weight: 600;
+    color: var(--primary-blue);
+}
+
+
+.report-status {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    display: inline-block;
+}
+
+/* Default/Submitted Status */
+.status-submitted, .status-pending {
+    background-color: #ffedd5; /* Amber light */
+    color: #b45309; /* Amber dark */
+}
+
+/* Approved/Accepted Status */
+.status-accepted, .status-completed {
+    background-color: #d1fae5; /* Green light */
+    color: #059669; /* Green dark */
+}
+
+/* Review Status */
+.status-awaiting_review {
+    background-color: #e0f2fe; /* Blue light */
+    color: #2563eb; /* Blue dark */
+}
+
+/* Rejected Status */
+.status-rejected {
+    background-color: #fee2e2; /* Red light */
+    color: #dc2626; /* Red dark */
+}
+
+
+
+.action-view-btn {
+    background-color: var(--primary-blue);
+    color: var(--white);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+
+.action-view-btn:hover {
+    background-color: #3870cc;
+}
+
+.report-status-message {
+    padding: 60px 40px;
+    text-align: center;
+    border: 2px dashed var(--border-light);
+    border-radius: 8px;
+    margin: 20px auto;
+    max-width: 600px;
+    color: var(--text-light);
+}
+
+.report-status-message p {
+    font-size: 1.1rem;
+    margin-top: 15px;
+}
+
+.report-status-message svg {
+    color: var(--text-light);
+}
+
+.report-status-message.no-data svg {
+    color: var(--primary-blue);
+}
+
+.report-status-message .spinner {
+    animation: spin 1s linear infinite;
+    color: var(--primary-blue);
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}

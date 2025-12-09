@@ -1,0 +1,304 @@
+/* EmployeeProfile.css - Minimal and Optimized */
+:root {
+    --primary: #4686e5;
+    --secondary: #1f2937; 
+    --text-medium: #4b5563; 
+    --white: #ffffff;
+    --border-color: #e5e7eb;
+    --success: #10b981;
+    --error: #ef4444;
+}
+
+/* --- Centering Wrapper --- */
+.employee-profile-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers container and back button */
+    padding: 30px 15px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.employee-profile-container {
+    width: 100%;
+    max-width: 650px;
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+.employee-profile-separator {
+    border: 0;
+    border-top: 1px solid var(--border-color);
+    margin: 20px 0;
+}
+
+/* --- Back Button --- */
+.employee-profile-back-button-container {
+    width: 100%;
+    max-width: 650px;
+    margin-bottom: 20px;
+    align-self: center; 
+}
+
+.employee-profile-back-btn {
+    background: none;
+    border: none;
+    color: var(--primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+.employee-profile-back-btn:hover {
+    background-color: #f0f4ff; 
+}
+
+/* --- 1. Identity Section --- */
+.employee-profile-identity {
+    text-align: center;
+}
+
+.employee-profile-avatar {
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    border-radius: 50%;
+    background-color: var(--primary);
+    color: var(--white);
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 auto 10px;
+}
+
+.employee-profile-username {
+    font-size: 1.5rem;
+    color: var(--secondary);
+    margin: 5px 0;
+}
+
+.employee-profile-role,
+.employee-profile-designation {
+    font-size: 0.95rem;
+    color: var(--text-medium);
+    margin: 2px 0;
+}
+.employee-profile-role strong,
+.employee-profile-designation strong {
+    color: var(--secondary);
+    font-weight: 600;
+}
+
+/* --- 2. Personal Details Section (Field Rows) --- */
+.employee-profile-header-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.employee-profile-header-details h4 {
+    font-size: 1.3rem;
+    color: var(--secondary);
+    margin: 0;
+}
+
+.employee-profile-field-row {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--border-color);
+}
+
+.employee-profile-field-label {
+    font-weight: 500;
+    color: var(--text-medium);
+    min-width: 120px; 
+    margin-right: 15px;
+}
+
+.employee-profile-field-value {
+    flex-grow: 1;
+    font-size: 1rem;
+    color: var(--secondary);
+    font-weight: 600;
+}
+
+.employee-profile-input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.employee-profile-actions-bottom {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    justify-content: flex-end; 
+}
+
+/* --- 3. Change Password Section --- */
+.employee-profile-password-section h4 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.3rem;
+    color: var(--secondary);
+    margin-bottom: 15px;
+}
+
+.employee-profile-password-input-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 0;
+}
+
+.employee-profile-password-input {
+    flex-grow: 1;
+    max-width: 250px;
+}
+
+/* --- Status Messages --- */
+.employee-profile-status-message {
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.employee-profile-status-message.small {
+    font-size: 0.9rem;
+    padding: 8px 10px;
+}
+
+.employee-profile-status-message.success {
+    background-color: #d1fae5;
+    color: var(--success);
+}
+
+.employee-profile-status-message.error {
+    background-color: #fee2e2;
+    color: var(--error);
+}
+
+/* --- Buttons --- */
+.employee-profile-btn-edit {
+    background-color: var(--primary);
+    color: var(--white);
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.employee-profile-btn-edit:disabled {
+    background-color: rgba(225, 220, 220, 0.842);
+    cursor: default;
+    
+}
+
+.employee-profile-btn-save {
+    background-color: var(--success);
+    color: var(--white);
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+}
+
+.employee-profile-btn-cancel {
+    background-color: var(--white);
+    color: var(--error);
+    border: 1px solid var(--error);
+    padding: 10px 15px;
+    border-radius: 6px;
+}
+
+.employee-profile-btn-password-change {
+    padding: 8px 15px;
+    background-color: var(--error);
+    color: var(--white);
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.employee-profile-btn-password-change:disabled,
+.employee-profile-btn-save:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Responsive adjustments */
+@media (max-width: 700px) {
+    .employee-profile-container {
+        padding: 20px;
+    }
+    .employee-profile-back-button-container {
+        max-width: 100%;
+    }
+    .employee-profile-field-row,
+    .employee-profile-password-input-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .employee-profile-field-label {
+        min-width: unset;
+        width: 100%;
+        margin-bottom: 5px;
+        margin-right: 0;
+    }
+    .employee-profile-password-input {
+        max-width: 100%;
+    }
+    .employee-profile-btn-password-change {
+        width: 100%;
+        margin-top: 10px;
+    }
+    .employee-profile-actions-bottom {
+        flex-direction: column;
+        width: 100%;
+    }
+}
+/* EmployeeProfile.css (Only new/modified styles) */
+
+/* The new container for Step 2 fields */
+.employee-profile-password-form-step2 {
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Reduce gap between rows */
+}
+
+/* Ensure field rows in step 2 look uniform */
+.employee-profile-password-form-step2 .employee-profile-field-row {
+    border-bottom: 1px dashed var(--border-color);
+}
+.employee-profile-password-form-step2 .employee-profile-field-row:last-of-type {
+    border-bottom: none;
+    margin-bottom: 10px; /* Space before buttons */
+}
+
+
+/* Re-use existing button styles: .employee-profile-btn-edit, .employee-profile-btn-cancel, .employee-profile-btn-password-change, .employee-profile-actions-bottom */
+
+/* Media Query Adjustment for Step 2 fields on small screens */
+@media (max-width: 700px) {
+    .employee-profile-password-form-step2 .employee-profile-field-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

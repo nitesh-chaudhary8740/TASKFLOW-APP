@@ -1,15 +1,16 @@
 import React from 'react';
-import { User, HelpCircle, LogOut, X } from 'lucide-react';
+import { User, HelpCircle, LogOut, X,ChevronLeft } from 'lucide-react';
 // Don't forget to import your CSS file at the top of your main JS/React file:
 import "./EmployeeProfileMenu.css"
 import { useContext } from 'react';
 import { TASK_MANAGEMENT_HOME } from '../../contexts/TaskManageMent.context';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 export function EmployeeProfileMenu() {
     const user = JSON.parse(localStorage.getItem("currentUser"));;
- const  {selectedAuthRole} = useContext(TASK_MANAGEMENT_HOME)
+    
+ const  {selectedAuthRole,setCurrentUser} = useContext(TASK_MANAGEMENT_HOME)
 const navigate = useNavigate()
   const handleAction = (name) => {
     console.log(`Action: ${name}`);
@@ -18,11 +19,12 @@ const navigate = useNavigate()
     console.log("logout")
         selectedAuthRole.current = null;
         localStorage.removeItem("currentUser")
+        setCurrentUser(null)
         navigate("/")
   }
   
   const menuItems = [
-    { name: "Account", icon: User, action: () => handleAction("Account") },
+  
     { name: "Help", icon: HelpCircle, action: () => handleAction("Help") },
     { name: "Logout", icon: LogOut, action: () => handleLogOut(), isDanger: true },
   ];
@@ -33,11 +35,11 @@ const navigate = useNavigate()
       {/* User Info Header */}
       <div className="menu-header">
           <div className="avatar">
-              {user.userName.charAt(0).toUpperCase()}
+              {user.fullName.charAt(0).toUpperCase()}
           </div>
           <div>
               <p style={{ fontSize: '14px', fontWeight: '600', color: '#1f2937' }}>{user.name}</p>
-              <p style={{ fontSize: '12px', color: '#6b7280' }}>View profile</p>
+              <Link className='view-profile-link' to={"/employee-profile"}>View profile</Link>
           </div>
 
           {/* Close Button (X) */}

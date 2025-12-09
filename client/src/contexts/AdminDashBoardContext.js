@@ -59,9 +59,7 @@ export const AdminDashBoardContext = createContext({
   handleBulkDeleteTasks: (taskArr) => { taskArr; },
   
   // --- Prompt / Modal Handlers ---
-  /** @param {ConfigOptions} configOptions */
-  configPrompt: (configOptions) => { configOptions },
-  setIsPromptOpen: () => {},
+
   
   // --- Ref Objects ---
   /**

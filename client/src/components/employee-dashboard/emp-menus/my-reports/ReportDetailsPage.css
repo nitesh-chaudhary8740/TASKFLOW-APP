@@ -1,0 +1,193 @@
+/* ReportDetailsPage.css */
+
+/* --- Variables (Assuming they are defined) --- */
+:root {
+    --primary: #4686e5; 
+    --secondary: #1f2937; 
+    --text-light: #6b7280; 
+    --white: #ffffff;
+    --border-color: #e5e7eb;
+    --bg-light: #f9fafb;
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+    --color-green: #10b981;
+    --color-red: #ef4444;
+    --color-blue: #3b82f6;
+}
+
+/* ------------------------------------------------------------------- */
+/* 1. Main Layout & Structure */
+/* ------------------------------------------------------------------- */
+
+.report-details-container {
+    padding: 24px;
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+    min-height: 80vh; 
+}
+
+.separator {
+    border: 0;
+    border-top: 1px solid var(--border-color);
+    margin: 20px 0;
+}
+
+/* ------------------------------------------------------------------- */
+/* 2. Breadcrumbs & Header */
+/* ------------------------------------------------------------------- */
+
+.report-breadcrumb {
+    margin-bottom: 25px;
+    font-size: 0.95rem;
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+}
+
+.back-button {
+    background: none;
+    border: none;
+    color: var(--primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    margin-right: 10px;
+    padding: 5px 0;
+    font-size: 1rem;
+}
+
+.back-button:hover {
+    text-decoration: underline;
+}
+
+.report-breadcrumb span {
+    font-weight: 600;
+    color: var(--secondary);
+}
+
+.report-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.report-title {
+    display: flex;
+    align-items: center;
+    font-size: 2rem;
+    color: var(--secondary);
+    margin: 0;
+}
+
+.report-id-subtle {
+    /* Style for the report ID next to the title */
+    font-size: 0.8em; 
+    font-weight: 400;
+    color: var(--text-light);
+    margin-left: 10px;
+}
+
+.report-status-badge {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+/* Status color classes (.status-submitted, etc.) should be imported/available */
+
+/* ------------------------------------------------------------------- */
+/* 3. Metadata Rows (The Key Layout) */
+/* ------------------------------------------------------------------- */
+
+.info-grid { 
+    display: flex;
+    flex-direction: column;
+    gap: 0px; 
+    margin-bottom: 30px;
+}
+
+/* Style for single, full-width detail rows (Task ID, Task Name) */
+.info-item.full-width-line {
+    border-bottom: 1px dashed #f0f0f0; 
+    padding: 8px 0;
+}
+
+/* Container for grouping Reported By/At horizontally */
+.info-item-group-horizontal {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 30px; 
+    padding: 8px 0;
+}
+
+/* Base style for all info rows */
+.info-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
+}
+
+/* Style for items within the horizontal group */
+.info-item.compact-item {
+    flex: 1 1 45%; 
+    padding: 0; 
+    border-bottom: none;
+}
+
+.info-item strong {
+    /* Style for the Label */
+    color: var(--text-medium);
+    font-weight: 600;
+    min-width: 120px; 
+    margin-right: 15px; 
+    display: flex;
+    align-items: center;
+    gap: 8px; 
+}
+
+.info-item.compact-item strong {
+     min-width: 100px; 
+}
+
+.info-item span {
+    /* Style for the Value */
+    color: var(--secondary);
+    font-weight: 400;
+    flex-grow: 1; 
+}
+
+.info-icon {
+    color: var(--primary);
+}
+
+
+/* ------------------------------------------------------------------- */
+/* 4. Description Section */
+/* ------------------------------------------------------------------- */
+
+.report-description-section h3 {
+    font-size: 1.3rem;
+    color: var(--secondary);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.report-description-box {
+    padding: 20px;
+    background-color: var(--bg-light);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    min-height: 200px;
+    line-height: 1.7;
+    color: var(--text-medium);
+    white-space: pre-wrap; 
+}
+
+.report-description-box p {
+    margin: 0;
+}

@@ -47,6 +47,10 @@ const taskSchema = new mongoose.Schema(
             type: Date, // Use Date type for robust calculations (e.g., Overdue status)
             required: true,
         },
+        startDate:{
+            type: Date,
+            default:null
+        },
         priority: {
             type: String,
             required: true,
@@ -67,6 +71,16 @@ const taskSchema = new mongoose.Schema(
         isAssigned: {
             type: Boolean,
             default: false,
+        },
+        hasReport: {
+            type: Boolean,
+            default: false,
+        },
+
+        report:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref:"Report",
+            default:null
         },
         // Reference to the Employee assigned to the task
         assignedTo: {

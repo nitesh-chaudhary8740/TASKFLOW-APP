@@ -357,6 +357,7 @@ const assignTask = async (req, res) => {
   }
   task.isAssigned = true;
   task.assignedTo = employee._id;
+  task.assignedBy = req.user._id;
   task.status = TASK_STATUS_OBJECT.PENDING;
   await task.save({ validateBeforeSave: false });
   employee.assignedTasks.push(task._id);
@@ -382,6 +383,7 @@ const unAssignTask = async (req, res) => {
     // Handle case where employee might have been deleted
     task.isAssigned = false;
     task.assignedTo = null;
+    task.assignedBy=null;
     await task.save({ validateBeforeSave: false });
     return res
       .status(200)
@@ -490,6 +492,7 @@ const bulkAssignTasks = async (req, res) => {
         // SET NEW VALUES: CRITICAL to set isAssigned and status!
         assignedTo: emp._id,
         isAssigned: true,
+        assignedBy:req.user._id,
         status: TASK_STATUS_OBJECT.PENDING,
       }
     );
@@ -538,7 +541,7 @@ const bulkUnassignTasks = async (req, res) => {
   const tasksIdsForUnassign =  fetchedSelectedTasks.map(task=>task._id)
   const updateResult = await Task.updateMany(
    { _id: { $in: tasksIdsForUnassign } ,isAssigned:true, status:TASK_STATUS_OBJECT.PENDING},
-   { $set: { assignedTo: null,isAssigned:false,status:TASK_STATUS_OBJECT.UN_ASSIGNED } } // Corrected and completed update operation
+   { $set: {assignedBy:null, assignedTo: null,isAssigned:false,status:TASK_STATUS_OBJECT.UN_ASSIGNED } } // Corrected and completed update operation
   );
 const rollbackEmployeeUnassignmentResults = await Employee.updateMany(
   {_id:{$in:employeesIds}},

@@ -1,4 +1,7 @@
-
+:root{
+    --primary: #4686e5;
+--primary-dark: #376dc3;
+}
 /* Profile Menu Container */
 .profile-menu-container {
     /* Styles for positioning, size, background, and shadow */
@@ -28,7 +31,7 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: #4f46e5;
+    background-color: var(--primary);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -97,4 +100,71 @@
 .menu-item.danger:hover {
     background-color: #fee2e2; /* Light red background */
     color: #b91c1c; /* Darker red on hover */
+}
+.view-profile-link{
+    font-size: 2vh;
+    color: var(--primary);
+    /* text-decoration: none; */
+}
+.view-profile-link:hover{
+    color: var(--primary-dark);
+    text-decoration: none;
+}
+/* EmployeeProfile.css (Only new/modified styles related to the back button) */
+
+/* --- Wrapper for Centering (Modified to allow space for the back button) --- */
+.profile-wrapper {
+    display: flex;
+    flex-direction: column; /* Stack back button and container */
+    align-items: center;
+    padding: 30px;
+}
+
+/* --- NEW: Back Button Styling --- */
+.back-button-container {
+    width: 100%;
+    max-width: 650px; /* Align to the same width constraint as the container */
+    margin-bottom: 20px;
+    align-self: center; /* Ensure it stays centered within the wrapper's flow */
+    padding-left: 10px; /* Slight padding for screen edge */
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    color: var(--primary);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+}
+
+.back-btn:hover {
+    background-color: #f0f4ff; /* Light hover background */
+    text-decoration: none;
+}
+
+/* ------------------------------------------------------------------- */
+/* The rest of the CSS (profile-container, profile-identity, etc.) remains unchanged. */
+/* ------------------------------------------------------------------- */
+
+/* Responsive adjustments */
+@media (max-width: 700px) {
+    .profile-container {
+        padding: 20px;
+    }
+    .back-button-container {
+        max-width: 100%;
+        padding-left: 0;
+    }
+    .back-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 10px;
+    }
+    /* ... rest of responsive styles ... */
 }

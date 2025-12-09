@@ -78,7 +78,7 @@ function EmployeeNavbar() {
         {showProfileMenu?<EmployeeProfileMenu showProfileMenu={showProfileMenu} setShowProfileMenu={setShowProfileMenu}/>
         : <div className="profile-avatar">
             <img
-              src={`https://placehold.co/100x100/4f46e5/ffffff?text=${user?.userName?.charAt(0).toUpperCase()}`}
+              src={`https://placehold.co/100x100/4f46e5/ffffff?text=${user?.fullName?.charAt(0).toUpperCase()}`}
               alt="Admin Avatar"
             />
           </div>
