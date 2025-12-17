@@ -15,8 +15,8 @@ export function filterTasks(mainArray, filterArraySetter, filterOptions) {
 
     // If no active filters, show the full list
     if (selectedOptions.length === 0) {
-        filterArraySetter(mainArray);
-        return;
+        // filterArraySetter(mainArray);
+        return mainArray;
     }
     // 2. Filter the main array by checking ALL selected criteria simultaneously
     const filteredArray = mainArray.filter(task => {
@@ -54,12 +54,17 @@ export function filterTasks(mainArray, filterArraySetter, filterOptions) {
     });
 
     console.log(`Filter applied. Showing ${filteredArray.length} tasks.`);
-    filterArraySetter(filteredArray);
+    // filterArraySetter(filteredArray);
+    return filteredArray;
 }
 export const sortTasks = (filteredArray,filteredArraySetter,sortOptions) =>{
     const sortedArray =  [...filteredArray]
     const {order,by}=sortOptions
-   if(order==="none"||by==="none") return;
+   if(order==="none"||by==="none")
+    {
+        filteredArraySetter(sortedArray)
+return
+    } ;
    if(order==="asc"){
        sortedArray.sort((a,b)=>
        {

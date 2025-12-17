@@ -87,8 +87,8 @@ function EmployeeMyTasks() {
       return searchResults;
     };
     const tasksForFilter = seachTerms();
-    filterTasks(tasksForFilter, setFilteredTasks, filterOptions);
-    sortTasks(tasksForFilter, setFilteredTasks, sortOptions);
+  const ftasks =   filterTasks(tasksForFilter, setFilteredTasks, filterOptions);
+    sortTasks(ftasks, setFilteredTasks, sortOptions);
   }, [employeeAllTasks, filterOptions, sortOptions, searchInput]);
 
   return (
@@ -214,7 +214,7 @@ function EmployeeMyTasks() {
                       <Calendar size={16} className="icon-calendar" />
                       {formatDate(task.dueDate)}
                     </td>
-                    <td data-label="Actions" className="actions-cell">
+                    <td data-label="Actions" className="emp-actions-cell">
                       <ActionButtons task={task} />
                       <button
                         className="action-btn manage-btn"

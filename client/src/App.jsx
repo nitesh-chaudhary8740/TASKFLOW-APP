@@ -30,6 +30,8 @@ import TaskDetails from "./components/employee-dashboard/emp-menus/emp-mytasks/T
 import MyReports from "./components/employee-dashboard/emp-menus/MyReports";
 import ReportDetailsPage from "./components/employee-dashboard/emp-menus/my-reports/ReportDetailsPage";
 import EmployeeProfile from "./components/employee-dashboard/EmployeeProfile";
+import AdminReports from "./components/admin_dashboard/AdminReports";
+import AdminReportView from "./components/admin_dashboard/reports-sub-comp/AdminReportView";
 
 
 function App() {
@@ -56,7 +58,8 @@ function App() {
                 <Route path="employee-details" element={<EmployeeDetailsFull/>} />
                 
                 <Route path="all-tasks" element={<AdminAllTasksMenu />} />
-                <Route path="projects" element={<AdminProjectsMenu />} />
+                <Route path="reports" element={<AdminReports />} />
+                <Route path="view-report/:reportId" element={<AdminReportView />} />
               </Route>
               {/* Employee Route */}
               <Route path="/employee-dashboard" element={<ProtectedEmployeeDashboard/>}>

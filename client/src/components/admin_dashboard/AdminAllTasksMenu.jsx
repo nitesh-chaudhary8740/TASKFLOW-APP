@@ -42,8 +42,8 @@ const SortIcon = ({ direction = "none" }) => {
   
   function AdminAllTasksMenu() {
     const location = useLocation()
-    const locationStates = location?.state
-    
+    const locationIsAssigned = location?.state?.isAssigned||null
+    const locationTaskHashElement =location?.state?.taskHashElement||null
   const [isSelecting,setIsSelecting]=useState(false)
   const [selectedTasksArray,setSelectedTasksArray]=useState([])
   const [selectedTaskCategory,setSelectedTaskCategory]=useState(taskCategories.ALL_TASKS)
@@ -59,12 +59,26 @@ const SortIcon = ({ direction = "none" }) => {
   const [searchInput,setSearchInput]=useState("")
   const {tasks,isLoading,error,handleUnassignTask,handleDeleteTask} = useContext(AdminDashBoardContext);
 useEffect(()=>{
-  if(locationStates){
-   setFilterOptions(prev=>(Object.assign({},prev,locationStates)))
-   console.log(locationStates)
+  if(locationIsAssigned){
+   setFilterOptions(prev=>({...prev,isAssigned:locationIsAssigned}))
+  }
+  if(locationTaskHashElement){
+    const timer = setTimeout(() => {
+        const element = document.getElementById(locationTaskHashElement._id);
+        if (element) {
+          element.scrollIntoView({ 
+            behavior:"smooth",
+            block: 'start' // Aligns the top of the element to the top of the viewport
+          });
+        }
+      }, 100); // 100ms is usually enough
+       return ()=>{
+    clearTimeout(timer)
+  }
   }
   adminContextValues.handleChangeActiveLink(2)
-},[])
+ 
+},[locationTaskHashElement])
 
   // --- Action Handlers (Moved inside to access AntDContext) ---
   const handleManageTask = (task) => {
@@ -149,7 +163,7 @@ const TaskCategories = Object.keys(taskCategories).map(categoryKey => {
     const tasksForFilter = seachTerms() //this function will return the array for filter
     //because filter must be perfomed on the searchTasks, not all availble,
     //if seachbox is empty then filter will apply on all tasks, else on the search results
-    filterTasks(tasksForFilter, setFilteredTasks, filterOptions);
+   setFilteredTasks (filterTasks(tasksForFilter, setFilteredTasks, filterOptions));
   }, [tasks, filterOptions,searchInput]);
 useEffect(()=>{
 

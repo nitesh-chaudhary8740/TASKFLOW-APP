@@ -529,6 +529,7 @@ width: 100%;
     cursor: pointer;
     transition: all 0.2s;
     text-transform: capitalize;
+    
 }
 .create-task-btn{
     color: white;

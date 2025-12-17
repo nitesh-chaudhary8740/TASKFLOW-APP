@@ -1,0 +1,121 @@
+/* src/components/admin/admin-nav-sub-com0/SearchResultsOverlay.css */
+
+.emp-search-results-overlay {
+    position: absolute;
+    top: 100%; /* Directly below the search bar */
+    right: 42;   /* Align to the right edge of the search container */
+    
+    /* WIDTH FIX: Set a fixed wider width so it doesn't look narrow */
+    width: 350px; 
+    max-height: 300px; 
+    
+    margin-top: 8px;
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    overflow-y: auto;
+    
+    /* PREVENT SCROLL LEAK: Stops the background from scrolling */
+    overscroll-behavior: contain;
+}
+
+.emp-overlay-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background-color: #f8fafc; /* Subtle light blue/gray */
+    border-bottom: 1px solid var(--border-color);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.emp-overlay-header span {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-light);
+    letter-spacing: 0.05em;
+}
+
+.emp-close-overlay {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.emp-close-overlay:hover {
+    background-color: #fee2e2;
+    color: #ef4444;
+}
+
+.emp-results-list {
+    padding: 5px 0;
+}
+
+.emp-result-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+    /* Prevent text selection while clicking fast */
+    user-select: none; 
+}
+
+.emp-result-item:hover {
+    background-color: #f1f5f9; /* Professional light hover color */
+}
+
+.emp-result-icon {
+    margin-right: 12px;
+    flex-shrink: 0; /* Prevents icon from squishing */
+}
+
+.emp-task-icon {
+    color: #3b82f6; /* Soft blue */
+}
+
+.emp-item-details {
+    display: flex;
+    flex-direction: column;
+    pointer-events: none; /* Prevents text elements from blocking the click */
+}
+
+.emp-item-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1e293b;
+    line-height: 1.2;
+}
+
+.emp-item-subtitle {
+    font-size: 0.75rem;
+    color: #64748b;
+    margin-top: 3px;
+}
+
+.emp-no-results {
+    padding: 20px 15px;
+    text-align: center;
+    color: #94a3b8;
+    font-style: italic;
+    font-size: 0.85rem;
+}
+
+/* Mobile Adjustment */
+@media (max-width: 480px) {
+    .emp-search-results-overlay {
+        width: 280px;
+        right: -10px; /* Slight offset for mobile nav padding */
+    }
+}

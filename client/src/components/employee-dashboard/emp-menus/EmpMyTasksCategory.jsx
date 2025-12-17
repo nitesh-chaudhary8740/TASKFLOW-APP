@@ -17,7 +17,7 @@ const TaskCategories = Object.keys(taskCategories).map(categoryKey => {
     const count = getStatusCount(categoryName);
   
     // Determine if the badge should be red (high attention)
-    const needsAttention = ['PENDING_TASKS', 'OVERDUE_TASKS', 'UNDER_REVIEW_TASKS'].includes(categoryKey);
+    const needsAttention = ['PENDING_TASKS', 'OVERDUE_TASKS', 'BLOCKED_TASKS'].includes(categoryKey);
     
     const isActive = selectedTaskCategory === categoryName;
   

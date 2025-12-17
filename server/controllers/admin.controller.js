@@ -15,6 +15,8 @@ const sendEmail = require("../utils/sendmail.util.js");
 const nanoid = require("nanoid");
 const mongoose = require("mongoose"); // Make sure you require Mongoose at the top
 const { validators } = require("../utils/validators.js");
+const { Report } = require("../models/report.model.js");
+const { findById } = require("../models/counter.model.js");
 
 const generateAdminTokens = async (adminId) => {
   const admin = await Admin.findById(adminId).select("-password -refreshToken");
@@ -331,6 +333,10 @@ const fetchAllTasks = async (req, res) => {
   const tasks = await Task.find().populate("assignedTo");
   res.status(200).send({msg:"tasks fetched successfully",tasks});
 };
+const fetchAllReports = async (req, res) => {
+  const reports = await Report.find().populate("task").populate("reportedBy","-password").exec();
+  res.status(200).send({msg:"tasks fetched successfully",reports});
+};
 const fetchAllPendingTasks = async (req, res) => {
   const pendingTasks = await Task.find({ status: "pending" });
   console.log(pendingTasks);
@@ -373,6 +379,10 @@ const unAssignTask = async (req, res) => {
     return res.status(404).send("Task not found.");
   }
 
+  if (task.status!==TASK_STATUS_OBJECT.PENDING) {
+    return res.status(400).send("This task is in working");
+  }
+  
   if (!task.isAssigned || !task.assignedTo) {
     return res.status(400).send("This task is not currently assigned.");
   }
@@ -560,6 +570,46 @@ const rollbackEmployeeUnassignmentResults = await Employee.updateMany(
   res.status(500).json({ msg: "Failed to unassign tasks due to a server error." });
  }
 };
+const approveReport = async(req,res)=>{
+  const {reportId} = req.body
+  const report = await Report.findById(reportId);
+  if(!report) return res.status(404).json({ msg: "report not found" });
+  const taskId= report.task
+  const task = await Task.findById(taskId)
+  if(!task) return res.status(404).json({ msg: "task not found, invalid task report" });
+  report.status="ACCEPTED";
+  await report.save({validateBeforeSave:false})
+  task.status = TASK_STATUS_OBJECT.COMPLETED
+  await task.save({validateBeforeSave:false})
+   res.status(200).json({ msg: "report approved" });
+    }
+const rejectReport = async(req,res)=>{
+  const {reportId} = req.body
+  const report = await Report.findById(reportId);
+  if(!report) return res.status(404).json({ msg: "report not found" });
+  const taskId= report.task
+  const task = await Task.findById(taskId)
+  if(!task) return res.status(404).json({ msg: "task not found, invalid task report" });
+  report.status="REJECTED";
+  await report.save({validateBeforeSave:false})
+  task.status = TASK_STATUS_OBJECT.IN_PROGRESS
+  await task.save({validateBeforeSave:false})
+   res.status(200).json({ msg: "report rejected successfully" });
+    }
+const undoReport = async(req,res)=>{
+  const {reportId} = req.body
+  const report = await Report.findById(reportId);
+  if(!report) return res.status(404).json({ msg: "report not found" });
+  const taskId= report.task
+  const task = await Task.findById(taskId)
+  if(!task) return res.status(404).json({ msg: "task not found, invalid task report" });
+  report.status="SUBMITTED";
+  await report.save({validateBeforeSave:false})
+  task.status = TASK_STATUS_OBJECT.IN_PROGRESS
+  await task.save({validateBeforeSave:false})
+   res.status(200).json({ msg: "report undo successfully" });
+    }
+
 module.exports = {
   generateAdminTokens,
   adminLogin,
@@ -580,4 +630,8 @@ module.exports = {
   bulkDeleteTasks,
   bulkAssignTasks,
   bulkUnassignTasks,
+  fetchAllReports,
+  approveReport,
+  rejectReport,
+  undoReport
 };

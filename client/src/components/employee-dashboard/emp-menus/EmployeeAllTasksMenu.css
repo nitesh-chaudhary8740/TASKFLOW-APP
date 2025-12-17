@@ -284,10 +284,10 @@ text-transform: capitalize;
 }
 
 /* Status Colors */
-.in-progress { background-color: #fef3c7; color: #b45309; }
+.under-review { background-color: #fef3c7; color: #b45309; }
 .pending { background-color: #fee2e2; color: #ef4444; }
 .completed { background-color: #d1fae5; color: #059669; }
-.on-hold { background-color: #e0f2fe; color: #0284c7; }
+.in-progress { background-color: #e0f2fe; color: #0284c7; }
 
 /* Priority Colors */
 .high { background-color: #ffe4e6; color: #e11d48; font-weight: 700; }
@@ -300,13 +300,13 @@ text-transform: capitalize;
 text-align: center !important;
 }
 
-.actions-cell {
+.emp-actions-cell {
 display: flex;
 gap: 8px;
 justify-content: center;
 align-items: center;
 height: 100%;
-/* width: 210px; */
+width: 220px;
 }
 
 .action-btn {

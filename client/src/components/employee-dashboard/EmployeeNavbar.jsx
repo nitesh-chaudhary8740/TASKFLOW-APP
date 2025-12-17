@@ -6,11 +6,15 @@ import { useState } from 'react';
 
 import { EmployeeDashboardContext } from '../../contexts/EmployeeDashboardContext';
 import { EmployeeProfileMenu } from './EmployeeProfileMenu';
+import { SearchResultsOverlay } from '../admin_dashboard/admin-nav-sub-com0/SearchResultsOverlay';
+import { EmpSearchResultsOverlay } from './employeeSearchOverlay';
 
 function EmployeeNavbar() {
     const [showProfileMenu,setShowProfileMenu] = useState(false)
     const {activeEmpNavLinks} = useContext(EmployeeDashboardContext)
     const user = JSON.parse(localStorage.getItem("currentUser"));
+      const [isSearchFocused, setIsSearchFocused] = useState(false);
+        const [searchTerm, setSearchTerm] = useState('');
 
 
   return (
@@ -47,16 +51,31 @@ function EmployeeNavbar() {
       <div className="navbar-right-section">
         
         {/* 🔍 SEARCH BAR PLACED HERE 🔍 */}
-        <div className="navbar-search">
-          <Search size={18} className="search-icon" />
-          <input 
-            type="text" 
-            placeholder="Search tasks, employees..." 
-            className="search-input"
-          />
-        </div>
-
-        {/* Vertical Separator between Search and Actions */}
+      {/* 🔍 SEARCH BAR SECTION */}
+<div className="navbar-search" style={{ position: 'relative' }}>
+    <Search size={18} className="search-icon" />
+    <input
+        type="text"
+        placeholder="Search tasks..."
+        className="search-input"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        onFocus={() => setIsSearchFocused(true)}
+        // Remove the auto-hide onBlur to keep it persistent while typing/clicking
+    />
+    
+    {/* RENDER SEARCH RESULTS OVERLAY */}
+    {isSearchFocused && (
+        <EmpSearchResultsOverlay 
+            searchTerm={searchTerm} 
+            // Pass a function to close the overlay manually
+            onClose={() => {
+                setIsSearchFocused(false);
+                setSearchTerm(''); // Optional: clear search on close
+            }} 
+        />
+    )}
+</div>
         <div className="nav-separator"></div>
 
         {/* Action Buttons */}

@@ -320,6 +320,7 @@ function All_Tasks({
             {fileteredTasks.map((task, i) => (
               <tr
                 key={task._id}
+                id={task._id}
                 className={checkIsSelected(task._id) ? "task-row-selected" : ""}
                 onClick={() => handleRowClick(task)}
               >

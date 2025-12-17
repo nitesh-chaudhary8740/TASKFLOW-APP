@@ -60,16 +60,18 @@ function AdminNavBar() {
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             onFocus={() => setIsSearchFocused(true)} // ⬅️ SET FOCUS STATE
-                            onBlur={() => {
-                                // Delay hide to allow click on a result item
-                                setTimeout(() => setIsSearchFocused(false), 150); 
-                            }}
+                            // onBlur={() => {
+                            //     // Delay hide to allow click on a result item
+                            //     setTimeout(() => setIsSearchFocused(false), 150); 
+                            // }}
                         />
                     </div>
                     
                     {/* ⬅️ RENDER SEARCH RESULTS OVERLAY */}
                     {isSearchFocused && (
-                        <SearchResultsOverlay searchTerm={searchTerm} />
+                        <SearchResultsOverlay searchTerm={searchTerm} onClose={()=>{
+                          setIsSearchFocused(false)
+                        }} />
                     )}
                 </div>
 

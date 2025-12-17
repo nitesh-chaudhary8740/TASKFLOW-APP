@@ -33,7 +33,7 @@ handleChangeActiveLink(0)
                 <p className="dashboard-date">{todayDate}</p>
                 </div>
                 <div>
-                <ProfileSummary/>
+                {/* <ProfileSummary/> */}
                 </div>
             </header>
             <StatCard />
@@ -41,7 +41,7 @@ handleChangeActiveLink(0)
                     {/* <OngoingTasksTable /> */}
                     
                     {/* <RecentActivityBox /> */}
-                    <QuickActions />
+                    {/* <QuickActions /> */}
                 
                 </div>
 

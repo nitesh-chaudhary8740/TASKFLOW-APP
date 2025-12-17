@@ -22,11 +22,11 @@ function ActionButtons({  task }) {
   if (task.status===TASK_STATUS_OBJECT.IN_PROGRESS) 
     return (
     <button
-      className="action-btn assign-btn"
+      className="action-btn delete-btn"
       title="View task details"
       onClick={() => stopWorkOnTask(task._id)}
     >
-      Stop working
+      Stop work
     </button>
 );
 //   return <div></div>;

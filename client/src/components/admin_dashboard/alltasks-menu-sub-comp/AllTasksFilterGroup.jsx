@@ -53,7 +53,7 @@ function AllTasksFilterGroup({ filterOptions, setFilterOptions,setSearchInput,se
                 onChange={(e) =>
                   setFilterOptions((prev) => ({
                     ...prev,
-                    isAssigned: e.target.value,
+                    isAssigned:e.target.value,
                   }))
                 }
                 className="hidden-radio"

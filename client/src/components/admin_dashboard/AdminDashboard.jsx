@@ -7,7 +7,7 @@ import { CreateTaskForm } from "./dashboard-home-options/CreateTaskForm";
 import { CreateEmployeeForm } from "./dashboard-home-options/CreateEmployeeForm.jsx";
 import { CreateProjectForm } from "./dashboard-home-options/CreateProjectForm.jsx";
 import axios from "axios";
-import { LayoutDashboard, Users, ListChecks, FolderPlus } from 'lucide-react';
+import { LayoutDashboard, Users, ListChecks, FolderPlus, FileText } from 'lucide-react';
 import { AssignEmployee } from "./dashboard-home-options/AssignEmployee.jsx";
 import TaskDetails from "./dashboard-home-options/TaskDetails.jsx";
 import { AntDContext } from "../../contexts/AntDContext.js";
@@ -20,7 +20,7 @@ const navLinks = [
     { name: 'Dashboard', icon: LayoutDashboard, href: '/admin-dashboard', active: true },
     { name: 'Employees', icon: Users, href: '/admin-dashboard/employees', active: false },
     { name: 'All Tasks', icon: ListChecks, href: '/admin-dashboard/all-tasks', active: false },
-    { name: 'Projects', icon: FolderPlus, href: '/admin-dashboard/projects', active: false },
+    { name: 'Reports', icon: FileText, href: '/admin-dashboard/reports', active: false },
 ];
 
 function AdminDashboard() {
@@ -39,11 +39,13 @@ function AdminDashboard() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [tasks, setTasks] = useState([]);
+    const [reports, setReports] = useState([]);
     const [allEmployees, setAllEmployees] = useState([]);
     // const [isPromptOpen, setIsPromptOpen] = useState(false)
     const selectedEmployee = useRef(null);
     const selectedTask = useRef(null);
     const selectedTasks = useRef(null)
+      const EMP_API = import.meta.env.VITE_EMP_API_URL;
     // const promptData = useRef({
     //     message: "",
     //     onConfirm: () => { },
@@ -98,6 +100,25 @@ function AdminDashboard() {
             }
         };
         fetchEmployees();
+    }, [showError,refetch]);
+    // --- Fetch Reports ---
+    useEffect(() => {
+        const fetchReports = async () => {
+            setIsLoading(true);
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/reports`,{withCredentials:true});
+                const fetchedReports = response.data.reports;
+                setReports(fetchedReports);
+                setError(null);
+            } catch (err) {
+                console.error("Error fetching reports:", err);
+                showError("Failed to reports.", 3);
+                setError("Failed to reports.");
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchReports();
     }, [showError,refetch]);
 
     // --- Fetch Admin Metadata ---
@@ -186,7 +207,7 @@ function AdminDashboard() {
         } catch (err) {
             console.error("Error unassigning task:", err.response?.data || err.message);
             setTasks(originalTasks); // Rollback
-            const errMsg = err.response?.data?.message || "Failed to unassign task. Network error.";
+            const errMsg = err.response?.data || "Failed to unassign task. Network error.";
             showError(errMsg, 5);
         }
     };
@@ -312,7 +333,6 @@ function AdminDashboard() {
         }
     }
     const handleBulkUnassignTasks = async (tasksArr,skipPrompt=false) => {
-        console.log('bulk-unassign', tasksArr)
          if(!skipPrompt){
             configPrompt({
                 msg:`Do you want to Unassign ${tasksArr.length!==1?tasksArr.length+" tasks":tasksArr.length+" task"} ?`,
@@ -331,7 +351,7 @@ function AdminDashboard() {
         //  setTasks(response?.data?.tasks)
         //  showSuccess(`${response.data.msg}`, 3);
          showSuccess(`${response.data.msg}`, 3);
-            triggerRefetch()
+        triggerRefetch()
            
         } catch (err) {
             // 5. Failure: Rollback UI and show error message
@@ -372,6 +392,104 @@ function AdminDashboard() {
             showError(errMsg, 5);
         }
     }
+    const returnFetchedReportById = async (reportId) => {
+    try {
+      const response = await axios.get(`${EMP_API}/fetch-report/${reportId}`);
+      console.log("report",response.data)
+      if (response.data.report) return response.data.report;
+      else throw new Error("report not found");
+    } catch (error) {
+      showError(error);
+      showError(error?.response?.data?.msg | "error in fetching report by id");
+    }
+  };
+  const approveReport = async(reportId,skipPrompt=false)=>{
+    if(!skipPrompt){
+            configPrompt({
+                msg:`Do you want to approve this report} ?`,
+                confirmText:`Approve`,
+                cancelText:`Cancel`,
+                type:"success",
+                onConfirm:()=>approveReport(reportId,true)
+            })
+            return;
+        }
+     
+        try {
+         const apiUrl = import.meta.env.VITE_API_URL;
+         const response = await axios.put(`${apiUrl}/approve-report/`,{reportId:reportId},{withCredentials:true});
+        
+
+         showSuccess(`${response.data.msg}`, 3);
+        triggerRefetch()
+           
+        } catch (err) {
+            // 5. Failure: Rollback UI and show error message
+            console.error("Error in approving report:", err.response?.data?.msg || err.message);
+           
+            const errMsg = err.response?.data.msg || "Failed to approve report. Network error.";
+            showError(errMsg, 5);
+        }
+       
+  }
+  const rejectReport = async(reportId,skipPrompt=false)=>{
+    if(!skipPrompt){
+            configPrompt({
+                msg:`Do you want to reject this report} ?`,
+                confirmText:`Reject`,
+                cancelText:`Cancel`,
+                type:"delete",
+                onConfirm:()=>rejectReport(reportId,true)
+            })
+            return;
+        }
+     
+        try {
+         const apiUrl = import.meta.env.VITE_API_URL;
+         const response = await axios.put(`${apiUrl}/reject-report/`,{reportId:reportId},{withCredentials:true});
+        
+
+         showSuccess(`${response.data.msg}`, 3);
+        triggerRefetch()
+           
+        } catch (err) {
+            // 5. Failure: Rollback UI and show error message
+            // console.error("Error in rejecting report:", err.response?.data?.msg || err.message);
+           
+            const errMsg = err.response?.data.msg || "Failed to reject report. Network error.";
+            showError(errMsg, 5);
+        }
+       
+  }
+  const undoReport = async(reportId,skipPrompt=false)=>{
+    if(!skipPrompt){
+            configPrompt({
+                msg:`Do you want to reject this report} ?`,
+                confirmText:`Undo`,
+                cancelText:`Cancel`,
+                type:"warning",
+                onConfirm:()=>undoReport(reportId,true)
+            })
+            return;
+        }
+     
+        try {
+         const apiUrl = import.meta.env.VITE_API_URL;
+         const response = await axios.put(`${apiUrl}/undo-report/`,{reportId:reportId},{withCredentials:true});
+        
+
+         showSuccess(`${response.data.msg}`, 3);
+        triggerRefetch()
+           
+        } catch (err) {
+            // 5. Failure: Rollback UI and show error message
+            // console.error("Error in rejecting report:", err.response?.data?.msg || err.message);
+           
+            const errMsg = err.response?.data.msg || "Failed to undo report. Network error.";
+            showError(errMsg, 5);
+        }
+       
+  }
     const values = {
         selectedEmployee,
         isTaskFormOpen,
@@ -390,8 +508,10 @@ function AdminDashboard() {
         selectedTask,
         isTaskDetailsFormOpen,//task detail modal overlay togglee
         setIsTaskDetailsFormOpen,
-        isEmployeeDetailsFormOpen, setIsEmployeeDetailsFormOpen,
+        isEmployeeDetailsFormOpen,
+        setIsEmployeeDetailsFormOpen,
         tasks,//all tasks
+        reports,
         isLoading,//api loading
         error,//api error
         setTasks,
@@ -406,9 +526,12 @@ function AdminDashboard() {
         handleBulkUnassignTasks,
         handleBulkDeleteTasks,
         configPrompt,
-  
+        returnFetchedReportById,
         selectedTasks,
         triggerRefetch,
+        approveReport,
+        rejectReport,
+        undoReport
     };
     return (
         <div className={`admin-app-wrapper${isTaskFormOpen ? "modal" : ""}`}>

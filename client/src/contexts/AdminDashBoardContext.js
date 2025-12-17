@@ -34,6 +34,7 @@ export const AdminDashBoardContext = createContext({
   isEmployeeDetailsFormOpen: false,
   setIsEmployeeDetailsFormOpen: () => {},
   tasks: [],
+  reports: [],
   isLoading: false,
   error: null,
   setTasks: () => {},
@@ -41,6 +42,7 @@ export const AdminDashBoardContext = createContext({
   setError: () => {},
   allEmployees: [],
   setAllEmployees: () => {},
+  
   
   // --- Individual Handlers ---
   /** @param {string} taskId */
@@ -57,7 +59,10 @@ export const AdminDashBoardContext = createContext({
   handleBulkUnassignTasks: (taskArr) => { taskArr; },
   /** @param {Array<string>} taskArr */
   handleBulkDeleteTasks: (taskArr) => { taskArr; },
-  
+    returnFetchedReportById:(reportId)=>{reportId},
+ approveReport:(reportId)=>{reportId},
+   rejectReport:(reportId)=>{reportId},
+    undoReport  :(reportId)=>{reportId},
   // --- Prompt / Modal Handlers ---
 
   

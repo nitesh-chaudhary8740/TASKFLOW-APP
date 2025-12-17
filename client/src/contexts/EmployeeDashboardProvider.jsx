@@ -164,6 +164,7 @@ function EmployeeDashboardProvider() {
   const returnFetchedReportById = async (reportId) => {
     try {
       const response = await axios.get(`${EMP_API}/fetch-report/${reportId}`);
+      console.log("report",response.data)
       if (response.data.report) return response.data.report;
       else throw new Error("report not found");
     } catch (error) {
