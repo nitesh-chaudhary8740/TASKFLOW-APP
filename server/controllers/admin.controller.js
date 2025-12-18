@@ -133,9 +133,8 @@ const employeeRegistration = async (req, res) => {
       return;
     }
     const password = generateUserPassword(8);
-    req.body.password = password;
 
-      await sendEmail(
+      sendEmail(
         email,
         "MY APP",
         mailData(fullName, userName, password),
