@@ -7,6 +7,7 @@ import { TASK_MANAGEMENT_HOME } from '../../../contexts/TaskManageMent.context';
 
 import axios from 'axios';
 import { AntDContext } from '../../../contexts/AntDContext';
+import { Link } from 'react-router-dom';
 export function ProfileMenu() {
    
 const  {selectedAuthRole,currentUser,setCurrentUser} = useContext(TASK_MANAGEMENT_HOME)
@@ -35,7 +36,6 @@ const handleAction = (name) => {
   }
   
   const menuItems = [
-    { name: "Account", icon: User, action: () => handleAction("Account") },
     { name: "Help", icon: HelpCircle, action: () => handleAction("Help") },
     { name: "Logout", icon: LogOut, action: () => handleLogOut(), isDanger: true },
   ];
@@ -50,7 +50,7 @@ const handleAction = (name) => {
           </div>
           <div>
               <p style={{ fontSize: '14px', fontWeight: '600', color: '#1f2937' }}>{currentUser.name}</p>
-              <p style={{ fontSize: '12px', color: '#6b7280' }}>View profile</p>
+                <Link className='view-profile-link' to={"/admin-profile"}>View profile</Link>
           </div>
 
           {/* Close Button (X) */}

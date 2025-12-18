@@ -24,7 +24,7 @@ function TaskManageMentProvider({ children }) {
         confirmText: ""
     })
 
-     const configPrompt = (configOptions) => {
+  const configPrompt = (configOptions) => {
         promptData.current = {
             // Set the message, type, and the function to run on confirm
             message: configOptions.msg,

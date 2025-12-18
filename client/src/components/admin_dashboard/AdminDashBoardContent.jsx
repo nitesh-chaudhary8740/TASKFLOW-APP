@@ -14,8 +14,8 @@ const summaryData = [
         colorClass: 'card-blue' 
     },
     { 
-        title: "Active Projects", 
-        value: "activeProjects", 
+        title: "Under-Review Tasks", 
+        value: "totalUnderReview", 
         icon: FolderPlus, 
         colorClass: 'card-green' 
     },
@@ -62,6 +62,7 @@ function AdminDashBoardContent() {
     if(value==="totalUnAssignedTasks") navigate("all-tasks",{state:{ isAssigned: "false"}})
     if(value==="totalEmployees") navigate("employees")
     if(value==="totalTasks") navigate("all-tasks")
+    if(value==="totalUnderReview") navigate("all-tasks",{state:{status:"UNDER-REVIEW"}})
   }
   const todayDate = new Date().toLocaleDateString("en-US", {
         weekday: "long",
@@ -85,13 +86,15 @@ function AdminDashBoardContent() {
         console.log("hello")
         adminContextValues.setIsTaskFormOpen(true)
     }
-    const handleCreateProject = () => {
-        {
-        console.log("hello")
-        adminContextValues.setIsCreateProjectFormOpen(true)
+    // const handleCreateProject = () => {
+    //     {
+
+    //     adminContextValues.setIsCreateProjectFormOpen(true)
+    // }
+    // }
+    const handleReviewActivity = () => {
+        adminContextValues.setIsActivityLogOpen(true)
     }
-    }
-    const handleReviewActivity = () => console.log('Navigating to Detailed Activity Log...');
 
 // console.log("admin",adminContextValues.adminMetaData)
     return (
@@ -125,11 +128,7 @@ function AdminDashBoardContent() {
                         title="Create New Task" 
                         onClick={handleCreateTask} 
                     />
-                    <QuickActionButton 
-                        icon={FolderPlus} 
-                        title="Create New Project" 
-                        onClick={handleCreateProject} 
-                    />
+                  
                      <QuickActionButton 
                         icon={Activity} 
                         title="Review Activity Log" 

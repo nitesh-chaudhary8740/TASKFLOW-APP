@@ -1,0 +1,124 @@
+/* Reuse your existing Overlay style */
+.activity-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 999; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+}
+
+/* Modal Container with Fixed Height */
+.activity-modal-container {
+    position: relative;
+    max-width: 650px;
+    width: 90%;
+    height: 80vh; /* Fixed Height */
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-direction: column; /* Allows header to stay top, content to scroll */
+    padding: 30px;
+    animation: slideIn 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Scrollable Body Area */
+.activity-scroll-area {
+    flex: 1; /* Takes up remaining space */
+    overflow-y: auto; /* The magic scroll bit */
+    margin-top: 20px;
+    padding-right: 10px; /* Space for scrollbar */
+}
+
+/* Timeline Styling */
+.activity-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+}
+
+.timeline-item {
+    display: flex;
+    gap: 15px;
+    position: relative;
+}
+
+/* The vertical line connecting icons */
+.timeline-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 17px;
+    top: 35px;
+    bottom: -15px;
+    width: 2px;
+    background: #f0f0f0;
+}
+
+.timeline-icon {
+    min-width: 36px;
+    height: 36px;
+    background: #f8fafc;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    border: 1px solid var(--border-color);
+}
+
+/* Icon Colors */
+.icon-task { color: var(--primary); }
+.icon-approve { color: #10b981; }
+.icon-reject { color: #ef4444; }
+.icon-assign { color: #f59e0b; }
+.icon-user { color: #8b5cf6; }
+
+.timeline-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.timeline-desc {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--secondary);
+    line-height: 1.4;
+}
+
+.timeline-time {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    margin-top: 4px;
+}
+
+/* Custom Scrollbar for better UX */
+.activity-scroll-area::-webkit-scrollbar {
+    width: 6px;
+}
+.activity-scroll-area::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+.activity-scroll-area::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+/* Red styling for delete actions */
+.icon-delete { 
+    color: #ef4444; 
+}
+
+/* Optional: Add a subtle red background for the icon wrapper on delete actions */
+/* You can apply this by checking the action type in the JSX className */
+.timeline-item.action-deleted .timeline-icon {
+    background-color: #fef2f2;
+    border-color: #fee2e2;
+}

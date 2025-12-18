@@ -3,14 +3,18 @@ import "./AdminReports.css"
 import { FileText, Calendar, List, Eye } from 'lucide-react';
 import { AdminDashBoardContext } from '../../contexts/AdminDashBoardContext';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 function AdminReports() {
-const {reports} = useContext(AdminDashBoardContext)
+const {reports,handleChangeActiveLink} = useContext(AdminDashBoardContext)
 const navigate = useNavigate()
+useEffect(()=>{
+    handleChangeActiveLink(3)
+},[])
    if (!reports || reports.length === 0) {
         return (
             <div className="report-status-message no-data">
                 <FileText size={40} />
-                <p>You haven't submitted any reports yet.</p>
+                <p>Employees haven't submitted any reports yet.</p>
             </div>
         );
     }
@@ -28,7 +32,7 @@ const navigate = useNavigate()
     // 4. Main Content Rendering (Table)
     return (
         <div className="my-reports-container">
-            <h1><List size={32} style={{marginRight: '10px'}} />My Submitted Reports</h1>
+            <h1><List size={32} style={{marginRight: '10px'}} /> Submitted Reports</h1>
 
             <div className="reports-table-wrapper">
                 <table className="reports-table">

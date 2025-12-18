@@ -333,7 +333,7 @@ useEffect(()=>{
                                             className="view-report-button"
                                             // Check if the current task status is in the list of statuses with no reports
                                             disabled={hasNoReports.includes(task.status)} 
-                                            onClick={() => { console.log(`Viewing report for Task: ${task.name}`); }} 
+                                            onClick={() => { navigate(`/admin-dashboard/view-report/${task.report}`) }} 
                                         >
                                             View Report
                                         </button>

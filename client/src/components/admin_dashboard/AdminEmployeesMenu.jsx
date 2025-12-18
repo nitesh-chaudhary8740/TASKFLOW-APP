@@ -26,7 +26,8 @@ function AdminEmployeesMenu() {
     selectedEmployee,
     // setIsEmployeeDetailsFormOpen,
     handleDeleteEmployee,
-    handleChangeActiveLink
+    handleChangeActiveLink,
+    triggerRefetch
   } = useContext(AdminDashBoardContext);
  const [fileteredEmployees, setFilteredEmployees] = useState(allEmployees);
   const [filterOptions, setFilterOptions] = useState({
@@ -146,7 +147,9 @@ function AdminEmployeesMenu() {
                     </button>
                     <button
                       className="action-btn delete-btn"
-                      onClick={() => handleDeleteEmployee(employee._id)}
+                      onClick={() => {handleDeleteEmployee(employee._id)
+                        triggerRefetch()}
+                      }
                       title="Delete Employee"
                     >
                       <Trash2 size={16} />

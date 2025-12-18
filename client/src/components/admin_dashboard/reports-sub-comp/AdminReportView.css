@@ -49,3 +49,37 @@
     color: white;
     background-color: #e9aa0a;
 }
+/* Container for buttons to align them nicely */
+.action-button-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Style for disabled buttons */
+.approve-btn:disabled, 
+.reject-btn:disabled {
+    background-color: #d1d5db; /* Gray out */
+    color: #9ca3af;
+    border-color: #e5e7eb;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Ensure icons/text inside follow the disabled cursor */
+.approve-btn:disabled *, 
+.reject-btn:disabled * {
+    pointer-events: none;
+}
+
+/* Hover effects for enabled buttons only */
+.approve-btn:not(:disabled):hover {
+    background-color: #059669;
+    transform: translateY(-1px);
+}
+
+.reject-btn:not(:disabled):hover {
+    background-color: #dc2626;
+    transform: translateY(-1px);
+}

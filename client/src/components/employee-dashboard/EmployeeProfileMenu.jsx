@@ -38,7 +38,7 @@ const navigate = useNavigate()
               {user.fullName.charAt(0).toUpperCase()}
           </div>
           <div>
-              <p style={{ fontSize: '14px', fontWeight: '600', color: '#1f2937' }}>{user.name}</p>
+              <p style={{ fontSize: '14px', fontWeight: '600', color: '#1f2937' }}>{user.fullName}</p>
               <Link className='view-profile-link' to={"/employee-profile"}>View profile</Link>
           </div>
 

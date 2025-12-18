@@ -96,6 +96,7 @@ function EmployeeMyTasks() {
       <div className="task-menu-container">
         <EmpMyTasksCategory
           tasks={employeeAllTasks}
+          filteredTasks={filteredTasks}
           setFilterOptions={setFilterOptions}
           selectedTaskCategory={selectedTaskCategory}
           setSelectedTaskCategory={setSelectedTaskCategory}

@@ -40,6 +40,13 @@ export const SearchResultsOverlay = ({ searchTerm, onClose }) => {
     if (!searchTerm) {
         return (
             <div className="search-results-overlay">
+                  <div className="overlay-header">
+                <span>Admin Search</span>
+                <button className="close-overlay-btn" onClick={onClose}>
+                    <X size={14} />
+                </button>
+            </div>
+
                 <div className="no-results">Start typing to search tasks and employees.</div>
             </div>
         );
@@ -47,7 +54,15 @@ export const SearchResultsOverlay = ({ searchTerm, onClose }) => {
     
     if (filteredResults.length === 0) {
         return (
+            
             <div className="search-results-overlay">
+                  <div className="overlay-header">
+                <span>Admin Search</span>
+                <button className="close-overlay-btn" onClick={onClose}>
+                    <X size={14} />
+                </button>
+            </div>
+
                 <div className="no-results">No results found for "{searchTerm}".</div>
             </div>
         );
@@ -93,11 +108,16 @@ export const SearchResultsOverlay = ({ searchTerm, onClose }) => {
                                 <FileText size={16} className="result-icon task-icon" />
                             }
                             <div className="item-details">
-                                <div className="item-title">{isEmployee ? item.fullName : item.name}</div>
+                                <div className="item-title">{isEmployee ? item.fullName : <span>{item.name} <span style={{fontWeight:"normal", fontSize:"1.8vh"}}>{`(${item.id})`}</span> </span>}</div>
                                 <div className="item-subtitle">
                                     {isEmployee ? 
                                         item.designation : 
-                                        `Assigned: ${item.assignedTo?.userName || 'Unassigned'}`
+                                        
+                                        `
+                                        Assigned: ${item.assignedTo?.userName || 'Unassigned'}
+                                        
+                                        `
+
                                     }
                                 </div>
                             </div>

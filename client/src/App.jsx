@@ -32,6 +32,7 @@ import ReportDetailsPage from "./components/employee-dashboard/emp-menus/my-repo
 import EmployeeProfile from "./components/employee-dashboard/EmployeeProfile";
 import AdminReports from "./components/admin_dashboard/AdminReports";
 import AdminReportView from "./components/admin_dashboard/reports-sub-comp/AdminReportView";
+import AdminProfile from "./components/admin_dashboard/admin-nav-sub-com0/AdminProfile";
 
 
 function App() {
@@ -61,6 +62,7 @@ function App() {
                 <Route path="reports" element={<AdminReports />} />
                 <Route path="view-report/:reportId" element={<AdminReportView />} />
               </Route>
+              <Route path="/admin-profile" element={<AdminProfile/>}/>
               {/* Employee Route */}
               <Route path="/employee-dashboard" element={<ProtectedEmployeeDashboard/>}>
 

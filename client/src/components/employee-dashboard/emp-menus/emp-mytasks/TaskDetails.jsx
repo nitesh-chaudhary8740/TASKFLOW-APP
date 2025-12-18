@@ -19,9 +19,7 @@ function TaskDetails() {
    (async()=>{
       const returnedTask = await returnFetchedTaskById(taskId);
       console.log(returnedTask)
-      if(returnedTask) setTask(returnedTask)
-       
-      
+      if(returnedTask) setTask(returnedTask)   
    })();
     },[taskId,returnFetchedTaskById])
     if (!task) {
@@ -92,8 +90,11 @@ function TaskDetails() {
                         task.hasReport ? (
                             <span>
                                 has been submitted:
-                                <button className='task-details-report-submit-btn view-report-btn'>View Report</button> 
-                                <button className='task-details-report-submit-btn delete-report-btn'>Delete Report</button> 
+                                <button className='task-details-report-submit-btn view-report-btn'
+                                onClick={()=>{
+                                    navigate(`/employee-dashboard/report-details/${task.report}`)
+                                }}>View Report</button> 
+                                {/* <button className='task-details-report-submit-btn delete-report-btn'>Delete Report</button>  */}
                             </span>
                         ) : (
                             <span >

@@ -1,8 +1,8 @@
 import React from 'react'
-import { filterTasks } from '../../../utils/filter_and_sorting';
+
 import { ListChecks } from 'lucide-react';
  
-function EmpMyTasksCategory({tasks,setFilterOptions,selectedTaskCategory,setSelectedTaskCategory,taskCategories}) {
+function EmpMyTasksCategory({tasks,filteredTasks,setFilterOptions,selectedTaskCategory,setSelectedTaskCategory,taskCategories}) {
 
     const getStatusCount = (status) => {
     if (status === taskCategories.ALL_TASKS) {
@@ -59,7 +59,7 @@ const TaskCategories = Object.keys(taskCategories).map(categoryKey => {
         <h1 className="task-list-title">
           <ListChecks size={32} style={{ marginRight: "10px" }} />
        
-          {`${selectedTaskCategory} (${filterTasks.length})`}
+          {`${selectedTaskCategory} (${filteredTasks.length})`}
 
         </h1>
     </>

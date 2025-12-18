@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { FileText, X } from "lucide-react"; // Import X icon
 import { useNavigate } from "react-router-dom";
 import { EmployeeDashboardContext } from "../../contexts/EmployeeDashboardContext";
-// ... other imports
+import "./SearchResultsOverlay.css"
 
 export const EmpSearchResultsOverlay = ({ searchTerm, onClose }) => {
   const { employeeAllTasks } = useContext(EmployeeDashboardContext);

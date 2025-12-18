@@ -43,6 +43,7 @@ const SortIcon = ({ direction = "none" }) => {
   function AdminAllTasksMenu() {
     const location = useLocation()
     const locationIsAssigned = location?.state?.isAssigned||null
+    const locationHasStatus = location?.state?.status||null
     const locationTaskHashElement =location?.state?.taskHashElement||null
   const [isSelecting,setIsSelecting]=useState(false)
   const [selectedTasksArray,setSelectedTasksArray]=useState([])
@@ -62,6 +63,14 @@ useEffect(()=>{
   if(locationIsAssigned){
    setFilterOptions(prev=>({...prev,isAssigned:locationIsAssigned}))
   }
+  if(locationHasStatus){
+    setSelectedTaskCategory(taskCategories.UNDER_REVIEW_TASKS)
+    setFilterOptions(({
+                    priority:"all",
+                    isAssigned:"all",
+                    status: "UNDER-REVIEW"
+                }))
+  }
   if(locationTaskHashElement){
     const timer = setTimeout(() => {
         const element = document.getElementById(locationTaskHashElement._id);
@@ -78,7 +87,7 @@ useEffect(()=>{
   }
   adminContextValues.handleChangeActiveLink(2)
  
-},[locationTaskHashElement])
+},[locationTaskHashElement,locationIsAssigned])
 
   // --- Action Handlers (Moved inside to access AntDContext) ---
   const handleManageTask = (task) => {

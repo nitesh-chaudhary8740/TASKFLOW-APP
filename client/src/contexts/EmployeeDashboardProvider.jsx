@@ -47,9 +47,10 @@ function EmployeeDashboardProvider() {
         const response = await axios.get(
           `${EMP_API}/employee-tasks/${user.current._id}`
         );
-
+        console.log(response)
         setEmployeeAllTasks(response.data.empTasks);
       } catch (error) {
+        console.log(error.response)
         if (error?.response?.data) showError(error.response.data);
         else showError("error is fetching tasks");
       }
@@ -164,7 +165,6 @@ function EmployeeDashboardProvider() {
   const returnFetchedReportById = async (reportId) => {
     try {
       const response = await axios.get(`${EMP_API}/fetch-report/${reportId}`);
-      console.log("report",response.data)
       if (response.data.report) return response.data.report;
       else throw new Error("report not found");
     } catch (error) {

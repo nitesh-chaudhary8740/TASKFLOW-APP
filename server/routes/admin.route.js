@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { employeeRegistration, adminLogout,adminLogin ,taskCreation, fetchAllTasks, fetchAllEmployees, fetchAdminMetaData, fetchAllPendingTasks, assignTask, deleteTask, deleteEmployee, unAssignTask, upDateEmployeeDetails, updateTask, bulkDeleteTasks, bulkAssignTasks, bulkUnassignTasks, currentUser, fetchAllReports, approveReport, rejectReport, undoReport} = require("../controllers/admin.controller");
+const { employeeRegistration, adminLogout,adminLogin ,taskCreation, fetchAllTasks, fetchAllEmployees, fetchAdminMetaData, fetchAllPendingTasks, assignTask, deleteTask, deleteEmployee, unAssignTask, upDateEmployeeDetails, updateTask, bulkDeleteTasks, bulkAssignTasks, bulkUnassignTasks, currentUser, fetchAllReports, approveReport, rejectReport, undoReport, createActivity, getActivities} = require("../controllers/admin.controller");
 const verifyJWT = require("../middlewares/auth.middleware.js");
 
 const adminRouter = express.Router();
@@ -27,4 +27,7 @@ adminRouter.route('/bulk-unassign-tasks').patch(verifyJWT,bulkUnassignTasks)
 adminRouter.route('/approve-report').put(verifyJWT,approveReport)
 adminRouter.route('/reject-report').put(verifyJWT,rejectReport)
 adminRouter.route('/undo-report').put(verifyJWT,undoReport)
+adminRouter.route('/create-activity').post(verifyJWT,createActivity)
+adminRouter.route('/get-activities').get(verifyJWT,getActivities)
+
 module.exports = adminRouter

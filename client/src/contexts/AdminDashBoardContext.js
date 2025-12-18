@@ -71,5 +71,24 @@ export const AdminDashBoardContext = createContext({
    * @type {React.MutableRefObject<Array<string>>}
    * A ref object holding the array of currently selected task IDs (strings) for bulk actions.
    */
-  selectedTasks: { current: [] } // Set default to match useRef([]) initialization
+  selectedTasks: { current: [] },// Set default to match useRef([]) initialization
+
+  /**
+ * Sends activity data to the backend to log a new system event.
+ * * @async
+ * @function createActivity
+ * @param {Object} options - The activity configuration object.
+ * @param {('Admin'|'Employee')} options.performerType - The collection type of the user performing the action.
+ * @param {string} options.performerId - The MongoDB ObjectId of the Admin or Employee.
+ * @param {string} options.action - A constant representing the action (e.g., 'TASK_ASSIGNED', 'WORK_STARTED').
+ * @param {('Task'|'Report'|'Admin'|'Employee')} options.targetType - The collection type of the object being acted upon.
+ * @param {string} options.targetId - The MongoDB ObjectId of the target (Task, Report, etc.).
+ * @param {string} options.description - A human-readable summary of the event (e.g., "John Doe submitted a report").
+ * @param {Object} [options.metadata] - Optional additional data (e.g., { oldStatus: 'Pending', newStatus: 'Accepted' }).
+ * @returns {Promise<void>}
+ */
+createActivity:(options)=>{options},
+activities:[],
+isActivityLogOpen:false, 
+setIsActivityLogOpen:()=>{}
 });

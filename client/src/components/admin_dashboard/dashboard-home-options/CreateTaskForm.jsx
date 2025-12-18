@@ -39,18 +39,21 @@ const {showError,showSuccess} =useContext(AntDContext)
          }
           const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/task-create`,taskData,{withCredentials:true});
+        await values.createActivity({
+            performerType:"Admin",
+            performerId:currentUser._id,
+            action:"Task",
+            targetType:"Task",
+            targetId:response.data.task._id,
+            description:`task ${response.data.task.name} created by ${currentUser.name}`
+
+            })
             showSuccess(response.data.msg,3)
             values.triggerRefetch()
       } catch (error) {
         console.log(error)
         showError(error.response?.data?.msg,3)
-      }
-     
-
-         
-            
-           
-       
+      }      
     };
 
     return (

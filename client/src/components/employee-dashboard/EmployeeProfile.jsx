@@ -186,7 +186,7 @@ function EmployeeProfile() {
                 {/* 1. Identity Section */}
                 <div className="employee-profile-identity">
                     <div className="employee-profile-avatar">{initial}</div>
-                    <h3 className="employee-profile-username">{name || 'N/A'}</h3>
+                    <h3 className="employee-profile-username">{fullName || 'N/A'}</h3>
                     <p className="employee-profile-role">Role: **{role || 'Employee'}**</p>
                     <p className="employee-profile-designation">Designation: **{designation || 'N/A'}**</p>
                 </div>

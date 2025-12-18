@@ -10,7 +10,7 @@ import { SearchResultsOverlay } from './admin-nav-sub-com0/SearchResultsOverlay'
 function AdminNavBar() {
   const [showProfileMenu,setShowProfileMenu] = useState(false)
   const [isSearchFocused, setIsSearchFocused] = useState(false);
-    const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const adminContextValues = useContext(AdminDashBoardContext)  
   const {currentUser} = useContext(TASK_MANAGEMENT_HOME)
 
