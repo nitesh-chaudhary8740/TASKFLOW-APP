@@ -4,24 +4,36 @@ console.log(process.env.MAIL_SERVICE_PASSWORD_7225)
 const nodemailer = require('nodemailer');
 
 // 1. Define the Transporter configuration
+// const transporter = nodemailer.createTransport({
+//     // Use 'service' for well-known providers like 'gmail', 'hotmail', etc.
+//     // This automatically sets the host, port, and security settings.
+//     service: 'gmail', 
+    
+//     // OR specify custom SMTP settings:
+//     /*
+//     host: 'smtp.gmail.com', // or smtp-mail.outlook.com
+//     port: 465, // Use 465 for secure: true (SSL/TLS)
+//     secure: true, // Use TLS
+//     */
+    
+//     // 2. Authentication Block
+//     auth: {
+//         // Use environment variables for security!
+//         user: process.env.EMAIL_USER, // e.g., 'your-email@gmail.com'
+//         pass: process.env.MAIL_SERVICE_PASSWORD_7225, // e.g., 'the-16-character-app-password'
+//     },
+// });
 const transporter = nodemailer.createTransport({
-    // Use 'service' for well-known providers like 'gmail', 'hotmail', etc.
-    // This automatically sets the host, port, and security settings.
-    service: 'gmail', 
-    
-    // OR specify custom SMTP settings:
-    /*
-    host: 'smtp.gmail.com', // or smtp-mail.outlook.com
-    port: 465, // Use 465 for secure: true (SSL/TLS)
-    secure: true, // Use TLS
-    */
-    
-    // 2. Authentication Block
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false, // true for 465, false for other ports
     auth: {
-        // Use environment variables for security!
-        user: process.env.EMAIL_USER, // e.g., 'your-email@gmail.com'
-        pass: process.env.MAIL_SERVICE_PASSWORD_7225, // e.g., 'the-16-character-app-password'
+        user: process.env.EMAIL_USER,
+        pass: process.env.MAIL_SERVICE_PASSWORD_7225,
     },
+    tls: {
+        rejectUnauthorized: false // Helps bypass some network restrictions
+    }
 });
 const sendEmail = async (to, subject, htmlContent, textContent) => {
     const mailOptions = {

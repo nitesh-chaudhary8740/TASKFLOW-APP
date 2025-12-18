@@ -124,37 +124,36 @@ const currentUser = async(req,res)=>{
 const employeeRegistration = async (req, res) => {
   try {
     const { userName, fullName, email, designation, phone, address } = req.body;
-    const existingUser = await Employee.findOne({
-      $or: [{ userName }, { email }],
-    });
-   
+    
+    // 1. Validation Logic...
+    const existingUser = await Employee.findOne({ $or: [{ userName }, { email }] });
     if (existingUser) {
-      res.status(400).json({msg:"this username and email already exists",success:false});
-      return;
+      return res.status(400).json({msg:"User already exists", success:false});
     }
+
     const password = generateUserPassword(8);
 
-      sendEmail(
-        email,
-        "MY APP",
-        mailData(fullName, userName, password),
-        "Welcome to app"
-      );
- 
+    // 2. Create the Employee FIRST
     const emp = await Employee.create({
-      userName,
-      fullName,
-      email,
-      password,
-      phone,
-      address,
-      designation,
-      createdBy:req.user._id
+      userName, fullName, email, password, phone, address, designation,
+      createdBy: req.user._id
     });
-    res.status(201).json({ msg: "user successfully created", emp });
+
+    // 3. Send Email WITHOUT 'await'
+    // This allows the response to be sent immediately while the email sends in the background
+    sendEmail(
+      email,
+      "Welcome to App",
+      mailData(fullName, userName, password),
+      "Your account has been created."
+    ).catch(err => console.error("Background Email Error:", err));
+
+    // 4. Respond to client immediately
+    return res.status(201).json({ msg: "User successfully created", emp });
+
   } catch (error) {
-    console.log("error",error)
-    res.status(400).json({ success: false, msg: "" });
+    console.error("Controller Error:", error);
+    res.status(500).json({ success: false, msg: "Internal Server Error" });
   }
 };
 
