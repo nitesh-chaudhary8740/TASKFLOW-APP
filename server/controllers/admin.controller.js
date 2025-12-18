@@ -63,7 +63,9 @@ const adminLogin = async (req, res) => {
     const {accessToken,refreshToken} = await generateAdminTokens(fetchedAdmin._id)
     const options={
       httpOnly:true,
-      secure:true
+      secure:true,
+      sameSite: 'none'
+      
     }
     const admin = await Admin.findById(fetchedAdmin._id).select("-password -refreshToken")
     res.status(200)
@@ -84,7 +86,8 @@ const adminLogout = async(req,res)=>{
   //   },{new:true})
     const options={
       httpOnly:true,
-      secure:true
+      secure:true,
+      sameSite: 'none'
     }
     res.status(200)
     .clearCookie("accessToken",options)
