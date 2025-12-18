@@ -62,7 +62,8 @@ function AdminEmployeesMenu() {
   return searchResults;
   }
     const employeessForFilter = seachTerms() 
-    filterTasks(employeessForFilter, setFilteredEmployees, filterOptions);
+  const returnenEmpArr=  filterTasks(employeessForFilter, setFilteredEmployees, filterOptions);
+  setFilteredEmployees(returnenEmpArr)
   }, [allEmployees, filterOptions,searchInput]);
   if (isLoading) {
     return (
