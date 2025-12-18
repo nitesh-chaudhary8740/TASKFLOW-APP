@@ -64,7 +64,9 @@ const adminLogin = async (req, res) => {
     const options={
       httpOnly:true,
       secure:true,
-      sameSite: 'none'
+      sameSite: 'none',
+      maxAge: 7 * 24 * 60 * 60 * 1000, 
+    path: "/",
       
     }
     const admin = await Admin.findById(fetchedAdmin._id).select("-password -refreshToken")
@@ -84,6 +86,7 @@ const adminLogout = async(req,res)=>{
   //       refreshToken:null
   //     }
   //   },{new:true})
+  console.log("admin logout")
     const options={
       httpOnly:true,
       secure:true,
