@@ -73,19 +73,16 @@ function AdminDashboard() {
                 setTasks(response.data.tasks);
                 setError(null);
             } catch (err) {
-                console.error("Error fetching tasks:", err);
-                // const errMsg = err.response
-                //     ? err.response.data.message || "Network Error"
-                //     : err.message;
-                   
-                // setError(errMsg);
+                    if(err?.response?.data?.isRevoked){
+                        showError("Token revoked!! login again")
+                    }
             } finally {
                 setIsLoading(false);
             }
         };
 
         fetchTasks();
-    }, [refetch]);
+    }, [refetch,showError]);
 
     // --- Fetch Employees ---
     useEffect(() => {
@@ -97,8 +94,9 @@ function AdminDashboard() {
                 setAllEmployees(fetchedEmployees);
                 setError(null);
             } catch (err) {
-                console.error("Error fetching employees:", err);
-                // showError("Failed to load employee list.", 3);
+               if(err?.response?.data?.isRevoked){
+                        showError("Token revoked!! login again")
+                    }
                 setError("Failed to load employees.");
             } finally {
                 setIsLoading(false);
@@ -116,8 +114,9 @@ function AdminDashboard() {
                 setReports(fetchedReports);
                 setError(null);
             } catch (err) {
-                console.error("Error fetching reports:", err);
-                // showError("Failed to reports.", 3);
+                   if(err?.response?.data?.isRevoked){
+                        showError("Token revoked!! login again")
+                    }
                 setError("Failed to reports.");
             } finally {
                 setIsLoading(false);
@@ -146,6 +145,9 @@ function AdminDashboard() {
             const response = await axios.get(`${import.meta.env.VITE_API_URL}/get-activities`, { withCredentials: true });
             setActivities(response.data);
         } catch (error) {
+               if(error?.response?.data?.isRevoked){
+                        showError("Token revoked!! login again")
+                    }
             console.error("Error fetching activities", error);
         } 
     };

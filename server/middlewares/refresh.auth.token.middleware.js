@@ -31,7 +31,7 @@ const refreshAccessToken = async (req, res, next) => {
     } catch (error) {
         // This catches errors like 'jwt expired' on the REFRESH TOKEN
         console.error("Refresh Token Failed:", error.message);
-        return res.status(401).json({ msg: "Refresh Token expired. Please log in again.", success: false });
+        return res.status(401).json({ msg: "Refresh Token expired. Please log in again.", success: false,tokenRevoked:true });
     }
 };
 module.exports=refreshAccessToken
